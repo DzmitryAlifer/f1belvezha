@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { Race } from '../types';
+import { map } from 'rxjs/operators';
+import { Race, Season } from '../types';
 import { HttpClient } from '@angular/common/http';
 
 const SCHEDULE_API = 'https://ergast.com/api/f1/';
@@ -12,6 +13,7 @@ export class ScheduleService {
   constructor(private readonly httpClient: HttpClient) {}
 
   getCurrentYearSchedule(): Observable<Race[]> {
-    return this.httpClient.get<Race[]>(`${SCHEDULE_API}${CURRENT_YEAR}.json`);
+    return this.httpClient.get<Season>(`${SCHEDULE_API}${CURRENT_YEAR}.json`).pipe(
+      map(season => season.MRData.RaceTable.Races));
   }
 }

@@ -5,7 +5,7 @@ export interface User {
     lastname?: string;
 }
 
-export interface Races {
+export interface Season {
     MRData: {
         RaceTable: {
             Races: Race[];
@@ -14,7 +14,7 @@ export interface Races {
 }
 
 export interface Race {
-    round: number;
+    round: string;
     Circuit: {
         Location: {
             country: string;
