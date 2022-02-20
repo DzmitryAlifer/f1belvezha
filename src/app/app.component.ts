@@ -1,12 +1,6 @@
 import { Component } from '@angular/core';
 import { HttpClient } from  '@angular/common/http';
 
-interface User {
-  id: number;
-  firstName: string;
-  lastName: string;
-}
-
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -17,7 +11,7 @@ export class AppComponent {
   underConstruction = 'under construction...';
 
   // usersResponse = this.http.get('http://localhost:3000/users', {headers: {'Access-Control-Allow-Origin': '*'}});
-  usersResponse = this.http.get('https://f1oracle.herokuapp.com:3000/users', {headers: {'Access-Control-Allow-Origin': '*'}});
+  usersResponse = this.http.get('https://f1oracle.herokuapp.com:8080/users', {headers: {'Access-Control-Allow-Origin': '*'}});
   
   constructor(private http: HttpClient) {}
 
