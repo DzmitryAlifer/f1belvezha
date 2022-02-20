@@ -1,9 +1,13 @@
-<div class="page-container">
-  <h1>{{title}}</h1>
-  <h3>{{underConstruction}}</h3>
-  <button (click)="getAllUsers()">Test users</button>
-  <div *ngFor="let user of (users | async)">{{user?.firstname}}</div>
-  <button (click)="getAllUsers2()">Test users 2</button>
-</div>
+<ng-container *ngIf="{
+  userById: userById | async,
+  users: users | async
+} as data">
+  <div class="page-container">
+    <h1>{{title}}</h1>
+    <h3>{{underConstruction}}</h3>
+    <div *ngFor="let user of data.users">{{user.firstname}}</div>
+    <div>User with id=1: {{data.userById?.firstname}}</div>
+  </div>
+</ng-container>
 
 <router-outlet></router-outlet>
