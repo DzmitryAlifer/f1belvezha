@@ -2,7 +2,7 @@
   <h1>{{title}}</h1>
   <h3>{{underConstruction}}</h3>
   <button (click)="getAllUsers()">Test users</button>
-  <div *ngFor="let user of (users | async)">{{user.firstname}}</div>
+  <div *ngFor="let user of (users | async)">{{user?.firstname}}</div>
   <button (click)="getAllUsers2()">Test users 2</button>
 </div>
 

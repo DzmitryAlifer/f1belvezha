@@ -1,6 +1,13 @@
 import { Component } from '@angular/core';
 import { HttpClient } from  '@angular/common/http';
-import { startWith } from 'rxjs';
+import { Observable, startWith } from 'rxjs';
+
+interface User {
+  id: number;
+  username: string;
+  firstname: string;
+  lastname?: string;
+}
 
 @Component({
   selector: 'app-root',
@@ -12,7 +19,7 @@ export class AppComponent {
   underConstruction = 'under construction...';
 
   // usersResponse = this.http.get('http://localhost:3000/users', {headers: {'Access-Control-Allow-Origin': '*'}});
-  users = this.http.get('https://safe-crag-81937.herokuapp.com/users').pipe(startWith([]));
+  readonly users: Observable<any> = this.http.get('https://safe-crag-81937.herokuapp.com/users');
   // usersResponse2 = this.http.get('https://safe-crag-81937.herokuapp.com/users2');
   
   constructor(private http: HttpClient) {}
