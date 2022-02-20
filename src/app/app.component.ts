@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { HttpClient } from  '@angular/common/http';
+import { startWith } from 'rxjs';
 
 @Component({
   selector: 'app-root',
@@ -11,13 +12,13 @@ export class AppComponent {
   underConstruction = 'under construction...';
 
   // usersResponse = this.http.get('http://localhost:3000/users', {headers: {'Access-Control-Allow-Origin': '*'}});
-  usersResponse1 = this.http.get('https://safe-crag-81937.herokuapp.com/users');
+  users = this.http.get('https://safe-crag-81937.herokuapp.com/users').pipe(startWith([]));
   // usersResponse2 = this.http.get('https://safe-crag-81937.herokuapp.com/users2');
   
   constructor(private http: HttpClient) {}
 
-  getAllUsers1() {
-    this.usersResponse1.subscribe(response => {console.log(response);});
+  getAllUsers() {
+    this.users.subscribe(response => {console.log(response);});
   }
 
   getAllUsers2() {

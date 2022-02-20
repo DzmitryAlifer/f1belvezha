@@ -1,7 +1,8 @@
 <div class="page-container">
   <h1>{{title}}</h1>
   <h3>{{underConstruction}}</h3>
-  <button (click)="getAllUsers1()">Test users 1</button>
+  <button (click)="getAllUsers()">Test users</button>
+  <div *ngFor="let user of (users | async)">{{user.firstname}}</div>
   <button (click)="getAllUsers2()">Test users 2</button>
 </div>
 
