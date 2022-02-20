@@ -9,6 +9,4 @@ app.get('/*', function(req, res) {
     res.sendFile(path.join(__dirname + '/dist/f1belvezha/index.html'));
 });
 
-app.listen(port, () => {
-    console.log(`App running on port ${port}.`);
-});
+app.listen(port);
