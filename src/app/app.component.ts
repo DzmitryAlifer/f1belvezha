@@ -16,7 +16,8 @@ export class AppComponent {
   title = 'F1 Belvezha';
   underConstruction = 'under construction...';
 
-  usersResponse = this.http.get('http://localhost:3000/users', {headers: {'Access-Control-Allow-Origin': '*'}});
+  // usersResponse = this.http.get('http://localhost:3000/users', {headers: {'Access-Control-Allow-Origin': '*'}});
+  usersResponse = this.http.get('https://f1oracle.herokuapp.com:3000/users', {headers: {'Access-Control-Allow-Origin': '*'}});
   
   constructor(private http: HttpClient) {}
 
