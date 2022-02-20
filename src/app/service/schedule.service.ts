@@ -3,7 +3,7 @@ import { Observable } from 'rxjs';
 import { Race } from '../types';
 import { HttpClient } from '@angular/common/http';
 
-const SCHEDULE_API = 'http://ergast.com/api/f1/';
+const SCHEDULE_API = 'https://ergast.com/api/f1/';
 const CURRENT_YEAR = new Date().getFullYear();
 
 @Injectable({providedIn: 'root'})
