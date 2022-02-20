@@ -1,9 +1,10 @@
 import { Component } from '@angular/core';
-import { HttpClient } from  '@angular/common/http';
-import { BehaviorSubject, combineLatest, Observable } from 'rxjs';
+import { BehaviorSubject, combineLatest } from 'rxjs';
 import {map} from 'rxjs/operators';
 import {User} from '../types';
 import {Sort} from '@angular/material/sort';
+import { UserService } from '../service/user.service';
+import { ScheduleService } from '../service/schedule.service';
 
 @Component({
   selector: 'full-results',
@@ -14,11 +15,9 @@ export class FullResultsComponent {
   readonly displayedColumns: string[] = ['id', 'name', 'total'];
 
   readonly sortSubject = new BehaviorSubject<Sort>({active: 'id', direction: 'asc'});
+  readonly users = this.userService.getAllUsers();
+  readonly races = this.scheduleService.getCurrentYearSchedule();
 
-  readonly users: Observable<User[]> = 
-      this.http.get<User[]>('https://safe-crag-81937.herokuapp.com/users');
-  readonly userById: Observable<User> = 
-      this.http.get<User>('https://safe-crag-81937.herokuapp.com/users/1');
   
   readonly sortedUsers = combineLatest([this.users, this.sortSubject]).pipe(
     map(([users, sort]) =>
@@ -36,7 +35,10 @@ export class FullResultsComponent {
     ),
   );
 
-  constructor(private http: HttpClient) {}
+  constructor(
+    private readonly scheduleService: ScheduleService,
+    private readonly userService: UserService,
+  ) {this.races.subscribe(r => console.log(r))}
 
   sortData(sort: Sort) {
     this.sortSubject.next(sort);
