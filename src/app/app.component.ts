@@ -12,7 +12,7 @@ export class AppComponent {
 
   // usersResponse = this.http.get('http://localhost:3000/users', {headers: {'Access-Control-Allow-Origin': '*'}});
   usersResponse1 = this.http.get('https://safe-crag-81937.herokuapp.com/users');
-  usersResponse2 = this.http.get('https://safe-crag-81937.herokuapp.com/users2');
+  // usersResponse2 = this.http.get('https://safe-crag-81937.herokuapp.com/users2');
   
   constructor(private http: HttpClient) {}
 
@@ -21,6 +21,6 @@ export class AppComponent {
   }
 
   getAllUsers2() {
-    this.usersResponse2.subscribe(response => {console.log(response);});
+    // this.usersResponse2.subscribe(response => {console.log(response);});
   }
 }
