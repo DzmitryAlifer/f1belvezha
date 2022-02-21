@@ -1,4 +1,19 @@
-/* You can add global styles to this file, and also import other style files */
+$grey-100: #f5f5f5;
+$grey-200: #eeeeee;
+$grey-500: #9e9e9e;
+$grey-800: #424242;
+$grey-900: #212121;
 
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+$main-color-dark: $grey-800;
+$main-color-light: white;
+
+$toolbar-height: 40px;
+
+html, body { 
+    height: 100%; 
+}
+
+body { 
+    margin: 0; 
+    font-family: Roboto, "Helvetica Neue", sans-serif; 
+}

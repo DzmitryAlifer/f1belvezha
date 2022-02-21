@@ -1,0 +1,11 @@
+@import '../../styles.scss';
+
+.mat-toolbar-row {
+    background-color: $main-color-light;
+    color: $main-color-dark;
+    height: $toolbar-height;
+
+    .spacer {
+        flex: 1 1 auto;
+    }
+}

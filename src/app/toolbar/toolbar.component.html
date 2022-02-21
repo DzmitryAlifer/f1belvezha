@@ -1,0 +1,30 @@
+<mat-toolbar>
+    <mat-toolbar-row>
+        <!-- <button mat-icon-button class="menu" (click)="openMainMenu()">
+            <mat-icon>menu</mat-icon>
+        </button> -->
+
+        <span>F1 Sport</span>
+
+        <span class="spacer"></span>
+
+        <!-- <button mat-icon-button class="settings" (click)="openSettingsMenu()">
+            <mat-icon>settings</mat-icon>
+        </button> -->
+        
+        <button mat-icon-button class="user" [matMenuTriggerFor]="userMenu">
+            <mat-icon>{{isAuthorized ? 'face' : 'account_circle'}}</mat-icon>
+        </button>
+
+        <mat-menu #userMenu="matMenu">
+            <!-- <button mat-menu-item (click)="login()">
+                <mat-icon>login</mat-icon>
+                Log in
+            </button> -->
+            <button mat-menu-item (click)="createAccount()">
+                <mat-icon>person_add</mat-icon>
+                Create account
+            </button>
+        </mat-menu>
+    </mat-toolbar-row>
+</mat-toolbar>

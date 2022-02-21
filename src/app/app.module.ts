@@ -6,6 +6,8 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FullResultsModule } from './full-results/full-results.module';
+import { ToolbarModule } from './toolbar/toolbar.module';
+import { CreateAccountDialogModule } from './toolbar/create-account-dialog/create-account-dialog.module';
 
 @NgModule({
   declarations: [AppComponent],
@@ -13,8 +15,10 @@ import { FullResultsModule } from './full-results/full-results.module';
     AppRoutingModule,
     BrowserAnimationsModule,
     BrowserModule,
+    CreateAccountDialogModule,
     FullResultsModule,
     HttpClientModule,
+    ToolbarModule,
   ],
   bootstrap: [AppComponent],
 })
