@@ -50,7 +50,7 @@ export class FullResultsComponent {
 
   private readonly filteredRaces = this.allRaces.pipe(
     map(races => {
-      const lastRaceIndex = races.findIndex(race => moment('2022-08-08').isBefore(race.date));
+      const lastRaceIndex = races.findIndex(race => moment().isBefore(race.date));
       const firstShownRaceIndex = Math.max(0, lastRaceIndex - NUMBER_OF_PAST_RACES);
       return races.slice(firstShownRaceIndex, lastRaceIndex + NUMBER_OF_FUTURE_RACES);
     }));
