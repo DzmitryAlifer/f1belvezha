@@ -7,7 +7,6 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AppComponent {
-  readonly title = 'F1 Sport';
   readonly subtitle = 'under construction...';
   readonly description = 'inspired by Belvezha team';
 }
