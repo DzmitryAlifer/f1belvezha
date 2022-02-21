@@ -12,3 +12,11 @@
         text-align: left;
     }
 }
+
+.mat-spinner {
+    display: inline-block;
+
+    ::ng-deep circle {
+        stroke: black;
+    }
+}

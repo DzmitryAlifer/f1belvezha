@@ -30,6 +30,9 @@ const COUNTRY_MAP = new Map<string, string>()
     .set('Brazil', 'BR')
     .set('UAE', 'AE');
 
+// const TODAY_ISO_DATE = new Date().toISOString().split('T')[0];
+const TODAY_ISO_DATE = '2022-08-24';
+
 @Component({
   selector: 'full-results',
   templateUrl: './full-results.component.html',
@@ -43,8 +46,10 @@ export class FullResultsComponent {
   readonly isLoaded = combineLatest([this.users, this.races]).pipe(
     map(([users, races]) => !!races && !!users));
 
-  readonly displayedColumns: Observable<string[]> = this.races.pipe(
-    map(races => ['name', ...races.map(race => 'round' + race.round), 'total']));
+  private readonly allRaceColumns = this.races.pipe(map(races => races.map(race => 'round' + race.round)));
+
+  readonly displayedColumns: Observable<string[]> = this.allRaceColumns.pipe(
+    map(raceColumns => ['name', ...raceColumns, 'total']));
   
   readonly sortedUsers = combineLatest([this.users, this.sortSubject]).pipe(
     map(([users, sort]) =>
