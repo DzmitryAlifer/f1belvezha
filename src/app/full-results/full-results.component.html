@@ -3,7 +3,12 @@
     isLoaded: isLoaded | async,
     races: races | async
 } as data">
-    <table *ngIf="data.isLoaded; else spinner" mat-table matSort (matSortChange)="sortData($event)" [dataSource]="sortedUsers" class="mat-elevation-z8">
+    <table *ngIf="data.isLoaded; else spinner" 
+            class="mat-elevation-z8"
+            mat-table 
+            matSort
+            [dataSource]="sortedUsers"
+            (matSortChange)="sortData($event)">
         <ng-container matColumnDef="id">
             <th mat-header-cell mat-sort-header="id" *matHeaderCellDef>ID</th>
             <td mat-cell *matCellDef="let user">{{user.id}}</td>
