@@ -1,4 +1,4 @@
-import { Component, EventEmitter } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter } from '@angular/core';
 import { MatSlideToggleChange } from '@angular/material/slide-toggle';
 import { Sort } from '@angular/material/sort';
 import { BehaviorSubject, combineLatest } from 'rxjs';
@@ -39,6 +39,7 @@ const COUNTRY_MAP = new Map<string, string>()
   selector: 'full-results',
   templateUrl: './full-results.component.html',
   styleUrls: ['./full-results.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class FullResultsComponent {
   readonly sortSubject = new BehaviorSubject<Sort>({active: 'id', direction: 'asc'});
