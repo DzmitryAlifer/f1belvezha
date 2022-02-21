@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FullResultsComponent } from './full-results.component';
 import {MatCardModule} from '@angular/material/card';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
+import {MatSlideToggleModule} from '@angular/material/slide-toggle';
 import {MatSortModule} from '@angular/material/sort';
 import {MatTableModule} from '@angular/material/table';
 
@@ -11,6 +12,7 @@ import {MatTableModule} from '@angular/material/table';
     CommonModule,
     MatCardModule,
     MatProgressSpinnerModule,
+    MatSlideToggleModule,
     MatSortModule,
     MatTableModule,
   ],
