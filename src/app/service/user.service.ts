@@ -1,7 +1,8 @@
-import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
-import { User } from '../types';
-import { HttpService } from './http.service';
+import {Injectable} from '@angular/core';
+import {Observable} from 'rxjs';
+import {Params, User} from '../types';
+import {HttpService} from './http.service';
+
 
 @Injectable({providedIn: 'root'})
 export class UserService {
@@ -18,5 +19,9 @@ export class UserService {
 
   createUser(user: User): Observable<User> {
     return this.httpService.post<User>('/users', user);
+  }
+
+  login(params: Params): Observable<User> {
+    return this.httpService.getByParams<User>('/users', params);
   }
 }

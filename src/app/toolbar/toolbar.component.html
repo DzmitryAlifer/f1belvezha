@@ -1,6 +1,6 @@
 <mat-toolbar>
     <mat-toolbar-row>
-        <!-- <button mat-icon-button class="menu" (click)="openMainMenu()">
+        <!-- <button mat-icon-button class="menu">
             <mat-icon>menu</mat-icon>
         </button> -->
 
@@ -8,7 +8,7 @@
 
         <span class="spacer"></span>
 
-        <!-- <button mat-icon-button class="settings" (click)="openSettingsMenu()">
+        <!-- <button mat-icon-button class="settings">
             <mat-icon>settings</mat-icon>
         </button> -->
         
@@ -17,13 +17,14 @@
         </button>
 
         <mat-menu #userMenu="matMenu">
-            <!-- <button mat-menu-item (click)="login()">
-                <mat-icon>login</mat-icon>
-                Log in
-            </button> -->
             <button mat-menu-item (click)="createAccount()">
                 <mat-icon>person_add</mat-icon>
                 Create account
+            </button>
+
+            <button mat-menu-item (click)="login()">
+                <mat-icon>login</mat-icon>
+                Log in
             </button>
         </mat-menu>
     </mat-toolbar-row>

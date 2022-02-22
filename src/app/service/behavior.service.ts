@@ -6,6 +6,7 @@ import {Observable, ReplaySubject} from 'rxjs';
 export class BehaviorService {
 
   private readonly reloadUsersSubject = new ReplaySubject<void>();
+  private readonly showUserToolbarSubject = new ReplaySubject<void>();
 
   constructor() {}
 
@@ -15,5 +16,13 @@ export class BehaviorService {
 
   isUsersReload(): Observable<void> {
     return this.reloadUsersSubject.asObservable();
+  }
+
+  showUserToolbar(): void {
+    this.showUserToolbarSubject.next();
+  }
+
+  isUserToolbar(): Observable<void> {
+    return this.showUserToolbarSubject.asObservable();
   }
 }

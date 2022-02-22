@@ -1,6 +1,7 @@
 import {ChangeDetectionStrategy, Component} from '@angular/core';
 import {MatDialog} from '@angular/material/dialog';
 import {CreateAccountDialog} from './create-account-dialog/create-account-dialog';
+import {LoginDialog} from './login-dialog/login-dialog';
 
 
 @Component({
@@ -12,21 +13,16 @@ import {CreateAccountDialog} from './create-account-dialog/create-account-dialog
 export class ToolbarComponent {
   isAuthorized = false;
 
-  constructor(private readonly createAccountDialog: MatDialog) {}
+  constructor(
+    private readonly createAccountDialog: MatDialog,
+    private readonly loginDialog: MatDialog,
+  ) {}
 
-  openMainMenu() {
-
-  }
-
-  openSettingsMenu() {
-    
-  }
-
-  login() {
-    
-  }
-
-  createAccount() {
+  createAccount(): void {
     this.createAccountDialog.open(CreateAccountDialog, {disableClose: true});
+  }
+
+  login(): void {
+    this.loginDialog.open(LoginDialog, {disableClose: true});
   }
 }

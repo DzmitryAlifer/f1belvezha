@@ -2,7 +2,6 @@ import {ChangeDetectionStrategy, Component} from '@angular/core';
 import {FormBuilder, FormControl, Validators} from '@angular/forms';
 import {MatDialogRef} from '@angular/material/dialog';
 import {UserService} from 'src/app/service/user.service';
-import {take} from 'rxjs/operators';
 import {BehaviorService} from 'src/app/service/behavior.service';
 
 
@@ -21,8 +20,6 @@ export class CreateAccountDialog {
     'username': [null, [Validators.required]],
     'password': [null, [Validators.required, this.checkPassword]],
   });
-
-  post: any = '';
 
   constructor(
     private readonly behaviorService: BehaviorService,

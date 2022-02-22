@@ -1,8 +1,11 @@
-import { Injectable } from '@angular/core';
-import { HttpClient } from  '@angular/common/http';
-import { Observable } from 'rxjs';
+import {Injectable} from '@angular/core';
+import {HttpClient} from  '@angular/common/http';
+import {Observable} from 'rxjs';
+import {Params} from '../types';
+
 
 const API_DOMAIN = 'https://safe-crag-81937.herokuapp.com';
+
 
 @Injectable({providedIn: 'root'})
 export class HttpService {
@@ -19,5 +22,9 @@ export class HttpService {
 
   post<T>(apiPath: string, entity: T): Observable<T> {
     return this.httpClient.post<T>(`${API_DOMAIN}${apiPath}`, entity);
+  }
+
+  getByParams<T>(apiPath: string, params: Params): Observable<T> {
+    return this.httpClient.get<T>(`${API_DOMAIN}${apiPath}`, params);
   }
 }

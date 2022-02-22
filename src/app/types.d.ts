@@ -3,6 +3,7 @@ export interface User {
     firstname: string;
     id?: number;
     lastname?: string;
+    password?: string;
 }
 
 export interface Season {
@@ -21,4 +22,8 @@ export interface Race {
         };
     };
     date: string;
+}
+
+export interface Params {
+    [param: string]: string;
 }
