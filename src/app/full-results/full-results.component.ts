@@ -1,12 +1,13 @@
-import { ChangeDetectionStrategy, Component, EventEmitter } from '@angular/core';
-import { MatSlideToggleChange } from '@angular/material/slide-toggle';
-import { Sort } from '@angular/material/sort';
-import { BehaviorSubject, combineLatest } from 'rxjs';
-import { map, shareReplay, startWith, switchMap } from 'rxjs/operators';
-import { User } from '../types';
-import { UserService } from '../service/user.service';
-import { ScheduleService } from '../service/schedule.service';
+import {ChangeDetectionStrategy, Component, EventEmitter} from '@angular/core';
+import {MatSlideToggleChange} from '@angular/material/slide-toggle';
+import {Sort} from '@angular/material/sort';
+import {BehaviorSubject, combineLatest, merge} from 'rxjs';
+import {map, shareReplay, startWith, switchMap} from 'rxjs/operators';
+import {User} from '../types';
+import {UserService} from '../service/user.service';
+import {ScheduleService} from '../service/schedule.service';
 import * as moment from 'moment';
+import {BehaviorService} from '../service/behavior.service';
 
 const NUMBER_OF_PAST_RACES = 3;
 const NUMBER_OF_FUTURE_RACES = 2;
@@ -45,7 +46,10 @@ export class FullResultsComponent {
   readonly sortSubject = new BehaviorSubject<Sort>({active: 'id', direction: 'asc'});
   private readonly tableToggle = new EventEmitter<boolean>();
 
-  readonly users = this.userService.getAllUsers().pipe(shareReplay(1));
+  private readonly initialUsers = this.userService.getAllUsers().pipe(shareReplay(1));
+  private readonly reloadedUsers = this.behaviorService.isUsersReload().pipe(switchMap(() => this.userService.getAllUsers()));
+  private readonly users = merge(this.initialUsers, this.reloadedUsers);
+
   readonly allRaces = this.scheduleService.getCurrentYearSchedule().pipe(shareReplay(1));
   readonly isLoaded = combineLatest([this.users, this.allRaces]).pipe(map(([users, races]) => !!races && !!users));
 
@@ -81,11 +85,10 @@ export class FullResultsComponent {
   );
 
   constructor(
+    private readonly behaviorService: BehaviorService,
     private readonly scheduleService: ScheduleService,
     private readonly userService: UserService,
-  ) {
-    this.filteredRaces.subscribe(columns => console.log(columns));
-    this.tableToggle.subscribe(checked => console.log(checked));
+  ) {;
   }
 
   sortData(sort: Sort): void {

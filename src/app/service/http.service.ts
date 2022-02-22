@@ -18,7 +18,6 @@ export class HttpService {
   }
 
   post<T>(apiPath: string, entity: T): Observable<T> {
-    console.log(entity);
     return this.httpClient.post<T>(`${API_DOMAIN}${apiPath}`, entity);
   }
 }
