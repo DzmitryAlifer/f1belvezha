@@ -15,14 +15,21 @@
         </button>
 
         <mat-menu #userMenu="matMenu">
-            <button mat-menu-item (click)="createAccount()">
-                <mat-icon>person_add</mat-icon>
-                Create account
-            </button>
+            <ng-container *ngIf="!data.user">
+                <button mat-menu-item (click)="createAccount()">
+                    <mat-icon>person_add</mat-icon>
+                    Create account
+                </button>
 
-            <button mat-menu-item (click)="login()">
-                <mat-icon>login</mat-icon>
-                Log in
+                <button mat-menu-item (click)="login()">
+                    <mat-icon>login</mat-icon>
+                    Log in
+                </button>
+            </ng-container>
+
+            <button *ngIf="data.user" mat-menu-item (click)="logout()">
+                <mat-icon>logout</mat-icon>
+                Log out
             </button>
         </mat-menu>
 

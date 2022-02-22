@@ -3,7 +3,6 @@ import {FormBuilder, Validators} from '@angular/forms';
 import {MatDialogRef} from '@angular/material/dialog';
 import {UserService} from 'src/app/service/user.service';
 import {BehaviorService} from 'src/app/service/behavior.service';
-import {switchMap} from 'rxjs/operators';
 
 
 @Component({

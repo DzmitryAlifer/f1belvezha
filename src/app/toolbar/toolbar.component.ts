@@ -1,6 +1,7 @@
 import {ChangeDetectionStrategy, Component} from '@angular/core';
 import {MatDialog} from '@angular/material/dialog';
 import {BehaviorService} from '../service/behavior.service';
+import {UserService} from '../service/user.service';
 import {CreateAccountDialog} from './create-account-dialog/create-account-dialog';
 import {LoginDialog} from './login-dialog/login-dialog';
 
@@ -15,9 +16,10 @@ export class ToolbarComponent {
   readonly user = this.behaviorService.getCurrentUser();
 
   constructor(
+    private readonly behaviorService: BehaviorService,
     private readonly createAccountDialog: MatDialog,
     private readonly loginDialog: MatDialog,
-    private readonly behaviorService: BehaviorService,
+    private readonly userService: UserService,
   ) {}
 
   createAccount(): void {
@@ -26,5 +28,9 @@ export class ToolbarComponent {
 
   login(): void {
     this.loginDialog.open(LoginDialog, {disableClose: true});
+  }
+
+  logout(): void {
+    this.behaviorService.setCurrentUser(null);
   }
 }
