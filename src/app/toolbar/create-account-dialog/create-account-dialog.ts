@@ -1,6 +1,7 @@
 import {ChangeDetectionStrategy, Component} from '@angular/core';
 import {FormBuilder, FormControl, Validators} from '@angular/forms';
 import {MatDialogRef} from '@angular/material/dialog';
+import {UserService} from 'src/app/service/user.service';
 
 
 const PASSWORD_REGEXP = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.{8,})/;
@@ -13,9 +14,9 @@ const PASSWORD_REGEXP = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.{8,})/;
 })
 export class CreateAccountDialog {
   readonly accountForm = this.formBuilder.group({
-    'firstName': [null, [Validators.required]],
-    'lastName': [null],
-    'login': [null, [Validators.required]],
+    'firstname': [null, [Validators.required]],
+    'lastname': [null],
+    'username': [null, [Validators.required]],
     'password': [null, [Validators.required, this.checkPassword]],
   });
 
@@ -24,6 +25,7 @@ export class CreateAccountDialog {
   constructor(
     private readonly dialogRef: MatDialogRef<CreateAccountDialog>,
     private readonly formBuilder: FormBuilder,
+    private readonly userService: UserService,
   ) {}
 
   checkPassword(formControl: FormControl) {
@@ -31,7 +33,7 @@ export class CreateAccountDialog {
   }
 
   submit(): void {
-    this.post = this.accountForm.value;
+    this.userService.createUser(this.accountForm.value);
   }
 
   cancel(): void {

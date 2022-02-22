@@ -16,4 +16,8 @@ export class HttpService {
   getById<T>(apiPath: string, id: number|string): Observable<T> {
     return this.httpClient.get<T>(`${API_DOMAIN}${apiPath}/${id}`);
   }
+
+  post<T>(apiPath: string, entity: T): Observable<T> {
+    return this.httpClient.post<T>(`${API_DOMAIN}${apiPath}`, entity);
+  }
 }

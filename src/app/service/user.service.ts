@@ -16,5 +16,7 @@ export class UserService {
     return this.httpService.getById<User>('/users', id);
   }
 
-  
+  createUser(user: User): Observable<User> {
+    return this.httpService.post<User>('/users', user);
+  }
 }

@@ -70,7 +70,7 @@ export class FullResultsComponent {
         const isAsc = sort.direction === 'asc';
         switch (sort.active) {
           case 'id':
-            return compare(left.id, right.id, isAsc);
+            return compare(left.id!, right.id!, isAsc);
           case 'name':
             return compare(left.firstname + left.lastname ?? '', right.lastname ?? '', isAsc);
           default:
