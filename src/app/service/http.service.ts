@@ -24,7 +24,7 @@ export class HttpService {
     return this.httpClient.post<T>(`${API_DOMAIN}${apiPath}`, entity);
   }
 
-  login<T>(apiPath: string, params: Params): Observable<T> {
-    return this.httpClient.get<T>(`${API_DOMAIN}${apiPath}`, params);
+  login<T>(apiPath: string, body: Params): Observable<T> {
+    return this.httpClient.post<T>(`${API_DOMAIN}${apiPath}`, body);
   }
 }
