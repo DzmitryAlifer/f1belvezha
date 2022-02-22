@@ -1,4 +1,4 @@
-<mat-toolbar>
+<mat-toolbar *ngIf="{user: user | async} as data">
     <mat-toolbar-row>
         <!-- <button mat-icon-button class="menu">
             <mat-icon>menu</mat-icon>
@@ -8,12 +8,10 @@
 
         <span class="spacer"></span>
 
-        <!-- <button mat-icon-button class="settings">
-            <mat-icon>settings</mat-icon>
-        </button> -->
+        <span>{{data.user?.firstname ?? 'guest'}}</span>
         
         <button mat-icon-button class="user" [matMenuTriggerFor]="userMenu">
-            <mat-icon>{{isAuthorized ? 'face' : 'account_circle'}}</mat-icon>
+            <mat-icon>{{data.user ? 'face' : 'account_circle'}}</mat-icon>
         </button>
 
         <mat-menu #userMenu="matMenu">
@@ -27,5 +25,9 @@
                 Log in
             </button>
         </mat-menu>
+
+          <!-- <button mat-icon-button class="settings">
+            <mat-icon>settings</mat-icon>
+        </button> -->
     </mat-toolbar-row>
 </mat-toolbar>

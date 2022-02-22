@@ -1,5 +1,6 @@
 import {ChangeDetectionStrategy, Component} from '@angular/core';
 import {MatDialog} from '@angular/material/dialog';
+import {BehaviorService} from '../service/behavior.service';
 import {CreateAccountDialog} from './create-account-dialog/create-account-dialog';
 import {LoginDialog} from './login-dialog/login-dialog';
 
@@ -11,11 +12,12 @@ import {LoginDialog} from './login-dialog/login-dialog';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ToolbarComponent {
-  isAuthorized = false;
+  readonly user = this.behaviorService.getCurrentUser();
 
   constructor(
     private readonly createAccountDialog: MatDialog,
     private readonly loginDialog: MatDialog,
+    private readonly behaviorService: BehaviorService,
   ) {}
 
   createAccount(): void {

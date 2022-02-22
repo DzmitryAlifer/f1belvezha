@@ -21,7 +21,7 @@ export class UserService {
     return this.httpService.post<User>('/users', user);
   }
 
-  login(params: Params): Observable<User> {
+  login(params: Params): Observable<User|null> {
     return this.httpService.login<User>('/login', params);
   }
 }

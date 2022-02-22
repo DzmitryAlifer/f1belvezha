@@ -1,12 +1,13 @@
 import {Injectable} from '@angular/core';
-import {Observable, ReplaySubject} from 'rxjs';
+import {BehaviorSubject, Observable, ReplaySubject} from 'rxjs';
+import {User} from '../types';
 
 
 @Injectable({providedIn: 'root'})
 export class BehaviorService {
 
   private readonly reloadUsersSubject = new ReplaySubject<void>();
-  private readonly showUserToolbarSubject = new ReplaySubject<void>();
+  private readonly currentUser = new BehaviorSubject<User|null>(null);
 
   constructor() {}
 
@@ -18,11 +19,11 @@ export class BehaviorService {
     return this.reloadUsersSubject.asObservable();
   }
 
-  showUserToolbar(): void {
-    this.showUserToolbarSubject.next();
+  setCurrentUser(user: User|null): void {
+    this.currentUser.next(user);
   }
 
-  isUserToolbar(): Observable<void> {
-    return this.showUserToolbarSubject.asObservable();
+  getCurrentUser(): Observable<User|null> {
+    return this.currentUser.asObservable();
   }
 }

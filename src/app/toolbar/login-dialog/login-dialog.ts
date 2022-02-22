@@ -1,8 +1,10 @@
 import {ChangeDetectionStrategy, Component} from '@angular/core';
-import {FormBuilder, FormControl, Validators} from '@angular/forms';
+import {FormBuilder, Validators} from '@angular/forms';
 import {MatDialogRef} from '@angular/material/dialog';
 import {UserService} from 'src/app/service/user.service';
 import {BehaviorService} from 'src/app/service/behavior.service';
+import {switchMap} from 'rxjs/operators';
+
 
 @Component({
   selector: 'app-login-dialog',
@@ -24,9 +26,10 @@ export class LoginDialog {
   ) {}
 
   login(): void {
-    this.userService.login(this.loginForm.value).subscribe();
+    this.userService.login(this.loginForm.value)
+        .subscribe(user => this.behaviorService.setCurrentUser(user));
+    
     this.cancel();
-    this.behaviorService.showUserToolbar();
   }
 
   cancel(): void {
