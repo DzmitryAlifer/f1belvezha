@@ -33,7 +33,7 @@ export class CreateAccountDialog {
   }
 
   submit(): void {
-    this.userService.createUser(this.accountForm.value);
+    this.userService.createUser(this.accountForm.value).subscribe((result) => console.log('result', result));
   }
 
   cancel(): void {
