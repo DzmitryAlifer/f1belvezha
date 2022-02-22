@@ -22,6 +22,6 @@ export class UserService {
   }
 
   login(params: Params): Observable<User> {
-    return this.httpService.getByParams<User>('/users', params);
+    return this.httpService.login<User>('/login', params);
   }
 }
