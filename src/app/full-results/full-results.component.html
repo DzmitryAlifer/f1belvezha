@@ -4,14 +4,9 @@
     races: allRaces | async,
     users: users | async
  } as data">
-    <div class="header">
-        <mat-slide-toggle color="primary" (change)="toggle($event)">All races</mat-slide-toggle>
-    </div>
-  
     <table *ngIf="data.isLoaded; else spinner"
             class="mat-elevation-z8"
             mat-table
-            matSort
             [dataSource]="allRaces">
     
         <ng-container matColumnDef="event">

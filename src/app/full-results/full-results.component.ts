@@ -1,16 +1,11 @@
-import {ChangeDetectionStrategy, Component, EventEmitter} from '@angular/core';
-import {MatSlideToggleChange} from '@angular/material/slide-toggle';
+import {ChangeDetectionStrategy, Component} from '@angular/core';
 import {Sort} from '@angular/material/sort';
 import {BehaviorSubject, combineLatest, merge} from 'rxjs';
-import {map, shareReplay, startWith, switchMap} from 'rxjs/operators';
-import {User} from '../types';
+import {map, shareReplay, switchMap} from 'rxjs/operators';
 import {UserService} from '../service/user.service';
 import {ScheduleService} from '../service/schedule.service';
-import * as moment from 'moment';
 import {BehaviorService} from '../service/behavior.service';
 
-const NUMBER_OF_PAST_RACES = 3;
-const NUMBER_OF_FUTURE_RACES = 2;
 
 const COUNTRY_MAP = new Map<string, string>()
     .set('Bahrain', 'BH')
@@ -36,6 +31,7 @@ const COUNTRY_MAP = new Map<string, string>()
     .set('Brazil', 'BR')
     .set('UAE', 'AE');
 
+    
 @Component({
   selector: 'full-results',
   templateUrl: './full-results.component.html',
@@ -44,26 +40,12 @@ const COUNTRY_MAP = new Map<string, string>()
 })
 export class FullResultsComponent {
   readonly sortSubject = new BehaviorSubject<Sort>({active: 'id', direction: 'asc'});
-  private readonly tableToggle = new EventEmitter<boolean>();
-
   private readonly initialUsers = this.userService.getAllUsers().pipe(shareReplay(1));
   private readonly reloadedUsers = this.behaviorService.isUsersReload().pipe(switchMap(() => this.userService.getAllUsers()));
   readonly users = merge(this.initialUsers, this.reloadedUsers);
 
   readonly allRaces = this.scheduleService.getCurrentYearSchedule().pipe(shareReplay(1));
   readonly isLoaded = combineLatest([this.users, this.allRaces]).pipe(map(([users, races]) => !!races && !!users));
-
-  private readonly filteredRaces = this.allRaces.pipe(
-    map(races => {
-      const lastRaceIndex = races.findIndex(race => moment().isBefore(race.date));
-      const firstShownRaceIndex = Math.max(0, lastRaceIndex - NUMBER_OF_PAST_RACES);
-      return races.slice(firstShownRaceIndex, lastRaceIndex + NUMBER_OF_FUTURE_RACES);
-    }));
-
-  readonly races = this.tableToggle.pipe(
-    startWith(false),
-    switchMap(isChecked => isChecked ? this.allRaces : this.filteredRaces),
-  );
 
   private readonly userColumns = this.users.pipe(map(users => users.map(user => 'user' + user.id)));
   readonly displayedColumns = this.userColumns.pipe(map(userColumns => ['event', ...userColumns]));
@@ -90,12 +72,4 @@ export class FullResultsComponent {
   getFlagLink(countryName: string): string {
     return `http://purecatamphetamine.github.io/country-flag-icons/3x2/${COUNTRY_MAP.get(countryName)}.svg`;
   }
-
-  toggle(event: MatSlideToggleChange): void {
-    this.tableToggle.emit(event.checked);
-  }
-}
-
-function compare(left: number | string, right: number | string, isAsc: boolean) {
-  return (left < right ? -1 : 1) * (isAsc ? 1 : -1);
 }
