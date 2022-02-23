@@ -5,8 +5,6 @@
     races: races | async,
     users: users | async
  } as data">
-    <circuit-map></circuit-map>
-
     <table *ngIf="data.isLoaded; else spinner"
             class="mat-elevation-z8"
             mat-table

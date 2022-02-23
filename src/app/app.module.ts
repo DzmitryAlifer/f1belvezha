@@ -9,7 +9,6 @@ import {FullResultsModule} from './full-results/full-results.module';
 import {ToolbarModule} from './toolbar/toolbar.module';
 import {CreateAccountDialogModule} from './toolbar/create-account-dialog/create-account-dialog.module';
 import {LoginDialogModule} from './toolbar/login-dialog/login-dialog.module';
-import {CircuitMapModule} from './circuit-map/circuit-map.module';
 
 
 @NgModule({
@@ -18,7 +17,6 @@ import {CircuitMapModule} from './circuit-map/circuit-map.module';
     AppRoutingModule,
     BrowserAnimationsModule,
     BrowserModule,
-    CircuitMapModule,
     CreateAccountDialogModule,
     FullResultsModule,
     HttpClientModule,
