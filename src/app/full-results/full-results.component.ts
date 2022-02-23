@@ -43,12 +43,17 @@ export class FullResultsComponent {
   private readonly initialUsers = this.userService.getAllUsers().pipe(shareReplay(1));
   private readonly reloadedUsers = this.behaviorService.isUsersReload().pipe(switchMap(() => this.userService.getAllUsers()));
   readonly users = merge(this.initialUsers, this.reloadedUsers);
+  
+  readonly currentUser = merge(
+    this.behaviorService.getCurrentUser(), 
+    this.userService.getCurrentUser(),
+  );
 
-  readonly allRaces = this.scheduleService.getCurrentYearSchedule().pipe(shareReplay(1));
-  readonly isLoaded = combineLatest([this.users, this.allRaces]).pipe(map(([users, races]) => !!races && !!users));
+  readonly races = this.scheduleService.getCurrentYearSchedule().pipe(shareReplay(1));
+  readonly isLoaded = combineLatest([this.users, this.races]).pipe(map(([users, races]) => !!races && !!users));
 
   private readonly userColumns = this.users.pipe(map(users => users.map(user => 'user' + user.id)));
-  readonly displayedColumns = this.userColumns.pipe(map(userColumns => ['event', ...userColumns]));
+  readonly displayedColumns = this.userColumns.pipe(map(userColumns => ['event', 'circuit', ...userColumns, 'empty', 'stats']));
 
   constructor(
     private readonly behaviorService: BehaviorService,
@@ -66,10 +71,14 @@ export class FullResultsComponent {
     const month = new Intl.DateTimeFormat('en', { month: 'short' }).format(date);
     const day = new Intl.DateTimeFormat('en', { day: '2-digit' }).format(date);
 
-    return `${month}, ${day}`;
+    return `${month} ${day}`;
   }
 
   getFlagLink(countryName: string): string {
     return `http://purecatamphetamine.github.io/country-flag-icons/3x2/${COUNTRY_MAP.get(countryName)}.svg`;
+  }
+
+  getCircuitPath(countryName: string): string {
+    return `/assets/images/circuits/${countryName}.png`;
   }
 }

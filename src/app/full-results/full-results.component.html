@@ -1,35 +1,45 @@
 <mat-card *ngIf="{
+    currentUser: currentUser | async,
     displayedColumns: displayedColumns | async,
     isLoaded: isLoaded | async,
-    races: allRaces | async,
+    races: races | async,
     users: users | async
  } as data">
+    <circuit-map></circuit-map>
+
     <table *ngIf="data.isLoaded; else spinner"
             class="mat-elevation-z8"
             mat-table
-            [dataSource]="allRaces">
+            [dataSource]="races">
     
         <ng-container matColumnDef="event">
-            <th mat-header-cell *matHeaderCellDef>Event</th>
+            <th class="event" mat-header-cell *matHeaderCellDef>Event</th>
             <td mat-cell *matCellDef="let race">
                 <span><img alt="race.Circuit.Location.country" class="flag" [src]="getFlagLink(race.Circuit.Location.country)"/></span>
                 <div>{{formatDate(race.date)}}</div>
             </td>
         </ng-container>
-       
-        <ng-container matColumnDef="name">
-            <th mat-header-cell *matHeaderCellDef>Name</th>
-            <td mat-cell *matCellDef="let user"> {{user.firstname}} {{user.lastname ?? ''}} </td>
+
+        <ng-container matColumnDef="circuit">
+            <th class="circuit" mat-header-cell *matHeaderCellDef>Circuit</th>
+            <td mat-cell *matCellDef="let race">
+                <span><img alt="race.Circuit.Location.country" class="circuit" [src]="getCircuitPath(race.Circuit.Location.country)"/></span>
+            </td>
         </ng-container>
   
         <ng-container *ngFor="let user of data.users" [matColumnDef]="'user' + user.id">
-            <th mat-header-cell *matHeaderCellDef>{{user.firstname}} {{user.lastname ?? ''}}</th>
-            <td class="points" mat-cell *matCellDef="let user">-</td>
+            <th class="user" mat-header-cell *matHeaderCellDef [class.current-user]="user.id === data.currentUser?.id">{{user.firstname}} {{user.lastname ?? ''}}</th>
+            <td class="points" mat-cell *matCellDef="let user" [class.current-user]="user.id === data.currentUser?.id">-</td>
         </ng-container>
   
-        <ng-container matColumnDef="total">
-            <th mat-header-cell *matHeaderCellDef>Total</th>
-            <td class="points" mat-cell *matCellDef="let user">-</td>
+        <ng-container matColumnDef="empty">
+            <th class="empty" mat-header-cell *matHeaderCellDef></th>
+            <td class="empty" mat-cell *matCellDef="let user"></td>
+        </ng-container>
+
+        <ng-container matColumnDef="stats">
+            <th class="stats" mat-header-cell *matHeaderCellDef>Stats</th>
+            <td class="points" mat-cell *matCellDef="let race">-</td>
         </ng-container>
        
         <tr mat-header-row *matHeaderRowDef="data.displayedColumns"></tr>

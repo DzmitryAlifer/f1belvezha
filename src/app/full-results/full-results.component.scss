@@ -6,23 +6,53 @@
 }
 
 .mat-table {
+    
     margin-top: 12px;
     width: 100%;
+
+    th {
+        background-color: white;
+        border: none;
+        padding: 4px;
+        text-align: center;
+
+        &.user, &.stats {
+            width: 80px;
+        }
+    }
+
+    th.event, th.circuit {
+        width: 70px;
+    }
 
     .flag {
         border: 1px solid grey;
         border-radius: 2px;
-        height: 14px;
-        margin-left: 8px;
+        height: 16px;
+    }
+
+    
+    .current-user {
+        color: blue;
+    }
+
+    .stats {
+        color: $grey-900;
     }
 
     .mat-cell {
-        color: $main-color-dark;
-        text-align: left;
+        border: none;
+        color: $main-color-dark;  
+        padding: 8px;
 
-        &.current {
-            color: blue;
+        .circuit {
+            height: 40px;
+            width: 55px;
         }
+    }
+
+    tr:nth-child(odd) {
+        background-color: $grey-50;
     }
 }
 

@@ -6,9 +6,11 @@ import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import {MatSlideToggleModule} from '@angular/material/slide-toggle';
 import {MatSortModule} from '@angular/material/sort';
 import {MatTableModule} from '@angular/material/table';
+import { CircuitMapModule } from '../circuit-map/circuit-map.module';
 
 @NgModule({
   imports: [
+    CircuitMapModule,
     CommonModule,
     MatCardModule,
     MatProgressSpinnerModule,
