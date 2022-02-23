@@ -1,54 +1,48 @@
 <mat-card *ngIf="{
-    currentUserId: currentUserId | async,
     displayedColumns: displayedColumns | async,
     isLoaded: isLoaded | async,
-    races: allRaces | async
-} as data">
+    races: allRaces | async,
+    users: users | async
+ } as data">
     <div class="header">
         <mat-slide-toggle color="primary" (change)="toggle($event)">All races</mat-slide-toggle>
     </div>
-
-    <table *ngIf="data.isLoaded; else spinner" 
+  
+    <table *ngIf="data.isLoaded; else spinner"
             class="mat-elevation-z8"
-            mat-table 
+            mat-table
             matSort
-            [dataSource]="sortedUsers"
-            (matSortChange)="sortData($event)">
-        <ng-container matColumnDef="id">
-            <th mat-header-cell mat-sort-header="id" *matHeaderCellDef>ID</th>
-            <td mat-cell *matCellDef="let user">{{user.id}}</td>
-        </ng-container>
-
-        <ng-container matColumnDef="username">
-            <th mat-header-cell mat-sort-header="login" *matHeaderCellDef>Login</th>
-            <td mat-cell *matCellDef="let user">{{user.id}}</td>
-        </ng-container>
-        
-        <ng-container matColumnDef="name">
-            <th mat-header-cell mat-sort-header="name" *matHeaderCellDef>Name</th>
-            <td mat-cell *matCellDef="let user" [class.current]="user.id === data.currentUserId">
-                {{user.firstname}} {{user.lastname ?? ''}}
-            </td>
-        </ng-container>
-
-        <ng-container *ngFor="let race of data.races" [matColumnDef]="'round' + race.round">
-            <th mat-header-cell *matHeaderCellDef>
+            [dataSource]="allRaces">
+    
+        <ng-container matColumnDef="event">
+            <th mat-header-cell *matHeaderCellDef>Event</th>
+            <td mat-cell *matCellDef="let race">
                 <span><img alt="race.Circuit.Location.country" class="flag" [src]="getFlagLink(race.Circuit.Location.country)"/></span>
                 <div>{{formatDate(race.date)}}</div>
-            </th>
-            <td class="points" mat-cell *matCellDef="let user" [class.current]="user.id === data.currentUserId">-</td>
+            </td>
         </ng-container>
-
+       
+        <ng-container matColumnDef="name">
+            <th mat-header-cell *matHeaderCellDef>Name</th>
+            <td mat-cell *matCellDef="let user"> {{user.firstname}} {{user.lastname ?? ''}} </td>
+        </ng-container>
+  
+        <ng-container *ngFor="let user of data.users" [matColumnDef]="'user' + user.id">
+            <th mat-header-cell *matHeaderCellDef>{{user.firstname}} {{user.lastname ?? ''}}</th>
+            <td class="points" mat-cell *matCellDef="let user">-</td>
+        </ng-container>
+  
         <ng-container matColumnDef="total">
-            <th mat-header-cell mat-sort-header="total" *matHeaderCellDef>Total</th>
-            <td class="points" mat-cell *matCellDef="let user" [class.current]="user.id === data.currentUserId">-</td>
+            <th mat-header-cell *matHeaderCellDef>Total</th>
+            <td class="points" mat-cell *matCellDef="let user">-</td>
         </ng-container>
-        
+       
         <tr mat-header-row *matHeaderRowDef="data.displayedColumns"></tr>
         <tr mat-row *matRowDef="let row; columns: data.displayedColumns;"></tr>
     </table>
-</mat-card>
-
-<ng-template #spinner>
+ </mat-card>
+  
+ <ng-template #spinner>
     <mat-spinner></mat-spinner>
-</ng-template>
+ </ng-template>
+ 

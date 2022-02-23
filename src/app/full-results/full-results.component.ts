@@ -43,17 +43,12 @@ const COUNTRY_MAP = new Map<string, string>()
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class FullResultsComponent {
-  private readonly sortSubject = new BehaviorSubject<Sort>({active: 'id', direction: 'asc'});
+  readonly sortSubject = new BehaviorSubject<Sort>({active: 'id', direction: 'asc'});
   private readonly tableToggle = new EventEmitter<boolean>();
-
-  readonly currentUserId = merge(
-    this.behaviorService.getCurrentUser(), 
-    this.userService.getCurrentUser(),
-  ).pipe(map(user => user?.id));
 
   private readonly initialUsers = this.userService.getAllUsers().pipe(shareReplay(1));
   private readonly reloadedUsers = this.behaviorService.isUsersReload().pipe(switchMap(() => this.userService.getAllUsers()));
-  private readonly users = merge(this.initialUsers, this.reloadedUsers);
+  readonly users = merge(this.initialUsers, this.reloadedUsers);
 
   readonly allRaces = this.scheduleService.getCurrentYearSchedule().pipe(shareReplay(1));
   readonly isLoaded = combineLatest([this.users, this.allRaces]).pipe(map(([users, races]) => !!races && !!users));
@@ -65,29 +60,13 @@ export class FullResultsComponent {
       return races.slice(firstShownRaceIndex, lastRaceIndex + NUMBER_OF_FUTURE_RACES);
     }));
 
-  private readonly races = this.tableToggle.pipe(
+  readonly races = this.tableToggle.pipe(
     startWith(false),
     switchMap(isChecked => isChecked ? this.allRaces : this.filteredRaces),
   );
 
-  private readonly raceColumns = this.races.pipe(map(races => races.map(race => 'round' + race.round)));
-  readonly displayedColumns = this.raceColumns.pipe(map(raceColumns => ['name', ...raceColumns, 'total']));
-  
-  readonly sortedUsers = combineLatest([this.users, this.sortSubject]).pipe(
-    map(([users, sort]) =>
-      users.sort((left: User, right: User) => {
-        const isAsc = sort.direction === 'asc';
-        switch (sort.active) {
-          case 'id':
-            return compare(left.id!, right.id!, isAsc);
-          case 'name':
-            return compare(left.firstname + left.lastname ?? '', right.lastname ?? '', isAsc);
-          default:
-            return 0;
-        }  
-      }),
-    ),
-  );
+  private readonly userColumns = this.users.pipe(map(users => users.map(user => 'user' + user.id)));
+  readonly displayedColumns = this.userColumns.pipe(map(userColumns => ['event', ...userColumns]));
 
   constructor(
     private readonly behaviorService: BehaviorService,
