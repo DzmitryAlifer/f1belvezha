@@ -1,9 +1,15 @@
 @import '../styles.scss';
 
+toolbar {
+    position: fixed;
+    top: 0px;
+    width: 100%;
+    z-index: 3;
+    box-shadow: 2px 2px 5px $grey-300;
+}
+
 .page-container {
     bottom: 0;
-    background: linear-gradient( rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.8) ), url(../static/background.jpg) no-repeat;
-    background-size: cover;
     color: white;
     left: 0;
     padding: 20px;

@@ -1,5 +1,9 @@
 @import '../../styles.scss';
 
+::ng-deep .mat-toolbar-multiple-rows {
+    min-height: $toolbar-height;
+}
+
 .mat-toolbar-row {
     background-color: $main-color-light;
     color: $main-color-dark;
