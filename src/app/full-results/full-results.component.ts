@@ -43,8 +43,13 @@ const COUNTRY_MAP = new Map<string, string>()
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class FullResultsComponent {
-  readonly sortSubject = new BehaviorSubject<Sort>({active: 'id', direction: 'asc'});
+  private readonly sortSubject = new BehaviorSubject<Sort>({active: 'id', direction: 'asc'});
   private readonly tableToggle = new EventEmitter<boolean>();
+
+  readonly currentUserId = merge(
+    this.behaviorService.getCurrentUser(), 
+    this.userService.getCurrentUser(),
+  ).pipe(map(user => user?.id));
 
   private readonly initialUsers = this.userService.getAllUsers().pipe(shareReplay(1));
   private readonly reloadedUsers = this.behaviorService.isUsersReload().pipe(switchMap(() => this.userService.getAllUsers()));

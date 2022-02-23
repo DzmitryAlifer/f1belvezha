@@ -19,7 +19,7 @@ export class ToolbarComponent {
   readonly user = merge(
     this.behaviorService.getCurrentUser(), 
     this.userService.getCurrentUser(),
-    );
+  );
 
   constructor(
     private readonly behaviorService: BehaviorService,

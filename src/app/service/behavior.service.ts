@@ -5,7 +5,6 @@ import {User} from '../types';
 
 @Injectable({providedIn: 'root'})
 export class BehaviorService {
-
   private readonly reloadUsersSubject = new ReplaySubject<void>();
   private readonly currentUser = new BehaviorSubject<User|null>(null);
 

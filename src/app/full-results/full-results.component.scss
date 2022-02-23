@@ -1,3 +1,5 @@
+@import '../../styles.scss';
+
 .header {
     text-align: left;
     width: 100%;
@@ -15,7 +17,12 @@
     }
 
     .mat-cell {
+        color: $main-color-dark;
         text-align: left;
+
+        &.current {
+            color: blue;
+        }
     }
 }
 
@@ -23,6 +30,6 @@
     display: inline-block;
 
     ::ng-deep circle {
-        stroke: black;
+        stroke: $main-color-dark;
     }
 }
