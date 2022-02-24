@@ -10,8 +10,9 @@ toolbar {
 
 .page-container {
     bottom: 0;
+    display: flex;
     left: 0;
-    padding: 20px;
+    padding: 20px 32px;
     position: absolute;
     right: 0;
     text-align: center;

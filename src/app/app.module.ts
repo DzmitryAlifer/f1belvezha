@@ -9,8 +9,9 @@ import {FullResultsModule} from './full-results/full-results.module';
 import {ToolbarModule} from './toolbar/toolbar.module';
 import {CreateAccountDialogModule} from './toolbar/create-account-dialog/create-account-dialog.module';
 import {LoginDialogModule} from './toolbar/login-dialog/login-dialog.module';
-import { MatSlideToggleModule } from '@angular/material/slide-toggle';
-import { MatSidenavModule } from '@angular/material/sidenav';
+import {MatSlideToggleModule} from '@angular/material/slide-toggle';
+import {MatSidenavModule} from '@angular/material/sidenav';
+import {UsersStandingModule} from './users-standing/users-standing.module';
 
 
 @NgModule({
@@ -24,6 +25,7 @@ import { MatSidenavModule } from '@angular/material/sidenav';
     HttpClientModule,
     LoginDialogModule,
     ToolbarModule,
+    UsersStandingModule,
     MatSlideToggleModule,
     MatSidenavModule,
   ],
