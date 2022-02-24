@@ -5,13 +5,11 @@
     width: 100%;
 }
 
-.mat-table {
-    
+.mat-table {   
     margin-top: 12px;
     width: 100%;
 
     th {
-        background-color: white;
         border: none;
         padding: 4px;
         text-align: center;
@@ -31,18 +29,12 @@
         height: 16px;
     }
 
-    
     .current-user {
-        color: blue;
-    }
-
-    .stats {
-        color: $grey-900;
+        color: $blue-800;
     }
 
     .mat-cell {
         border: none;
-        color: $main-color-dark;  
         padding: 8px;
 
         .circuit {
@@ -51,15 +43,21 @@
         }
     }
 
-    tr:nth-child(odd) {
+    tr:nth-child(even) {
         background-color: $grey-50;
+    }
+
+    &.dark {
+        .current-user {
+            color: $blue-200;
+        }
+
+        tr:nth-child(even) {
+            background-color: $grey-700;
+        }
     }
 }
 
 .mat-spinner {
     display: inline-block;
-
-    ::ng-deep circle {
-        stroke: $main-color-dark;
-    }
 }

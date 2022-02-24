@@ -1,10 +1,12 @@
 import {ChangeDetectionStrategy, Component} from '@angular/core';
 import {MatDialog} from '@angular/material/dialog';
 import {merge} from 'rxjs';
+import {startWith} from 'rxjs/operators';
 import {CURRENT_USER_KEY} from 'src/constants';
 import {BehaviorService} from '../service/behavior.service';
 import {LocalStorageService} from '../service/local-storage.service';
 import {UserService} from '../service/user.service';
+import {Theme, ThemeService} from '../service/theme.service';
 import {CreateAccountDialog} from './create-account-dialog/create-account-dialog';
 import {LoginDialog} from './login-dialog/login-dialog';
 
@@ -16,6 +18,10 @@ import {LoginDialog} from './login-dialog/login-dialog';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ToolbarComponent {
+  readonly isDarkMode = this.themeService.isDarkMode().pipe(
+    startWith(localStorage.getItem('user-theme')),
+  );
+
   readonly user = merge(
     this.behaviorService.getCurrentUser(), 
     this.userService.getCurrentUser(),
@@ -27,7 +33,10 @@ export class ToolbarComponent {
     private readonly localStorageService: LocalStorageService,
     private readonly loginDialog: MatDialog,
     private readonly userService: UserService,
-  ) {}
+    private readonly themeService: ThemeService,
+  ) {
+    this.themeService.initTheme();
+  }
 
   createAccount(): void {
     this.createAccountDialog.open(CreateAccountDialog, {disableClose: true});
@@ -40,5 +49,9 @@ export class ToolbarComponent {
   logout(): void {
     this.behaviorService.setCurrentUser(null);
     this.localStorageService.setItem(CURRENT_USER_KEY, null);
+  }
+
+  toggleMode(isPrevousModeDark: boolean) {
+    this.themeService.update(isPrevousModeDark ? Theme.Light : Theme.Dark);
   }
 }

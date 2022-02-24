@@ -1,3 +1,6 @@
+@import "~@angular/material/theming";
+@include mat-core();
+
 $grey-50: #fafafa;
 $grey-100: #f5f5f5;
 $grey-200: #eeeeee;
@@ -9,10 +12,50 @@ $grey-700: #616161;
 $grey-800: #424242;
 $grey-900: #212121;
 
-$main-color-dark: $grey-700;
-$main-color-light: white;
+$blue-200: #90caf9;
+$blue-300: #64b5f6;
+$blue-500: #1e88e5;
+$blue-800: #1565c0;
 
 $toolbar-height: 40px;
+
+$mat-primary-scheme: (
+  100: #c5cae9,
+  500: #61699a,
+  700: #303f9f,
+  contrast: (
+    100: rgba(0, 0, 0, 0.87),
+    500: #ffffff,
+    700: #ffffff,
+  ),
+);
+
+$mat-accent-scheme: (
+  100: #ff80ab,
+  500: #ff4081,
+  700: #f50057,
+  contrast: (
+    100: rgba(0, 0, 0, 0.87),
+    500: rgba(0, 0, 0, 0.87),
+    700: #ffffff,
+  ),
+);
+
+$mat-primary-palette: mat-palette($mat-primary-scheme);
+$mat-accent-palette: mat-palette($mat-accent-scheme);
+$app-light-theme: mat-light-theme($mat-primary-palette, $mat-accent-palette);
+$app-dark-theme: mat-dark-theme($mat-primary-palette, $mat-accent-palette);
+
+.light-mode {
+  @include angular-material-theme($app-light-theme);
+}
+
+.dark-mode {
+  @include angular-material-theme($app-dark-theme);
+
+  background-color: $grey-900;
+  color: $grey-100;
+}
 
 html, body { 
     height: 100%; 

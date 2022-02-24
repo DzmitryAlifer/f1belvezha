@@ -1,4 +1,7 @@
-<mat-toolbar *ngIf="{user: user | async} as data">
+<mat-toolbar *ngIf="{
+    isDarkMode: isDarkMode | async,
+    user: user | async
+} as data">
     <mat-toolbar-row>
         <!-- <button mat-icon-button class="menu">
             <mat-icon>menu</mat-icon>
@@ -33,8 +36,8 @@
             </button>
         </mat-menu>
 
-          <!-- <button mat-icon-button class="settings">
-            <mat-icon>settings</mat-icon>
-        </button> -->
+        <button mat-icon-button class="settings" (click)="toggleMode(!!data.isDarkMode)">
+            <mat-icon>{{data.isDarkMode ? 'brightness_5' : 'brightness_4'}}</mat-icon>
+        </button>
     </mat-toolbar-row>
 </mat-toolbar>

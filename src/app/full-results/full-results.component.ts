@@ -5,6 +5,7 @@ import {map, shareReplay, switchMap} from 'rxjs/operators';
 import {UserService} from '../service/user.service';
 import {ScheduleService} from '../service/schedule.service';
 import {BehaviorService} from '../service/behavior.service';
+import {ThemeService} from '../service/theme.service';
 
 
 const COUNTRY_MAP = new Map<string, string>()
@@ -40,6 +41,7 @@ const COUNTRY_MAP = new Map<string, string>()
 })
 export class FullResultsComponent {
   readonly sortSubject = new BehaviorSubject<Sort>({active: 'id', direction: 'asc'});
+  readonly isDarkMode = this.themeService.isDarkMode();
   private readonly initialUsers = this.userService.getAllUsers().pipe(shareReplay(1));
   private readonly reloadedUsers = this.behaviorService.isUsersReload().pipe(switchMap(() => this.userService.getAllUsers()));
   readonly users = merge(this.initialUsers, this.reloadedUsers);
@@ -58,9 +60,9 @@ export class FullResultsComponent {
   constructor(
     private readonly behaviorService: BehaviorService,
     private readonly scheduleService: ScheduleService,
+    private readonly themeService: ThemeService,
     private readonly userService: UserService,
-  ) {;
-  }
+  ) {}
 
   sortData(sort: Sort): void {
     this.sortSubject.next(sort);

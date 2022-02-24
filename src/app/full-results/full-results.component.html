@@ -1,6 +1,7 @@
 <ng-container *ngIf="{
     currentUser: currentUser | async,
     displayedColumns: displayedColumns | async,
+    isDarkMode: isDarkMode | async,
     isLoaded: isLoaded | async,
     races: races | async,
     users: users | async
@@ -8,6 +9,7 @@
     <table *ngIf="data.isLoaded; else spinner"
             class="mat-elevation-z8"
             mat-table
+            [class.dark]="data.isDarkMode"
             [dataSource]="races">
     
         <ng-container matColumnDef="event">
@@ -26,8 +28,18 @@
         </ng-container>
   
         <ng-container *ngFor="let user of data.users" [matColumnDef]="'user' + user.id">
-            <th class="user" mat-header-cell *matHeaderCellDef [class.current-user]="user.id === data.currentUser?.id">{{user.firstname}} {{user.lastname ?? ''}}</th>
-            <td class="points" mat-cell *matCellDef="let user" [class.current-user]="user.id === data.currentUser?.id">-</td>
+            <th class="user"
+                mat-header-cell
+                *matHeaderCellDef 
+                [class.current-user]="user.id === data.currentUser?.id">
+                    {{user.firstname}} {{user.lastname ?? ''}}
+            </th>
+            <td class="points" 
+                mat-cell 
+                *matCellDef="let user" 
+                [class.current-user]="user.id === data.currentUser?.id">
+                    -
+            </td>
         </ng-container>
   
         <ng-container matColumnDef="empty">

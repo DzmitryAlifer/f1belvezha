@@ -6,6 +6,8 @@ import {MatIconModule} from '@angular/material/icon'
 import {MatMenuModule} from '@angular/material/menu';
 import {MatToolbarModule} from '@angular/material/toolbar'
 import {ToolbarComponent} from './toolbar.component';
+import {MatSlideToggleModule} from '@angular/material/slide-toggle';
+import {MatSidenavModule} from '@angular/material/sidenav';
 
 @NgModule({
   imports: [
@@ -14,7 +16,9 @@ import {ToolbarComponent} from './toolbar.component';
     MatDialogModule, 
     MatIconModule,
     MatMenuModule,
+    MatSidenavModule,
     MatToolbarModule,
+    MatSlideToggleModule,
   ],
   declarations: [ToolbarComponent],
   exports: [ToolbarComponent],
