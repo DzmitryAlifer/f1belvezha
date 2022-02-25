@@ -12,6 +12,7 @@ import {LoginDialogModule} from './toolbar/login-dialog/login-dialog.module';
 import {MatSlideToggleModule} from '@angular/material/slide-toggle';
 import {MatSidenavModule} from '@angular/material/sidenav';
 import {UsersStandingModule} from './users-standing/users-standing.module';
+import {DragDropModule} from '@angular/cdk/drag-drop';
 
 
 @NgModule({
@@ -21,6 +22,7 @@ import {UsersStandingModule} from './users-standing/users-standing.module';
     BrowserAnimationsModule,
     BrowserModule,
     CreateAccountDialogModule,
+    DragDropModule,
     FullResultsModule,
     HttpClientModule,
     LoginDialogModule,
