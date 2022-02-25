@@ -7,6 +7,7 @@ import {BehaviorService} from 'src/app/service/behavior.service';
 
 const PASSWORD_REGEXP = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.{8,})/;
 
+
 @Component({
   selector: 'create-account-dialog1',
   templateUrl: './create-account-dialog.html',

@@ -13,6 +13,7 @@ import {MatSlideToggleModule} from '@angular/material/slide-toggle';
 import {MatSidenavModule} from '@angular/material/sidenav';
 import {UsersStandingModule} from './users-standing/users-standing.module';
 import {DragDropModule} from '@angular/cdk/drag-drop';
+import {PredictionDialogModule} from './prediction-dialog/prediction-dialog.module';
 
 
 @NgModule({
@@ -26,6 +27,7 @@ import {DragDropModule} from '@angular/cdk/drag-drop';
     FullResultsModule,
     HttpClientModule,
     LoginDialogModule,
+    PredictionDialogModule,
     ToolbarModule,
     UsersStandingModule,
     MatSlideToggleModule,

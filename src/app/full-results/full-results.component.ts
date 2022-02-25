@@ -1,4 +1,5 @@
 import {ChangeDetectionStrategy, Component} from '@angular/core';
+import {MatDialog} from '@angular/material/dialog';
 import {Sort} from '@angular/material/sort';
 import {BehaviorSubject, combineLatest, merge} from 'rxjs';
 import {map, shareReplay, switchMap} from 'rxjs/operators';
@@ -6,7 +7,13 @@ import {UserService} from '../service/user.service';
 import {ScheduleService} from '../service/schedule.service';
 import {BehaviorService} from '../service/behavior.service';
 import {ThemeService} from '../service/theme.service';
+import {PredictionDialog} from '../prediction-dialog/prediction-dialog';
+import {Race} from '../types';
+import * as moment from 'moment';
 
+
+const NOW = moment();
+const ROUND_TO_INDEX_OFFSET = 2;
 
 const COUNTRY_MAP = new Map<string, string>()
     .set('Bahrain', 'BH')
@@ -52,13 +59,14 @@ export class FullResultsComponent {
   );
 
   readonly races = this.scheduleService.getCurrentYearSchedule().pipe(shareReplay(1));
+  readonly nextRaceRound = this.races.pipe(map(races => races.findIndex(nextRacePredicate) + ROUND_TO_INDEX_OFFSET));
   readonly isLoaded = combineLatest([this.users, this.races]).pipe(map(([users, races]) => !!races && !!users));
-
   private readonly userColumns = this.users.pipe(map(users => users.map(user => 'user' + user.id)));
   readonly displayedColumns = this.userColumns.pipe(map(userColumns => ['event', 'circuit', ...userColumns, 'empty', 'stats']));
 
   constructor(
     private readonly behaviorService: BehaviorService,
+    private readonly predictionDialog: MatDialog,
     private readonly scheduleService: ScheduleService,
     private readonly themeService: ThemeService,
     private readonly userService: UserService,
@@ -83,4 +91,12 @@ export class FullResultsComponent {
   getCircuitPath(countryName: string): string {
     return `/assets/images/circuits/${countryName}.png`;
   }
+
+  openPredictionDialog(): void {
+    this.predictionDialog.open(PredictionDialog, {disableClose: true});
+  }
+}
+
+function nextRacePredicate(race: Race, index: number, races: Race[]): boolean {
+  return NOW.isAfter(race.date) && NOW.isBefore(races[index + 1].date);
 }

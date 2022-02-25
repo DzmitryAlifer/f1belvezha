@@ -1,0 +1,15 @@
+h2, .button-bar {
+    text-align: center;
+}
+
+.prediction-form {
+    display: flex;
+
+    .qualification {
+        padding: 0 32px;
+    }
+
+    .race {
+        padding: 0 32px;
+    }
+}

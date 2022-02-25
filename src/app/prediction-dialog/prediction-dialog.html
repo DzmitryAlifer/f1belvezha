@@ -1,0 +1,44 @@
+<h2>Predict results</h2>
+
+<form [formGroup]="predictionForm" (ngSubmit)="submit()">
+    <div class="prediction-form">
+        <div class="qualification">
+            <h3>Qualification</h3>
+            
+            <ng-container *ngFor="let placeIndex of PLACE_INDEXES">
+                <p>
+                    <mat-form-field>
+                        <mat-label>{{placeIndex + 1}}</mat-label>
+                        <mat-select [formControlName]="'qualification' + (placeIndex + 1)" name="qualification">
+                            <mat-option *ngFor="let pilot of PILOTS" [value]="pilot" >
+                            {{pilot}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </p>
+            </ng-container>
+        </div>
+
+        <div class="race">
+            <h3>Race</h3>
+            
+            <ng-container *ngFor="let placeIndex of PLACE_INDEXES">
+                <p>
+                    <mat-form-field>
+                        <mat-label>{{placeIndex + 1}}</mat-label>
+                        <mat-select [formControlName]="'race' + (placeIndex + 1)" name="race">
+                            <mat-option *ngFor="let pilot of PILOTS" [value]="pilot" >
+                            {{pilot}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </p>
+            </ng-container>
+        </div>
+    </div>
+
+    <div class="button-bar">
+        <button mat-button color="primary" type="submit" [disabled]="!predictionForm.valid">Submit</button>
+        <button mat-button color="primary" (click)="discard()">Discard</button>
+    </div>
+</form>
