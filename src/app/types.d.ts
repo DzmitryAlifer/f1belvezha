@@ -27,3 +27,8 @@ export interface Race {
 export interface Params {
     [param: string]: string;
 }
+
+export interface DropPoint {
+    x: number;
+    y: number;
+}

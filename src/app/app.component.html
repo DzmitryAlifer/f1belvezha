@@ -2,7 +2,11 @@
 
 <div class="page-container">
   <full-results></full-results>
-  <users-standing cdkDrag></users-standing>
+  <users-standing 
+      cdkDrag
+      [cdkDragFreeDragPosition]="savedPosition"
+      (cdkDragEnded)="savePosition($event)">
+  </users-standing>
 </div>
 
 <router-outlet></router-outlet>

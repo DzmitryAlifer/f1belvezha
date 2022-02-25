@@ -1,11 +1,11 @@
 @import '../styles.scss';
 
 toolbar {
+    box-shadow: 2px 2px 5px $grey-500;
     position: fixed;
     top: 0px;
     width: 100%;
     z-index: 3;
-    box-shadow: 2px 2px 5px $grey-500;
 }
 
 .page-container {

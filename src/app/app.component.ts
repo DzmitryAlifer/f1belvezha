@@ -1,4 +1,8 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import {CdkDragEnd} from '@angular/cdk/drag-drop';
+import {ChangeDetectionStrategy, Component} from '@angular/core';
+import {LocalStorageService} from './service/local-storage.service';
+import {DropPoint} from './types';
+
 
 @Component({
   selector: 'app-root',
@@ -7,6 +11,14 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AppComponent {
-  readonly subtitle = 'under construction...';
-  readonly description = 'inspired by Belvezha team';
+  positionX = 100;
+  positionY = 100;
+  readonly savedPosition = this.localStorageService.getItem<DropPoint>('dropPointUserStanding') ?? {x: 0, y: 0};
+
+  constructor(private readonly localStorageService: LocalStorageService) {}
+
+  savePosition(event: CdkDragEnd): void {
+    const dragPosition: DropPoint = event.source.getFreeDragPosition();
+    this.localStorageService.setItem('dropPointUserStanding', dragPosition);
+  }
 }
