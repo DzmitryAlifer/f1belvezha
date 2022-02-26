@@ -6,10 +6,26 @@ export interface User {
     password?: string;
 }
 
-export interface Season {
+export interface RacesResponse {
     MRData: {
         RaceTable: {
             Races: Race[];
+        };
+    };
+}
+
+export interface DriversResponse {
+    MRData: {
+        DriverTable: {
+            Drivers: Driver[];
+        };
+    };
+}
+
+export interface TeamsResponse {
+    MRData: {
+        ConstructorTable: {
+            Constructors: Team[];
         };
     };
 }
@@ -22,6 +38,24 @@ export interface Race {
         };
     };
     date: string;
+}
+
+export interface Team {
+    constructorId: string;
+    url: string;
+    name: string;
+    nationality: string;
+}
+
+export interface Driver {
+    driverId: string;
+    permanentNumber: number;
+    code: string;
+    url: string;
+    givenName: string;
+    familyName: string;
+    dateOfBirth: string;
+    nationality: string;
 }
 
 export interface Params {

@@ -2,33 +2,16 @@
 
 <form [formGroup]="predictionForm" (ngSubmit)="submit()">
     <div class="prediction-form">
-        <div class="qualification">
-            <h3>Qualification</h3>
+        <div *ngFor="let eventName of ['qualification', 'race']; let isLast = last" class="event">
+            <h3>{{eventName}}</h3>
             
             <ng-container *ngFor="let placeIndex of PLACE_INDEXES">
                 <p>
                     <mat-form-field>
                         <mat-label>{{placeIndex + 1}}</mat-label>
-                        <mat-select [formControlName]="'qualification' + (placeIndex + 1)" name="qualification">
-                            <mat-option *ngFor="let pilot of PILOTS" [value]="pilot" >
-                            {{pilot}}
-                            </mat-option>
-                        </mat-select>
-                    </mat-form-field>
-                </p>
-            </ng-container>
-        </div>
-
-        <div class="race">
-            <h3>Race</h3>
-            
-            <ng-container *ngFor="let placeIndex of PLACE_INDEXES">
-                <p>
-                    <mat-form-field>
-                        <mat-label>{{placeIndex + 1}}</mat-label>
-                        <mat-select [formControlName]="'race' + (placeIndex + 1)" name="race">
-                            <mat-option *ngFor="let pilot of PILOTS" [value]="pilot" >
-                            {{pilot}}
+                        <mat-select [formControlName]="eventName + (placeIndex + 1)">
+                            <mat-option *ngFor="let driver of drivers | async" [value]="driver.driverId" >
+                                {{driver.givenName}} {{driver.familyName}}
                             </mat-option>
                         </mat-select>
                     </mat-form-field>

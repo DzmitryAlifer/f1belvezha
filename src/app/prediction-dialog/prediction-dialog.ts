@@ -1,34 +1,11 @@
 import {ChangeDetectionStrategy, Component} from '@angular/core';
-import {FormBuilder, FormControl} from '@angular/forms';
+import {FormBuilder} from '@angular/forms';
 import {MatDialogRef} from '@angular/material/dialog';
+import { F1PublicApiService } from '../service/f1-public-api.service';
 
 
 const PREDICTION_PLACES_NUMBER = 5;
 const PLACE_INDEXES = Array.from({length: PREDICTION_PLACES_NUMBER}, (v, i) => i);
-
-const PILOTS = [
-  '[vacant]',
-  'Max Verstappen',
-  'Lewis Hamilton',
-  'Valtteri Bottas',
-  'Sergio Perez',
-  'Carlos Sainz',
-  'Lando Norris',
-  'Charles Leclerc',
-  'Daniel Ricciardo',
-  'Pierre Gasly',
-  'Fernando Alonso',
-  'Esteban Ocon',
-  'Sebastian Vettel',
-  'Lance Stroll',
-  'Yuki Tsunoda',
-  'George Russell',
-  'Kimi Räikkönen',
-  'Nicholas Latifi',
-  'Antonio Giovinazzi',
-  'Mick Schumacher',
-  'Nikita Mazepin',
-];
 
 
 @Component({
@@ -39,7 +16,7 @@ const PILOTS = [
 })
 export class PredictionDialog {
   readonly PLACE_INDEXES = PLACE_INDEXES;
-  readonly PILOTS = PILOTS;
+  readonly drivers = this.f1PublicApiService.getDrivers();
   
   readonly predictionForm = this.formBuilder.group({
     qualification1: [null],
@@ -56,6 +33,7 @@ export class PredictionDialog {
 
   constructor(
     private readonly dialogRef: MatDialogRef<PredictionDialog>,
+    private readonly f1PublicApiService: F1PublicApiService,
     private readonly formBuilder: FormBuilder,
   ) {}
 
