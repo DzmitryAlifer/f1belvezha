@@ -37,6 +37,7 @@ const DRIVER_TEAM_MAPPING = new Map<string, string>()
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PredictionDialog {
+  readonly selectedDriverIds = [['','','','',''],['','','','','']];
   readonly PLACE_INDEXES = PLACE_INDEXES;
   readonly drivers = this.f1PublicApiService.getDrivers();
   
