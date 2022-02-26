@@ -7,6 +7,7 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {FullResultsModule} from './full-results/full-results.module';
 import {ToolbarModule} from './toolbar/toolbar.module';
 import {CreateAccountDialogModule} from './toolbar/create-account-dialog/create-account-dialog.module';
+import {HelpDialogModule} from './toolbar/help-dialog/help-dialog.module';
 import {LoginDialogModule} from './toolbar/login-dialog/login-dialog.module';
 import {MatSlideToggleModule} from '@angular/material/slide-toggle';
 import {MatSidenavModule} from '@angular/material/sidenav';
@@ -25,6 +26,7 @@ import {PredictionDialogModule} from './prediction-dialog/prediction-dialog.modu
     DragDropModule,
     FullResultsModule,
     HttpClientModule,
+    HelpDialogModule,
     LoginDialogModule,
     PredictionDialogModule,
     ToolbarModule,

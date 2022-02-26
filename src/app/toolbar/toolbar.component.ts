@@ -8,6 +8,7 @@ import {LocalStorageService} from '../service/local-storage.service';
 import {UserService} from '../service/user.service';
 import {Theme, ThemeService} from '../service/theme.service';
 import {CreateAccountDialog} from './create-account-dialog/create-account-dialog';
+import {HelpDialog} from './help-dialog/help-dialog';
 import {LoginDialog} from './login-dialog/login-dialog';
 
 
@@ -30,10 +31,11 @@ export class ToolbarComponent {
   constructor(
     private readonly behaviorService: BehaviorService,
     private readonly createAccountDialog: MatDialog,
+    private readonly helpDialog: MatDialog,
     private readonly localStorageService: LocalStorageService,
     private readonly loginDialog: MatDialog,
-    private readonly userService: UserService,
     private readonly themeService: ThemeService,
+    private readonly userService: UserService,
   ) {
     this.themeService.initTheme();
   }
@@ -53,5 +55,9 @@ export class ToolbarComponent {
 
   toggleMode(isPrevousModeDark: boolean) {
     this.themeService.update(isPrevousModeDark ? Theme.Light : Theme.Dark);
+  }
+
+  showHelp(): void {
+    this.helpDialog.open(HelpDialog, {width: '500px'});
   }
 }
