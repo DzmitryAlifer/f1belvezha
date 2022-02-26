@@ -4,11 +4,13 @@ import { map } from 'rxjs/operators';
 import { Race, Season } from '../types';
 import { HttpClient } from '@angular/common/http';
 
+
 const SCHEDULE_API = 'https://ergast.com/api/f1/';
 const CURRENT_YEAR = new Date().getFullYear();
 
+
 @Injectable({providedIn: 'root'})
-export class ScheduleService {
+export class F1PublicApiService {
 
   constructor(private readonly httpClient: HttpClient) {}
 

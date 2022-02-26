@@ -5,7 +5,8 @@ import {UserService} from 'src/app/service/user.service';
 import {BehaviorService} from 'src/app/service/behavior.service';
 
 
-const PASSWORD_REGEXP = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.{8,})/;
+// const PASSWORD_REGEXP = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.{8,})/;
+const PASSWORD_REGEXP = /^.{1,32}$/;
 
 
 @Component({
