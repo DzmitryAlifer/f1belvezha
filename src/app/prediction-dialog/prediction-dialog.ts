@@ -1,33 +1,33 @@
 import {ChangeDetectionStrategy, Component} from '@angular/core';
 import {FormBuilder} from '@angular/forms';
 import {MatDialogRef} from '@angular/material/dialog';
-import { F1PublicApiService } from '../service/f1-public-api.service';
+import {F1PublicApiService} from '../service/f1-public-api.service';
 
 
 const PREDICTION_PLACES_NUMBER = 5;
 const PLACE_INDEXES = Array.from({length: PREDICTION_PLACES_NUMBER}, (v, i) => i);
 
 const DRIVER_TEAM_MAPPING = new Map<string, string>()
-    .set('hamilton', 'mercedes')
-    .set('russell', 'mercedes')
-    .set('max_verstappen', 'red_bull')
-    .set('perez', 'red_bull')
-    .set('sainz', 'ferrari')
-    .set('leclerc', 'ferrari')
-    .set('norris', 'mclaren')
-    .set('ricciardo', 'mclaren')
-    .set('ocon', 'alpine')
-    .set('alonso', 'alpine')
-    .set('gasly', 'alphatauri')
-    .set('tsunoda', 'alphatauri')
-    .set('stroll', 'aston_martin')
-    .set('vettel', 'aston_martin')
-    .set('albon', 'williams')
-    .set('latifi', 'williams')
-    .set('bottas', 'alfa')
-    .set('zhou', 'alfa')
-    .set('mick_schumacher', 'haas')    
-    .set('mazepin', 'haas');
+    .set('Hamilton', 'mercedes')
+    .set('Russell', 'mercedes')
+    .set('Verstappen', 'red_bull')
+    .set('Pérez', 'red_bull')
+    .set('Sainz', 'ferrari')
+    .set('Leclerc', 'ferrari')
+    .set('Norris', 'mclaren')
+    .set('Ricciardo', 'mclaren')
+    .set('Ocon', 'alpine')
+    .set('Alonso', 'alpine')
+    .set('Gasly', 'alphatauri')
+    .set('Tsunoda', 'alphatauri')
+    .set('Stroll', 'aston_martin')
+    .set('Vettel', 'aston_martin')
+    .set('Albon', 'williams')
+    .set('Latifi', 'williams')
+    .set('Bottas', 'alfa')
+    .set('Zhou', 'alfa')
+    .set('Schumacher', 'haas')    
+    .set('Mazepin', 'haas');
 
 
 @Component({
@@ -37,7 +37,7 @@ const DRIVER_TEAM_MAPPING = new Map<string, string>()
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PredictionDialog {
-  readonly selectedDriverIds = [['','','','',''],['','','','','']];
+  readonly selectedDriverFamilyNames = [['','','','',''], ['','','','','']];
   readonly PLACE_INDEXES = PLACE_INDEXES;
   readonly drivers = this.f1PublicApiService.getDrivers();
   
@@ -60,8 +60,8 @@ export class PredictionDialog {
     private readonly formBuilder: FormBuilder,
   ) {}
 
-  getBolidPath(driverId: string): string {
-    const teamId = DRIVER_TEAM_MAPPING.get(driverId);
+  getBolidPath(driverFamilyName: string): string {
+    const teamId = DRIVER_TEAM_MAPPING.get(driverFamilyName);
     return `/assets/images/bolids/${teamId}.png`;
   }
 

@@ -1,6 +1,6 @@
 <h2>Predict results</h2>
 
-<form [formGroup]="predictionForm" (ngSubmit)="submit()">
+<form *ngIf="{drivers: drivers | async} as data" [formGroup]="predictionForm" (ngSubmit)="submit()">
     <div class="prediction-form">
         <div *ngFor="let eventName of ['qualification', 'race']; let eventIndex = index; let isLast = last" class="event">
             <h3>{{eventName}}</h3>
@@ -9,15 +9,19 @@
                 <p>
                     <mat-form-field>
                         <mat-label>{{placeIndex + 1}}</mat-label>
+                        
                         <mat-select 
+                            panelClass="my-select-panel-class"
                             [formControlName]="eventName + (placeIndex + 1)" 
-                            [(value)]="selectedDriverIds[eventIndex][placeIndex]">
+                            [(value)]="selectedDriverFamilyNames[eventIndex][placeIndex]">
+                            
                             <mat-select-trigger>
-                                <img class="bolid" [src]="getBolidPath(selectedDriverIds[eventIndex][placeIndex])" />
-                                <span>{{selectedDriverIds[eventIndex][placeIndex]}}</span>
+                                <img class="bolid" [src]="getBolidPath(selectedDriverFamilyNames[eventIndex][placeIndex])" />
+                                <span>{{selectedDriverFamilyNames[eventIndex][placeIndex]}}</span>
                             </mat-select-trigger>
-                            <mat-option *ngFor="let driver of drivers | async" [value]="driver.driverId" >
-                                <img class="bolid" [src]="getBolidPath(driver.driverId)" />
+                            
+                            <mat-option *ngFor="let driver of data.drivers" [value]="driver.familyName" >
+                                <img class="bolid" [src]="getBolidPath(driver.familyName)" />
                                 <span class="name">{{driver.familyName}}</span>
                             </mat-option>
                         </mat-select>
@@ -29,6 +33,6 @@
 
     <div class="button-bar">
         <button mat-button color="primary" type="submit" [disabled]="!predictionForm.valid">Submit</button>
-        <button mat-button color="primary" (click)="discard()">Discard</button>
+        <button mat-button color="primary" type="button" (click)="discard()">Discard</button>
     </div>
 </form>

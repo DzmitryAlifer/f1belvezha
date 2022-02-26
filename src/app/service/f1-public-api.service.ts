@@ -43,6 +43,7 @@ const NEW_DRIVERS = new Map<string, Driver>()
 
 @Injectable({providedIn: 'root'})
 export class F1PublicApiService {
+  private drivers: Observable<Driver[]>|null = null;
 
   constructor(private readonly httpClient: HttpClient) {}
 
@@ -57,12 +58,16 @@ export class F1PublicApiService {
   }
 
   getDrivers(): Observable<Driver[]> {
-    return this.httpClient.get<DriversResponse>(`${F1_PUBLIC_API}${CURRENT_YEAR - 1}/drivers.json`).pipe(
-      map(response => {
-        const drivers = 
-            response.MRData.DriverTable.Drivers.filter(driver => !REMOVED_DRIVER_IDS.includes(driver.driverId));
+    if (!this.drivers) {
+      this.drivers = this.httpClient.get<DriversResponse>(`${F1_PUBLIC_API}${CURRENT_YEAR - 1}/drivers.json`).pipe(
+        map(response => {
+          const drivers = 
+              response.MRData.DriverTable.Drivers.filter(driver => !REMOVED_DRIVER_IDS.includes(driver.driverId));
+  
+          return [...drivers, ...NEW_DRIVERS.values()];
+        }));
+    }
 
-        return [...drivers, ...NEW_DRIVERS.values()];
-      }));
+    return this.drivers;
   }
 }

@@ -7,6 +7,10 @@ h2, h3, .button-bar {
 
     .event {
         padding: 0 24px;
+
+        .mat-form-field {
+            width: 240px;
+        }
     }
 }
 
@@ -15,8 +19,13 @@ h2, h3, .button-bar {
     width: 80px;
 }
 
-.name {
-    font: 500 15px/20px Roboto;
-    padding-left: 12px;
+::ng-deep .mat-select-value {
+    height: 23px;
+}
+
+
+.name, ::ng-deep .mat-select-value-text span {
+    font: 500 16px/20px Roboto;
+    padding-left: 10px;
     vertical-align: middle;
 }
