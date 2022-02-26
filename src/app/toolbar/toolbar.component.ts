@@ -53,6 +53,8 @@ export class ToolbarComponent {
     this.localStorageService.setItem(CURRENT_USER_KEY, null);
   }
 
+  changeAvatar(): void {}
+
   toggleMode(isPrevousModeDark: boolean) {
     this.themeService.update(isPrevousModeDark ? Theme.Light : Theme.Dark);
   }

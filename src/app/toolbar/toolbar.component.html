@@ -16,25 +16,6 @@
             <mat-icon>{{data.isDarkMode ? 'brightness_5' : 'brightness_4'}}</mat-icon>
         </button>
 
-        <mat-menu #userMenu="matMenu">
-            <ng-container *ngIf="!data.user">
-                <button mat-menu-item (click)="createAccount()">
-                    <mat-icon>person_add</mat-icon>
-                    Create account
-                </button>
-
-                <button mat-menu-item (click)="login()">
-                    <mat-icon>login</mat-icon>
-                    Log in
-                </button>
-            </ng-container>
-
-            <button *ngIf="data.user" mat-menu-item (click)="logout()">
-                <mat-icon>logout</mat-icon>
-                Log out
-            </button>
-        </mat-menu>
-
         <button class="help" mat-icon-button (click)="showHelp()">
             <mat-icon>question_mark</mat-icon>
         </button>
@@ -68,6 +49,32 @@
         <button mat-icon-button class="user" [matMenuTriggerFor]="userMenu">
             <mat-icon>{{data.user ? 'face' : 'account_circle'}}</mat-icon>
         </button>
+
+        <mat-menu #userMenu="matMenu">
+            <ng-container *ngIf="!data.user">
+                <button mat-menu-item (click)="createAccount()">
+                    <mat-icon>person_add</mat-icon>
+                    Create account
+                </button>
+
+                <button mat-menu-item (click)="login()">
+                    <mat-icon>login</mat-icon>
+                    Log in
+                </button>
+            </ng-container>
+
+            <ng-container *ngIf="data.user">
+                <button disabled mat-menu-item (click)="changeAvatar()">
+                    <mat-icon>portrait</mat-icon>
+                    Change avatar
+                </button>
+
+                <button *ngIf="data.user" mat-menu-item (click)="logout()">
+                    <mat-icon>logout</mat-icon>
+                    Log out
+                </button>
+            </ng-container>
+        </mat-menu>
 
         <span>{{data.user?.firstname ?? 'guest'}}</span>
     </mat-toolbar-row>
