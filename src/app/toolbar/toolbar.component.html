@@ -7,14 +7,13 @@
             <mat-icon>menu</mat-icon>
         </button>
 
-        <span>F1 Sport</span>
+        <img class="logo" src="/assets/images/f1_logo.png" />
+        <span> Sport Predictor</span>
 
         <span class="spacer"></span>
-
-        <span>{{data.user?.firstname ?? 'guest'}}</span>
         
-        <button mat-icon-button class="user" [matMenuTriggerFor]="userMenu">
-            <mat-icon>{{data.user ? 'face' : 'account_circle'}}</mat-icon>
+        <button mat-icon-button class="theme" (click)="toggleMode(!!data.isDarkMode)">
+            <mat-icon>{{data.isDarkMode ? 'brightness_5' : 'brightness_4'}}</mat-icon>
         </button>
 
         <mat-menu #userMenu="matMenu">
@@ -56,9 +55,11 @@
                 Setting 3
             </button>
         </mat-menu>
-
-        <button mat-icon-button class="theme" (click)="toggleMode(!!data.isDarkMode)">
-            <mat-icon>{{data.isDarkMode ? 'brightness_5' : 'brightness_4'}}</mat-icon>
+        
+        <button mat-icon-button class="user" [matMenuTriggerFor]="userMenu">
+            <mat-icon>{{data.user ? 'face' : 'account_circle'}}</mat-icon>
         </button>
+
+        <span>{{data.user?.firstname ?? 'guest'}}</span>
     </mat-toolbar-row>
 </mat-toolbar>

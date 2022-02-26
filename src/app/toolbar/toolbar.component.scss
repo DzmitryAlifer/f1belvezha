@@ -7,6 +7,11 @@
 .mat-toolbar-row {
     height: $toolbar-height;
 
+    .logo {
+        height: 37px;
+        padding: 0 12px;
+    }
+
     .spacer {
         flex: 1 1 auto;
     }
