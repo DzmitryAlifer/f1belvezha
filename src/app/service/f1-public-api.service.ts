@@ -7,8 +7,18 @@ import {HttpClient} from '@angular/common/http';
 
 const F1_PUBLIC_API = 'https://ergast.com/api/f1/';
 const CURRENT_YEAR = new Date().getFullYear();
-const REMOVED_DRIVER_IDS = ['raikkonen', 'giovinazzi', 'kubica'];
+const REMOVED_DRIVER_IDS = ['raikkonen', 'giovinazzi', 'kubica', 'russell'];
 const NEW_DRIVERS = new Map<string, Driver>()
+    .set('russell', {
+      driverId: 'russell',
+      permanentNumber: 63,
+      code: 'RUS',
+      url: 'http://en.wikipedia.org/wiki/George_Russell_%28racing_driver%29',
+      givenName: 'George',
+      familyName: 'Russell',
+      dateOfBirth: '1998-02-15',
+      nationality: 'British',
+    })      
     .set('albon', {
       driverId: 'albon',
       permanentNumber: 0,
@@ -29,27 +39,6 @@ const NEW_DRIVERS = new Map<string, Driver>()
       dateOfBirth: '1999-05-30',
       nationality: 'China',
     });
-const DRIVER_TEAM_MAPPING = new Map<string, string>()
-    .set('hamilton', 'mercedes')
-    .set('russel', 'mercedes')
-    .set('max_verstappen', 'red_bull')
-    .set('perez', 'red_bull')
-    .set('sainz', 'ferrari')
-    .set('leclerc', 'ferrari')
-    .set('norris', 'mclaren')
-    .set('ricciardo', 'mclaren')
-    .set('ocon', 'alpine')
-    .set('alonso', 'alpine')
-    .set('gasly', 'alphatauri')
-    .set('tsunoda', 'alphatauri')
-    .set('stroll', 'aston_martin')
-    .set('vettel', 'aston_martin')
-    .set('albon', 'williams')
-    .set('latifi', 'williams')
-    .set('bottas', 'alfa')
-    .set('zhou', 'alfa')
-    .set('mick_schumacher', 'haas')    
-    .set('mazepin', 'haas');
 
 
 @Injectable({providedIn: 'root'})

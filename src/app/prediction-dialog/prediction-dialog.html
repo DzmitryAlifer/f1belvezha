@@ -11,7 +11,8 @@
                         <mat-label>{{placeIndex + 1}}</mat-label>
                         <mat-select [formControlName]="eventName + (placeIndex + 1)">
                             <mat-option *ngFor="let driver of drivers | async" [value]="driver.driverId" >
-                                {{driver.givenName}} {{driver.familyName}}
+                                <img class="bolid" [src]="getBolidPath(driver.driverId)" />
+                                <span class="name">{{driver.givenName}} {{driver.familyName}}</span>
                             </mat-option>
                         </mat-select>
                     </mat-form-field>
