@@ -56,6 +56,7 @@ export interface Driver {
     familyName: string;
     dateOfBirth: string;
     nationality: string;
+    constructorId?: string;
 }
 
 export interface Params {
