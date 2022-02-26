@@ -3,13 +3,8 @@
     user: user | async
 } as data">
     <mat-toolbar-row>
-        <button class="menu" mat-icon-button disabled>
-            <mat-icon>menu</mat-icon>
-        </button>
-
         <img class="logo" src="/assets/images/f1_logo.png" />
         <span> Sport Predictor</span>
-
         <span class="spacer"></span>
         
         <button mat-icon-button class="theme" (click)="toggleMode(!!data.isDarkMode)">
