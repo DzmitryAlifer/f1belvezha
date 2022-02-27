@@ -65,7 +65,7 @@ export class PredictionDialog {
     private readonly f1PublicApiService: F1PublicApiService,
     private readonly formBuilder: FormBuilder,
     private readonly predictionService: PredictionService,
-  ) {}
+  ) {this.existingPrediction.subscribe(r => console.log(r));}
 
   getBolidPath(driverFamilyName: string): string {
     const teamId = DRIVER_TEAM_MAPPING.get(driverFamilyName);
@@ -76,7 +76,7 @@ export class PredictionDialog {
     const prediction: Prediction = {
       userId: this.data.userId,
       round: this.data.round,
-      predictionForm: this.predictionForm.value,
+      places: this.predictionForm.value,
     };
     this.predictionService.makePrediction(prediction);
     this.dialogRef.close();

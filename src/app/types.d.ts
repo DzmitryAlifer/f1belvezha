@@ -71,7 +71,7 @@ export interface DropPoint {
 export interface Prediction {
     userId: number;
     round: number;
-    predictionForm?: {
+    places?: {
         qualification1?: string;
         qualification2?: string;
         qualification3?: string;
