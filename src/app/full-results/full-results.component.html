@@ -4,7 +4,6 @@
     isDarkMode: isDarkMode | async,
     isLoaded: isLoaded | async,
     nextRaceRound: nextRaceRound | async,
-    races: races | async,
     users: users | async
  } as data">
     <table *ngIf="data.isLoaded; else spinner"
@@ -44,8 +43,8 @@
                     mat-cell
                     *matCellDef="let race">
                     <mat-icon 
-                        *ngIf="userData.isCurrentUser && race.round == data.nextRaceRound" 
-                        (click)="openPredictionDialog()">
+                        *ngIf="userData.isCurrentUser && race.round === data.nextRaceRound" 
+                        (click)="openPredictionDialog(user.id!, race.round)">
                         lightbulb_outline
                     </mat-icon>
                 </td>

@@ -92,8 +92,11 @@ export class FullResultsComponent {
     return `/assets/images/circuits/${countryName}.png`;
   }
 
-  openPredictionDialog(): void {
-    this.predictionDialog.open(PredictionDialog, {disableClose: true});
+  openPredictionDialog(userId: number, round: number): void {
+    this.predictionDialog.open(PredictionDialog, {
+      disableClose: true,
+      data: {userId, round},
+    });
   }
 }
 

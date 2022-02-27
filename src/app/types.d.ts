@@ -31,7 +31,7 @@ export interface TeamsResponse {
 }
 
 export interface Race {
-    round: string;
+    round: number;
     Circuit: {
         Location: {
             country: string;
@@ -66,4 +66,21 @@ export interface Params {
 export interface DropPoint {
     x: number;
     y: number;
+}
+
+export interface Prediction {
+    userId: number;
+    round: number;
+    predictionForm?: {
+        qualification1?: string;
+        qualification2?: string;
+        qualification3?: string;
+        qualification4?: string;
+        qualification5?: string;
+        race1?: string;
+        race2?: string;
+        race3?: string;
+        race4?: string;
+        race5?: string;
+    };
 }

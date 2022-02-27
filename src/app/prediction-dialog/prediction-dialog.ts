@@ -1,7 +1,9 @@
-import {ChangeDetectionStrategy, Component} from '@angular/core';
+import {ChangeDetectionStrategy, Component, Inject} from '@angular/core';
 import {FormBuilder} from '@angular/forms';
-import {MatDialogRef} from '@angular/material/dialog';
+import {MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
 import {F1PublicApiService} from '../service/f1-public-api.service';
+import {PredictionService} from '../service/prediction.service';
+import {Prediction} from '../types';
 
 
 const PREDICTION_PLACES_NUMBER = 5;
@@ -55,9 +57,11 @@ export class PredictionDialog {
   });
 
   constructor(
+    @Inject(MAT_DIALOG_DATA) public data: {userId: number; round: number},
     private readonly dialogRef: MatDialogRef<PredictionDialog>,
     private readonly f1PublicApiService: F1PublicApiService,
     private readonly formBuilder: FormBuilder,
+    private readonly predictionService: PredictionService,
   ) {}
 
   getBolidPath(driverFamilyName: string): string {
@@ -66,8 +70,13 @@ export class PredictionDialog {
   }
 
   submit(): void {
-    console.log(this.predictionForm.value);
-    this.discard();
+    const prediction: Prediction = {
+      userId: this.data.userId,
+      round: this.data.round,
+      predictionForm: this.predictionForm.value,
+    };
+    this.predictionService.makePrediction(prediction);
+    this.dialogRef.close();
   }
 
   discard(): void {
