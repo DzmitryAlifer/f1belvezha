@@ -1,9 +1,10 @@
-import {ChangeDetectionStrategy, Component, Inject} from '@angular/core';
+import {Component, Inject} from '@angular/core';
 import {FormBuilder} from '@angular/forms';
 import {MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
+import {map, shareReplay} from 'rxjs/operators';
 import {F1PublicApiService} from '../service/f1-public-api.service';
 import {PredictionService} from '../service/prediction.service';
-import {Prediction} from '../types';
+import {Places, Prediction} from '../types';
 
 
 const PREDICTION_PLACES_NUMBER = 5;
@@ -36,13 +37,13 @@ const DRIVER_TEAM_MAPPING = new Map<string, string>()
   selector: 'app-prediction-dialog',
   templateUrl: './prediction-dialog.html',
   styleUrls: ['./prediction-dialog.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PredictionDialog {
   readonly selectedDriverFamilyNames = [['','','','',''], ['','','','','']];
   readonly PLACE_INDEXES = PLACE_INDEXES;
 
-  private readonly existingPrediction = this.predictionService.getPrediction(this.data.userId, this.data.round);
+  readonly existingPrediction = this.predictionService.getPrediction(this.data.userId, this.data.round)
+      .pipe(shareReplay(1));
 
   readonly drivers = this.f1PublicApiService.getDrivers();
   
@@ -65,7 +66,29 @@ export class PredictionDialog {
     private readonly f1PublicApiService: F1PublicApiService,
     private readonly formBuilder: FormBuilder,
     private readonly predictionService: PredictionService,
-  ) {this.existingPrediction.subscribe(r => console.log(r));}
+  ) {
+    // TODO: remake this ugly logic and get ChangeDetectionStrategy.OnPush back
+    this.existingPrediction.pipe(map(prediction => prediction.places)).subscribe((places: Places) => {
+      this.selectedDriverFamilyNames[0][0] = places.qualification1;
+      this.selectedDriverFamilyNames[0][1] = places.qualification2;
+      this.selectedDriverFamilyNames[0][2] = places.qualification3;
+      this.selectedDriverFamilyNames[0][3] = places.qualification4;
+      this.selectedDriverFamilyNames[0][4] = places.qualification5;
+      this.selectedDriverFamilyNames[1][0] = places.race1;
+      this.selectedDriverFamilyNames[1][1] = places.race2;
+      this.selectedDriverFamilyNames[1][2] = places.race3;
+      this.selectedDriverFamilyNames[1][3] = places.race4;
+      this.selectedDriverFamilyNames[1][4] = places.race5;
+    });
+  }
+
+  getPilotName(prediction: Prediction | null, eventName: string, place: number): string {
+    if (!prediction || !prediction.places) {
+      return '';
+    }
+
+    return prediction.places[eventName + place];
+  }
 
   getBolidPath(driverFamilyName: string): string {
     const teamId = DRIVER_TEAM_MAPPING.get(driverFamilyName);
@@ -74,7 +97,7 @@ export class PredictionDialog {
 
   submit(): void {
     const prediction: Prediction = {
-      userId: this.data.userId,
+      userid: this.data.userId,
       round: this.data.round,
       places: this.predictionForm.value,
     };
