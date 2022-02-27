@@ -41,6 +41,9 @@ const DRIVER_TEAM_MAPPING = new Map<string, string>()
 export class PredictionDialog {
   readonly selectedDriverFamilyNames = [['','','','',''], ['','','','','']];
   readonly PLACE_INDEXES = PLACE_INDEXES;
+
+  private readonly existingPrediction = this.predictionService.getPrediction(this.data.userId, this.data.round);
+
   readonly drivers = this.f1PublicApiService.getDrivers();
   
   readonly predictionForm = this.formBuilder.group({
