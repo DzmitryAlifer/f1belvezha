@@ -1,13 +1,14 @@
 import {Component, Inject} from '@angular/core';
-import {FormBuilder} from '@angular/forms';
+import {FormBuilder, FormControl} from '@angular/forms';
 import {MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
-import {map, shareReplay} from 'rxjs/operators';
+import {combineLatest} from 'rxjs';
+import {map, shareReplay, startWith, tap} from 'rxjs/operators';
 import {F1PublicApiService} from '../service/f1-public-api.service';
 import {PredictionService} from '../service/prediction.service';
 import {Places, Prediction} from '../types';
 
 
-const PREDICTION_PLACES_NUMBER = 5;
+export const PREDICTION_PLACES_NUMBER = 5;
 const PLACE_INDEXES = Array.from({length: PREDICTION_PLACES_NUMBER}, (v, i) => i);
 
 const DRIVER_TEAM_MAPPING = new Map<string, string>()
@@ -39,25 +40,29 @@ const DRIVER_TEAM_MAPPING = new Map<string, string>()
   styleUrls: ['./prediction-dialog.scss'],
 })
 export class PredictionDialog {
-  readonly selectedDriverFamilyNames = [['','','','',''], ['','','','','']];
   readonly PLACE_INDEXES = PLACE_INDEXES;
 
-  readonly existingPrediction = this.predictionService.getPrediction(this.data.userId, this.data.round)
-      .pipe(shareReplay(1));
-
   readonly drivers = this.f1PublicApiService.getDrivers();
+  readonly existingPrediction = this.predictionService.getPrediction(this.data.userId, this.data.round);
+  readonly isLoaded = combineLatest([this.drivers, this.existingPrediction])
+    .pipe(map(([drivers, prediction]) => !!drivers && !!prediction));
+
+  readonly places = this.existingPrediction.pipe(
+    startWith({qualification: ['', '', '', '', ''], race: ['', '', '', '', '']}),
+    shareReplay(1),
+  );
   
   readonly predictionForm = this.formBuilder.group({
-    qualification1: [null],
-    qualification2: [null],
-    qualification3: [null],
-    qualification4: [null],
-    qualification5: [null],
-    race1: [null],
-    race2: [null],
-    race3: [null],
-    race4: [null],
-    race5: [null],
+    q1: [''],
+    q2: [''],
+    q3: [''],
+    q4: [''],
+    q5: [''],
+    r1: [''],
+    r2: [''],
+    r3: [''],
+    r4: [''],
+    r5: [''],
   });
 
   constructor(
@@ -67,27 +72,20 @@ export class PredictionDialog {
     private readonly formBuilder: FormBuilder,
     private readonly predictionService: PredictionService,
   ) {
-    // TODO: remake this ugly logic and get ChangeDetectionStrategy.OnPush back
-    this.existingPrediction.pipe(map(prediction => prediction.places)).subscribe((places: Places) => {
-      this.selectedDriverFamilyNames[0][0] = places.qualification1;
-      this.selectedDriverFamilyNames[0][1] = places.qualification2;
-      this.selectedDriverFamilyNames[0][2] = places.qualification3;
-      this.selectedDriverFamilyNames[0][3] = places.qualification4;
-      this.selectedDriverFamilyNames[0][4] = places.qualification5;
-      this.selectedDriverFamilyNames[1][0] = places.race1;
-      this.selectedDriverFamilyNames[1][1] = places.race2;
-      this.selectedDriverFamilyNames[1][2] = places.race3;
-      this.selectedDriverFamilyNames[1][3] = places.race4;
-      this.selectedDriverFamilyNames[1][4] = places.race5;
+    this.places.subscribe(places => {
+      this.predictionForm.patchValue({
+        q1: places.qualification[0],
+        q2: places.qualification[1],
+        q3: places.qualification[2],
+        q4: places.qualification[3],
+        q5: places.qualification[4],
+        r1: places.race[0],
+        r2: places.race[1],
+        r3: places.race[2],
+        r4: places.race[3],
+        r5: places.race[4],
+     });
     });
-  }
-
-  getPilotName(prediction: Prediction | null, eventName: string, place: number): string {
-    if (!prediction || !prediction.places) {
-      return '';
-    }
-
-    return prediction.places[eventName + place];
   }
 
   getBolidPath(driverFamilyName: string): string {
@@ -96,12 +94,14 @@ export class PredictionDialog {
   }
 
   submit(): void {
+    const {q1, q2, q3, q4, q5, r1, r2, r3, r4, r5} = this.predictionForm.value;
     const prediction: Prediction = {
       userid: this.data.userId,
       round: this.data.round,
-      places: this.predictionForm.value,
+      qualification: [q1, q2, q3, q4, q5],
+      race: [r1, r2, r3, r4, r5],
     };
-    this.predictionService.makePrediction(prediction);
+    this.predictionService.makePrediction(prediction).subscribe();
     this.dialogRef.close();
   }
 

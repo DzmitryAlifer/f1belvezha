@@ -2,11 +2,14 @@ h2, h3, .button-bar {
     text-align: center;
 }
 
-.prediction-form {
+.places {
     display: flex;
 
     .event {
-        padding: 0 24px;
+        margin: 24px;
+        padding: 24px;
+        text-align: center;
+        width: 280px;
 
         .mat-form-field {
             width: 240px;

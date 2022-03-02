@@ -1,35 +1,61 @@
 <h2>Predict results</h2>
 
-<form *ngIf="{drivers: drivers | async} as data" [formGroup]="predictionForm" (ngSubmit)="submit()">
-    <div class="prediction-form">
-        <div *ngFor="let eventName of ['qualification', 'race']; let eventIndex = index; let isLast = last" class="event">
-            <h3>{{eventName}}</h3>
+<form *ngIf="{
+    drivers: drivers | async,
+    isLoaded: isLoaded | async,
+    places: places | async
+} as data" [formGroup]="predictionForm" (ngSubmit)="submit()">
+<div class="places">    
+    <fieldset *ngIf="data.isLoaded" class="event">
+        <h3>Qualification</h3>
             
-            <ng-container *ngFor="let placeIndex of PLACE_INDEXES">
-                <p>
-                    <mat-form-field>
-                        <mat-label>{{placeIndex + 1}}</mat-label>
+        <ng-container *ngFor="let placeIndex of PLACE_INDEXES">
+            <mat-form-field *ngIf="data.places">
+                <mat-label>Place {{placeIndex + 1}}</mat-label>
                         
-                        <mat-select 
-                            [formControlName]="eventName + (placeIndex + 1)" 
-                            [(value)]="selectedDriverFamilyNames[eventIndex][placeIndex]">
+                <mat-select
+                    [formControlName]="'q' + (placeIndex + 1)" 
+                    [(value)]="data.places.qualification[placeIndex]">
                             
-                            <mat-select-trigger>
-                                <img class="bolid" [src]="getBolidPath(selectedDriverFamilyNames[eventIndex][placeIndex])" />
-                                <span>{{selectedDriverFamilyNames[eventIndex][placeIndex]}}</span>
-                            </mat-select-trigger>
+                    <mat-select-trigger>
+                        <img *ngIf="data.places.qualification[placeIndex]" class="bolid" [src]="getBolidPath(data.places.qualification[placeIndex]!)" />
+                        <span>{{data.places.qualification[placeIndex]}}</span>
+                    </mat-select-trigger>
                             
-                            <mat-option *ngFor="let driver of data.drivers" [value]="driver.familyName" >
-                                <img class="bolid" [src]="getBolidPath(driver.familyName)" />
-                                <span class="name">{{driver.familyName}}</span>
-                            </mat-option>
-                        </mat-select>
-                    </mat-form-field>
-                </p>
-            </ng-container>
-        </div>
-    </div>
+                    <mat-option *ngFor="let driver of data.drivers" [value]="driver.familyName" >
+                        <img class="bolid" [src]="getBolidPath(driver.familyName)" />
+                        <span class="name">{{driver.familyName}}</span>
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+        </ng-container>
+    </fieldset>
 
+    <fieldset *ngIf="data.isLoaded" class="event">
+        <h3>Race</h3>
+            
+        <ng-container *ngFor="let placeIndex of PLACE_INDEXES">
+            <mat-form-field *ngIf="data.places">
+                <mat-label>Place {{placeIndex + 1}}</mat-label>
+                    
+                <mat-select
+                    [formControlName]="'r' + (placeIndex + 1)" 
+                    [(value)]="data.places.race[placeIndex]">
+                        
+                    <mat-select-trigger>
+                        <img *ngIf="data.places.race[placeIndex]" class="bolid" [src]="getBolidPath(data.places.race[placeIndex]!)" />
+                        <span>{{data.places.race[placeIndex]}}</span>
+                    </mat-select-trigger>
+                        
+                    <mat-option *ngFor="let driver of data.drivers" [value]="driver.familyName" >
+                        <img class="bolid" [src]="getBolidPath(driver.familyName)" />
+                        <span class="name">{{driver.familyName}}</span>
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+        </ng-container>
+    </fieldset>
+</div>
     <div class="button-bar">
         <button mat-raised-button color="primary" type="submit" [disabled]="!predictionForm.valid">Submit</button>
         <button mat-raised-button type="button" (click)="discard()">Discard</button>
