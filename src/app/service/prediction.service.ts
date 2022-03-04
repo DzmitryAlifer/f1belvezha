@@ -1,5 +1,6 @@
 import {Injectable} from '@angular/core';
 import {Observable} from 'rxjs';
+import {map} from 'rxjs/operators';
 import {Params, Prediction} from '../types';
 import {HttpService} from './http.service';
 
@@ -12,9 +13,16 @@ export class PredictionService {
 
   constructor(private readonly httpService: HttpService) {}
 
+  getAllUserPredictions(userId: number): Observable<Prediction[]> {
+    const queryParams: Params = {userId: String(userId)};
+    return this.httpService.getByParams<Prediction[]>(PREDICTION_API, queryParams);
+  }
+
   getPrediction(userId: number, round: number): Observable<Prediction> {
     const queryParams: Params = {userId: String(userId), round: String(round)};
-    return this.httpService.getByParams<Prediction>(PREDICTION_API, queryParams);
+    
+    return this.httpService.getByParams<Prediction>(PREDICTION_API, queryParams).pipe(
+      map(predictions => predictions));
   }
 
   makePrediction(prediction: Prediction): Observable<Prediction> {

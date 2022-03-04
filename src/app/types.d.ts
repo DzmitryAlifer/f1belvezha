@@ -68,19 +68,19 @@ export interface DropPoint {
     y: number;
 }
 
-export interface PlacesKeys {
-    [key: string]: Array<string|null>;
-}
+// export interface PlacesKeys {
+//     [key: string]: Array<string|null>;
+// }
 
 export interface Prediction {
     id?: number;
-    userid: number;
-    round: number;
+    userid?: number;
+    round?: number;
     qualification: string[];
     race: string[];
 }
 
-export interface Places extends PlacesKeys {
-    qualification: Array<string|null>;
-    race: Array<string|null>;
-}
+// export interface Places extends PlacesKeys {
+//     qualification: Array<string|null>;
+//     race: Array<string|null>;
+// }

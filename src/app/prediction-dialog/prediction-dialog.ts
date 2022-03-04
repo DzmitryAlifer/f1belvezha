@@ -1,11 +1,11 @@
 import {Component, Inject} from '@angular/core';
 import {FormBuilder, FormControl} from '@angular/forms';
 import {MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
-import {combineLatest} from 'rxjs';
-import {map, shareReplay, startWith, tap} from 'rxjs/operators';
+import {combineLatest, Observable} from 'rxjs';
+import {map, shareReplay, startWith, take, tap} from 'rxjs/operators';
 import {F1PublicApiService} from '../service/f1-public-api.service';
 import {PredictionService} from '../service/prediction.service';
-import {Places, Prediction} from '../types';
+import {Prediction} from '../types';
 
 
 export const PREDICTION_PLACES_NUMBER = 5;
@@ -43,12 +43,14 @@ export class PredictionDialog {
   readonly PLACE_INDEXES = PLACE_INDEXES;
 
   readonly drivers = this.f1PublicApiService.getDrivers();
-  readonly existingPrediction = this.predictionService.getPrediction(this.data.userId, this.data.round);
+  readonly existingPrediction: Observable<Prediction> = this.predictionService.getPrediction(this.data.userId, this.data.round)
+    .pipe(shareReplay(1));
   readonly isLoaded = combineLatest([this.drivers, this.existingPrediction])
     .pipe(map(([drivers, prediction]) => !!drivers && !!prediction));
 
-  readonly places = this.existingPrediction.pipe(
+  readonly places: Observable<Prediction> = this.existingPrediction.pipe(
     startWith({qualification: ['', '', '', '', ''], race: ['', '', '', '', '']}),
+    // take(1),
     shareReplay(1),
   );
   
@@ -66,13 +68,13 @@ export class PredictionDialog {
   });
 
   constructor(
-    @Inject(MAT_DIALOG_DATA) public data: {userId: number; round: number},
+    @Inject(MAT_DIALOG_DATA) public data: {userId: number; round: number, hasPrediction: boolean},
     private readonly dialogRef: MatDialogRef<PredictionDialog>,
     private readonly f1PublicApiService: F1PublicApiService,
     private readonly formBuilder: FormBuilder,
     private readonly predictionService: PredictionService,
   ) {
-    this.places.subscribe(places => {
+    this.places.subscribe((places: Prediction) => {
       this.predictionForm.patchValue({
         q1: places.qualification[0],
         q2: places.qualification[1],
@@ -101,7 +103,10 @@ export class PredictionDialog {
       qualification: [q1, q2, q3, q4, q5],
       race: [r1, r2, r3, r4, r5],
     };
-    this.predictionService.makePrediction(prediction).subscribe();
+    const predictionResponse = this.data.hasPrediction ? 
+        this.predictionService.updatePrediction(prediction) :
+        this.predictionService.makePrediction(prediction);
+    predictionResponse.subscribe();
     this.dialogRef.close();
   }
 

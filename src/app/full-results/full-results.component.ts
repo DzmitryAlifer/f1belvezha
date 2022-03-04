@@ -2,14 +2,15 @@ import {ChangeDetectionStrategy, Component} from '@angular/core';
 import {MatDialog} from '@angular/material/dialog';
 import {Sort} from '@angular/material/sort';
 import {BehaviorSubject, combineLatest, merge} from 'rxjs';
-import {map, shareReplay, switchMap} from 'rxjs/operators';
+import {filter, map, shareReplay, switchMap} from 'rxjs/operators';
 import {UserService} from '../service/user.service';
 import {F1PublicApiService} from '../service/f1-public-api.service';
 import {BehaviorService} from '../service/behavior.service';
 import {ThemeService} from '../service/theme.service';
 import {PredictionDialog} from '../prediction-dialog/prediction-dialog';
-import {Race} from '../types';
+import {Prediction, Race} from '../types';
 import * as moment from 'moment';
+import {PredictionService} from '../service/prediction.service';
 
 
 const NOW = moment();
@@ -53,9 +54,11 @@ export class FullResultsComponent {
   private readonly reloadedUsers = this.behaviorService.isUsersReload().pipe(switchMap(() => this.userService.getAllUsers()));
   readonly users = merge(this.initialUsers, this.reloadedUsers);
   
-  readonly currentUser = merge(
-    this.behaviorService.getCurrentUser(), 
-    this.userService.getCurrentUser(),
+  readonly currentUser = merge(this.behaviorService.getCurrentUser(), this.userService.getCurrentUser());
+
+  readonly currentUserPredictions = this.currentUser.pipe(
+    filter(user => !!user?.id),
+    switchMap(user => this.predictionService.getAllUserPredictions(user?.id!)),
   );
 
   readonly races = this.f1PublicApiService.getCurrentYearSchedule().pipe(shareReplay(1));
@@ -68,6 +71,7 @@ export class FullResultsComponent {
     private readonly behaviorService: BehaviorService,
     private readonly f1PublicApiService: F1PublicApiService,
     private readonly predictionDialog: MatDialog,
+    private readonly predictionService: PredictionService,
     private readonly themeService: ThemeService,
     private readonly userService: UserService,
   ) {}
@@ -92,11 +96,19 @@ export class FullResultsComponent {
     return `/assets/images/circuits/${countryName}.png`;
   }
 
-  openPredictionDialog(userId: number, round: number): void {
+  openPredictionDialog(userId: number, round: number, hasPrediction: boolean): void {
     this.predictionDialog.open(PredictionDialog, {
       disableClose: true,
-      data: {userId, round},
+      data: {userId, round, hasPrediction},
     });
+  }
+
+  hasPrediction(currentUserPredictions: Prediction[]|null, round: number): boolean {
+    return (currentUserPredictions ?? []).some(prediction => 
+      prediction.round === round && 
+      prediction.qualification.filter(name => !!name) &&
+      prediction.race.filter(name => !!name),
+    );
   }
 }
 
