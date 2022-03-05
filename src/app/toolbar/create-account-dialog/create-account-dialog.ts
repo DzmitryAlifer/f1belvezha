@@ -1,8 +1,9 @@
 import {ChangeDetectionStrategy, Component} from '@angular/core';
 import {FormBuilder, FormControl, Validators} from '@angular/forms';
 import {MatDialogRef} from '@angular/material/dialog';
+import {Store} from '@ngrx/store';
 import {UserService} from 'src/app/service/user.service';
-import {BehaviorService} from 'src/app/service/behavior.service';
+import {FullResultsActionType} from 'src/app/full-results/store/full-results.actions';
 
 
 // const PASSWORD_REGEXP = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.{8,})/;
@@ -24,20 +25,21 @@ export class CreateAccountDialog {
   });
 
   constructor(
-    private readonly behaviorService: BehaviorService,
     private readonly dialogRef: MatDialogRef<CreateAccountDialog>,
     private readonly formBuilder: FormBuilder,
+    private readonly store: Store,
     private readonly userService: UserService,
   ) {}
 
   checkPassword(formControl: FormControl) {
-    return (!PASSWORD_REGEXP.test(formControl.value) && formControl.value) ? { 'requirements': true } : null;
+    return (!PASSWORD_REGEXP.test(formControl.value) && formControl.value) ? {'requirements': true} : null;
   }
 
   submit(): void {
-    this.userService.createUser(this.accountForm.value).subscribe();
     this.cancel();
-    this.behaviorService.reloadUsers();
+    this.userService.createUser(this.accountForm.value).subscribe(() => {
+      this.store.dispatch({type: FullResultsActionType.LOAD_USERS});
+    });
   }
 
   cancel(): void {
