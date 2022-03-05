@@ -1,15 +1,19 @@
 import {Component, Inject} from '@angular/core';
 import {FormBuilder, FormControl} from '@angular/forms';
 import {MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
+import {Store} from '@ngrx/store';
 import {combineLatest, Observable} from 'rxjs';
-import {map, shareReplay, startWith, take, tap} from 'rxjs/operators';
+import {map, shareReplay, startWith, take} from 'rxjs/operators';
 import {F1PublicApiService} from '../service/f1-public-api.service';
 import {PredictionService} from '../service/prediction.service';
 import {Prediction} from '../types';
+import * as fullResultsSelectors from '../full-results/store/full-results.selectors';
+import {FullResultsActionType} from '../full-results/store/full-results.actions';
 
 
 export const PREDICTION_PLACES_NUMBER = 5;
 const PLACE_INDEXES = Array.from({length: PREDICTION_PLACES_NUMBER}, (v, i) => i);
+const EMPTY_PREDICTION: Prediction = {qualification: ['', '', '', '', ''], race: ['', '', '', '', '']};
 
 const DRIVER_TEAM_MAPPING = new Map<string, string>()
     .set('Hamilton', 'mercedes')
@@ -43,14 +47,16 @@ export class PredictionDialog {
   readonly PLACE_INDEXES = PLACE_INDEXES;
 
   readonly drivers = this.f1PublicApiService.getDrivers();
-  readonly existingPrediction: Observable<Prediction> = this.predictionService.getPrediction(this.data.userId, this.data.round)
-    .pipe(shareReplay(1));
+  readonly existingPrediction = this.store.select(fullResultsSelectors.selectCurrentUserPredictions).pipe(
+    map(predictions => 
+        predictions.find(({userid, round}) => userid == this.data.userId && round === this.data.round) ?? 
+            EMPTY_PREDICTION),
+    shareReplay(1),
+  );
   readonly isLoaded = combineLatest([this.drivers, this.existingPrediction])
     .pipe(map(([drivers, prediction]) => !!drivers && !!prediction));
 
-  readonly places: Observable<Prediction> = this.existingPrediction.pipe(
-    startWith({qualification: ['', '', '', '', ''], race: ['', '', '', '', '']}),
-    // take(1),
+  readonly prediction = this.existingPrediction.pipe(
     shareReplay(1),
   );
   
@@ -73,20 +79,25 @@ export class PredictionDialog {
     private readonly f1PublicApiService: F1PublicApiService,
     private readonly formBuilder: FormBuilder,
     private readonly predictionService: PredictionService,
-  ) {
-    this.places.subscribe((places: Prediction) => {
+    private readonly store: Store,
+  ) {}
+
+  ngOnInit(): void {
+    this.store.dispatch({type: FullResultsActionType.LOAD_CURRENT_USER_PREDICTIONS});
+
+    this.prediction.subscribe(prediction => {
       this.predictionForm.patchValue({
-        q1: places.qualification[0],
-        q2: places.qualification[1],
-        q3: places.qualification[2],
-        q4: places.qualification[3],
-        q5: places.qualification[4],
-        r1: places.race[0],
-        r2: places.race[1],
-        r3: places.race[2],
-        r4: places.race[3],
-        r5: places.race[4],
-     });
+        q1: prediction.qualification[0],
+        q2: prediction.qualification[1],
+        q3: prediction.qualification[2],
+        q4: prediction.qualification[3],
+        q5: prediction.qualification[4],
+        r1: prediction.race[0],
+        r2: prediction.race[1],
+        r3: prediction.race[2],
+        r4: prediction.race[3],
+        r5: prediction.race[4],
+      });
     });
   }
 

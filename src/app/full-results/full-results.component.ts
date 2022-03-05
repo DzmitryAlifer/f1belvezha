@@ -1,13 +1,12 @@
-import { ChangeDetectionStrategy, Component, OnInit} from '@angular/core';
+import {ChangeDetectionStrategy, Component, OnInit} from '@angular/core';
 import {MatDialog} from '@angular/material/dialog';
 import {Store} from '@ngrx/store';
 import {combineLatest} from 'rxjs';
-import {filter, map, shareReplay, switchMap} from 'rxjs/operators';
+import {map, shareReplay} from 'rxjs/operators';
 import {F1PublicApiService} from '../service/f1-public-api.service';
 import {PredictionDialog} from '../prediction-dialog/prediction-dialog';
 import {Prediction, Race} from '../types';
 import * as moment from 'moment';
-import {PredictionService} from '../service/prediction.service';
 import * as fullResultsSelectors from './store/full-results.selectors';
 import {FullResultsActionType} from './store/full-results.actions';
 import * as toolbarSelectors from '../toolbar/store/toolbar.selectors';
@@ -52,11 +51,15 @@ export class FullResultsComponent implements OnInit {
   readonly users = this.store.select(fullResultsSelectors.selectUsers);
   readonly currentUser = this.store.select(toolbarSelectors.selectCurrentUser);
   readonly currentUserPredictions = this.store.select(fullResultsSelectors.selectCurrentUserPredictions);
+
   readonly races = this.f1PublicApiService.getCurrentYearSchedule().pipe(shareReplay(1));
   readonly nextRaceRound = this.races.pipe(map(races => races.findIndex(nextRacePredicate) + ROUND_TO_INDEX_OFFSET));
   readonly isLoaded = combineLatest([this.users, this.races]).pipe(map(([users, races]) => !!races && !!users));
-  private readonly userColumns = this.users.pipe(map(users => users.map(user => 'user' + user.id)));
-  readonly displayedColumns = this.userColumns.pipe(map(userColumns => ['event', 'circuit', ...userColumns, 'empty', 'stats']));
+    
+  readonly displayedColumns = this.users.pipe(
+    map(users => users.map(user => 'user' + user.id)),
+    map(userColumns => ['event', 'circuit', ...userColumns, 'empty', 'stats']),
+  );
 
   constructor(
     private readonly f1PublicApiService: F1PublicApiService,
@@ -95,8 +98,8 @@ export class FullResultsComponent implements OnInit {
   hasPrediction(currentUserPredictions: Prediction[]|null, round: number): boolean {
     return (currentUserPredictions ?? []).some(prediction => 
       prediction.round === round && 
-      prediction.qualification.filter(name => !!name) &&
-      prediction.race.filter(name => !!name),
+      prediction.qualification.filter(name => !!name).length &&
+      prediction.race.filter(name => !!name).length,
     );
   }
 }

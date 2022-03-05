@@ -3,23 +3,25 @@
 <form *ngIf="{
     drivers: drivers | async,
     isLoaded: isLoaded | async,
-    places: places | async
+    prediction: prediction | async
 } as data" [formGroup]="predictionForm" (ngSubmit)="submit()">
 <div class="places">    
     <fieldset *ngIf="data.isLoaded" class="event">
         <h3>Qualification</h3>
             
         <ng-container *ngFor="let placeIndex of PLACE_INDEXES">
-            <mat-form-field *ngIf="data.places">
+            <mat-form-field *ngIf="data.prediction">
                 <mat-label>Place {{placeIndex + 1}}</mat-label>
                         
                 <mat-select
                     [formControlName]="'q' + (placeIndex + 1)" 
-                    [(value)]="data.places.qualification[placeIndex]">
+                    [(value)]="data.prediction.qualification[placeIndex]">
                             
                     <mat-select-trigger>
-                        <img *ngIf="data.places.qualification[placeIndex]" class="bolid" [src]="getBolidPath(data.places.qualification[placeIndex]!)" />
-                        <span>{{data.places.qualification[placeIndex]}}</span>
+                        <img *ngIf="data.prediction.qualification[placeIndex]"
+                            class="bolid"
+                            [src]="getBolidPath(data.prediction.qualification[placeIndex]!)" />
+                        <span>{{data.prediction.qualification[placeIndex]}}</span>
                     </mat-select-trigger>
                             
                     <mat-option *ngFor="let driver of data.drivers" [value]="driver.familyName" >
@@ -35,16 +37,18 @@
         <h3>Race</h3>
             
         <ng-container *ngFor="let placeIndex of PLACE_INDEXES">
-            <mat-form-field *ngIf="data.places">
+            <mat-form-field *ngIf="data.prediction">
                 <mat-label>Place {{placeIndex + 1}}</mat-label>
                     
                 <mat-select
                     [formControlName]="'r' + (placeIndex + 1)" 
-                    [(value)]="data.places.race[placeIndex]">
+                    [(value)]="data.prediction.race[placeIndex]">
                         
                     <mat-select-trigger>
-                        <img *ngIf="data.places.race[placeIndex]" class="bolid" [src]="getBolidPath(data.places.race[placeIndex]!)" />
-                        <span>{{data.places.race[placeIndex]}}</span>
+                        <img *ngIf="data.prediction.race[placeIndex]" 
+                            class="bolid" 
+                            [src]="getBolidPath(data.prediction.race[placeIndex]!)" />
+                        <span>{{data.prediction.race[placeIndex]}}</span>
                     </mat-select-trigger>
                         
                     <mat-option *ngFor="let driver of data.drivers" [value]="driver.familyName" >
