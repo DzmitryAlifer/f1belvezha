@@ -1,9 +1,11 @@
 import {Action} from '@ngrx/store';
+import {User} from 'src/app/types';
 
 
 export enum FullResultsActionType {
     SET_LOADED = '[Full Results] Set loaded state',
-    ACTION_2 = '[Full Results] Action 2',
+    LOAD_USERS = '[Full Results] Load users',
+    LOAD_USERS_SUCCESS = '[Full Results] Load users - success',
 }
 
 export class SetLoaded implements Action {
@@ -11,11 +13,17 @@ export class SetLoaded implements Action {
     constructor(readonly payload: {isLoaded: boolean}) {}
 }
 
-export class Action2 implements Action {
-    readonly type = FullResultsActionType.ACTION_2;
+export class LoadUsers implements Action {
+    readonly type = FullResultsActionType.LOAD_USERS;
     constructor(readonly payload: {param2: string}) {}
+}
+
+export class LoadUsersSuccess implements Action {
+    readonly type = FullResultsActionType.LOAD_USERS_SUCCESS;
+    constructor(readonly payload: {users: User[]}) {}
 }
 
 export type FullResultsAction =
     | SetLoaded
-    | Action2;
+    | LoadUsers
+    | LoadUsersSuccess;

@@ -14,13 +14,16 @@ export const initialState: FullResultsState = {
 };
 
 
-export function settingsReducer(state: FullResultsState = initialState, action: FullResultsAction): FullResultsState {
+export function fullResultsReducer(state: FullResultsState = initialState, action: FullResultsAction): FullResultsState {
     switch (action.type) {
         case FullResultsActionType.SET_LOADED:
-            return {...state, ...action.payload};
+            return {...state, isLoaded: action.payload.isLoaded};
 
-        case FullResultsActionType.ACTION_2:
-            return {...state, ...action.payload};
+        case FullResultsActionType.LOAD_USERS:
+            return { ...state, isLoaded: false};
+
+        case FullResultsActionType.LOAD_USERS_SUCCESS:
+            return {...state, users: action.payload.users, isLoaded: true};
 
         default:
             return state;

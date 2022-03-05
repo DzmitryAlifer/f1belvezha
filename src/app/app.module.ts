@@ -13,11 +13,12 @@ import {MatSlideToggleModule} from '@angular/material/slide-toggle';
 import {MatSidenavModule} from '@angular/material/sidenav';
 import {UsersStandingModule} from './users-standing/users-standing.module';
 import {DragDropModule} from '@angular/cdk/drag-drop';
+import { StoreModule } from '@ngrx/store';
+import { EffectsModule } from '@ngrx/effects';
 import {PredictionDialogModule} from './prediction-dialog/prediction-dialog.module';
 
 
 @NgModule({
-  declarations: [AppComponent],
   imports: [
     AppRoutingModule,
     BrowserAnimationsModule,
@@ -33,7 +34,10 @@ import {PredictionDialogModule} from './prediction-dialog/prediction-dialog.modu
     UsersStandingModule,
     MatSlideToggleModule,
     MatSidenavModule,
+    StoreModule.forRoot({}),
+    EffectsModule.forRoot([]),
   ],
   bootstrap: [AppComponent],
+  declarations: [AppComponent],
 })
 export class AppModule { }

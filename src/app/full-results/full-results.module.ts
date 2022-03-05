@@ -1,12 +1,16 @@
 import { NgModule } from '@angular/core';
 import {CommonModule} from '@angular/common';
-import {FullResultsComponent} from './full-results.component';
 import {MatCardModule} from '@angular/material/card';
 import {MatIconModule} from '@angular/material/icon';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import {MatSlideToggleModule} from '@angular/material/slide-toggle';
-import {MatSortModule} from '@angular/material/sort';
 import {MatTableModule} from '@angular/material/table';
+import {StoreModule} from '@ngrx/store';
+import {EffectsModule} from '@ngrx/effects';
+import {FullResultsComponent} from './full-results.component';
+import {FullResultsEffects} from './store/full-results.effects';
+import {fullResultsReducer} from './store/full-results.reducer';
+
 
 @NgModule({
   imports: [
@@ -15,8 +19,9 @@ import {MatTableModule} from '@angular/material/table';
     MatIconModule,
     MatProgressSpinnerModule,
     MatSlideToggleModule,
-    MatSortModule,
     MatTableModule,
+    StoreModule.forFeature('fullResults', fullResultsReducer),
+    EffectsModule.forFeature([FullResultsEffects]),
   ],
   declarations: [FullResultsComponent],
   exports: [FullResultsComponent],
