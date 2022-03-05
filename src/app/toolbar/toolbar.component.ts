@@ -1,15 +1,17 @@
 import {ChangeDetectionStrategy, Component} from '@angular/core';
 import {MatDialog} from '@angular/material/dialog';
+import {Store} from '@ngrx/store';
 import {merge} from 'rxjs';
 import {startWith} from 'rxjs/operators';
 import {CURRENT_USER_KEY} from 'src/constants';
-import {BehaviorService} from '../service/behavior.service';
 import {LocalStorageService} from '../service/local-storage.service';
 import {UserService} from '../service/user.service';
 import {Theme, ThemeService} from '../service/theme.service';
 import {CreateAccountDialog} from './create-account-dialog/create-account-dialog';
 import {HelpDialog} from './help-dialog/help-dialog';
 import {LoginDialog} from './login-dialog/login-dialog';
+import {ToolbarActionType} from './store/toolbar.actions';
+import * as toolbarSelectors from './store/toolbar.selectors';
 
 
 @Component({
@@ -24,16 +26,16 @@ export class ToolbarComponent {
   );
 
   readonly user = merge(
-    this.behaviorService.getCurrentUser(), 
+    this.store.select(toolbarSelectors.selectCurrentUser),
     this.userService.getCurrentUser(),
   );
 
   constructor(
-    private readonly behaviorService: BehaviorService,
     private readonly createAccountDialog: MatDialog,
     private readonly helpDialog: MatDialog,
     private readonly localStorageService: LocalStorageService,
     private readonly loginDialog: MatDialog,
+    private readonly store: Store,
     private readonly themeService: ThemeService,
     private readonly userService: UserService,
   ) {
@@ -49,7 +51,7 @@ export class ToolbarComponent {
   }
 
   logout(): void {
-    this.behaviorService.setCurrentUser(null);
+    this.store.dispatch({type: ToolbarActionType.SET_CURRENT_USER, payload: {currentUser: null}});
     this.localStorageService.setItem(CURRENT_USER_KEY, null);
   }
 

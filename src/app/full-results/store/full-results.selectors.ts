@@ -4,7 +4,7 @@ import {FullResultsState} from './full-results.model';
 
 export const selectFullResultsState = createFeatureSelector<FullResultsState>('fullResults');
 
-export const selectFullResults = createSelector(
+const selectFullResults = createSelector(
     selectFullResultsState,
     (state: FullResultsState) => state,
 );

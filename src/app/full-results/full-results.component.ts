@@ -1,12 +1,10 @@
 import { ChangeDetectionStrategy, Component, OnInit} from '@angular/core';
 import {MatDialog} from '@angular/material/dialog';
-import {Sort} from '@angular/material/sort';
 import {Store} from '@ngrx/store';
-import {BehaviorSubject, combineLatest, merge} from 'rxjs';
+import {combineLatest, merge} from 'rxjs';
 import {filter, map, shareReplay, switchMap} from 'rxjs/operators';
 import {UserService} from '../service/user.service';
 import {F1PublicApiService} from '../service/f1-public-api.service';
-import {BehaviorService} from '../service/behavior.service';
 import {ThemeService} from '../service/theme.service';
 import {PredictionDialog} from '../prediction-dialog/prediction-dialog';
 import {Prediction, Race} from '../types';
@@ -14,6 +12,7 @@ import * as moment from 'moment';
 import {PredictionService} from '../service/prediction.service';
 import * as fullResultsSelectors from './store/full-results.selectors';
 import {FullResultsActionType} from './store/full-results.actions';
+import * as toolbarSelectors from '../toolbar/store/toolbar.selectors';
 
 
 const NOW = moment();
@@ -52,11 +51,12 @@ const COUNTRY_MAP = new Map<string, string>()
 })
 export class FullResultsComponent implements OnInit {
   readonly isDarkMode = this.themeService.isDarkMode();
-  private readonly initialUsers = this.store.select(fullResultsSelectors.selectUsers);
-  private readonly reloadedUsers = this.behaviorService.isUsersReload().pipe(switchMap(() => this.userService.getAllUsers()));
-  readonly users = merge(this.initialUsers, this.reloadedUsers);
+  readonly users = this.store.select(fullResultsSelectors.selectUsers);
   
-  readonly currentUser = merge(this.behaviorService.getCurrentUser(), this.userService.getCurrentUser());
+  readonly currentUser = merge(
+    this.store.select(toolbarSelectors.selectCurrentUser), 
+    this.userService.getCurrentUser(),
+  );
 
   readonly currentUserPredictions = this.currentUser.pipe(
     filter(user => !!user?.id),
@@ -70,7 +70,6 @@ export class FullResultsComponent implements OnInit {
   readonly displayedColumns = this.userColumns.pipe(map(userColumns => ['event', 'circuit', ...userColumns, 'empty', 'stats']));
 
   constructor(
-    private readonly behaviorService: BehaviorService,
     private readonly f1PublicApiService: F1PublicApiService,
     private readonly predictionDialog: MatDialog,
     private readonly predictionService: PredictionService,

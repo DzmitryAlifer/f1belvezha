@@ -1,10 +1,11 @@
 import {ChangeDetectionStrategy, Component} from '@angular/core';
 import {FormBuilder, Validators} from '@angular/forms';
 import {MatDialogRef} from '@angular/material/dialog';
+import {Store} from '@ngrx/store';
 import {UserService} from 'src/app/service/user.service';
-import {BehaviorService} from 'src/app/service/behavior.service';
 import {LocalStorageService} from 'src/app/service/local-storage.service';
 import {CURRENT_USER_KEY} from 'src/constants';
+import {ToolbarActionType} from '../store/toolbar.actions';
 
 
 @Component({
@@ -20,17 +21,17 @@ export class LoginDialog {
   });
 
   constructor(
-    private readonly behaviorService: BehaviorService,
     private readonly dialogRef: MatDialogRef<LoginDialog>,
     private readonly formBuilder: FormBuilder,
     private readonly localStorageService: LocalStorageService,
+    private readonly store: Store,
     private readonly userService: UserService,
   ) {}
 
   login(): void {
-    this.userService.login(this.loginForm.value).subscribe(user => {
-      this.behaviorService.setCurrentUser(user);
-      this.localStorageService.setItem(CURRENT_USER_KEY, user);
+    this.userService.login(this.loginForm.value).subscribe(currentUser => {
+      this.store.dispatch({type: ToolbarActionType.SET_CURRENT_USER, payload: {currentUser}});
+      this.localStorageService.setItem(CURRENT_USER_KEY, currentUser);
     });
     
     this.cancel();
