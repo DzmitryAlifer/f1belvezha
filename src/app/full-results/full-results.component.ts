@@ -1,9 +1,8 @@
 import { ChangeDetectionStrategy, Component, OnInit} from '@angular/core';
 import {MatDialog} from '@angular/material/dialog';
 import {Store} from '@ngrx/store';
-import {combineLatest, merge} from 'rxjs';
+import {combineLatest} from 'rxjs';
 import {filter, map, shareReplay, switchMap} from 'rxjs/operators';
-import {UserService} from '../service/user.service';
 import {F1PublicApiService} from '../service/f1-public-api.service';
 import {PredictionDialog} from '../prediction-dialog/prediction-dialog';
 import {Prediction, Race} from '../types';
@@ -51,11 +50,7 @@ const COUNTRY_MAP = new Map<string, string>()
 export class FullResultsComponent implements OnInit {
   readonly isDarkMode = this.store.select(toolbarSelectors.selectIsDarkMode);
   readonly users = this.store.select(fullResultsSelectors.selectUsers);
-  
-  readonly currentUser = merge(
-    this.store.select(toolbarSelectors.selectCurrentUser), 
-    this.userService.getCurrentUser(),
-  );
+  readonly currentUser = this.store.select(toolbarSelectors.selectCurrentUser);
 
   readonly currentUserPredictions = this.currentUser.pipe(
     filter(user => !!user?.id),
@@ -73,7 +68,6 @@ export class FullResultsComponent implements OnInit {
     private readonly predictionDialog: MatDialog,
     private readonly predictionService: PredictionService,
     private readonly store: Store,
-    private readonly userService: UserService,
   ) {}
 
   ngOnInit(): void {
