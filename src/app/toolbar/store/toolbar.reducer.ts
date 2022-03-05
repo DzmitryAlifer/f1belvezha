@@ -1,10 +1,12 @@
 import { Theme } from 'src/app/service/theme.service';
+import { User } from 'src/app/types';
+import { CURRENT_USER_KEY } from 'src/constants';
 import { ToolbarAction, ToolbarActionType} from './toolbar.actions';
 import {ToolbarState} from './toolbar.model';
 
 
 export const initialState: ToolbarState = {
-    currentUser: null,
+    currentUser: getStoredUser(),
     isDarkMode: localStorage.getItem('user-theme') === Theme.Dark,
 };
 
@@ -20,4 +22,9 @@ export function toolbarReducer(state: ToolbarState = initialState, action: Toolb
         default:
             return state;
     }
+}
+
+function getStoredUser(): User|null {
+    const userJson = localStorage.getItem(CURRENT_USER_KEY);
+    return !!userJson ? JSON.parse(userJson) as User : null;
 }

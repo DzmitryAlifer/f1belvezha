@@ -5,7 +5,6 @@ import {combineLatest, merge} from 'rxjs';
 import {filter, map, shareReplay, switchMap} from 'rxjs/operators';
 import {UserService} from '../service/user.service';
 import {F1PublicApiService} from '../service/f1-public-api.service';
-import {ThemeService} from '../service/theme.service';
 import {PredictionDialog} from '../prediction-dialog/prediction-dialog';
 import {Prediction, Race} from '../types';
 import * as moment from 'moment';
@@ -50,7 +49,7 @@ const COUNTRY_MAP = new Map<string, string>()
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class FullResultsComponent implements OnInit {
-  readonly isDarkMode = this.themeService.isDarkMode();
+  readonly isDarkMode = this.store.select(toolbarSelectors.selectIsDarkMode);
   readonly users = this.store.select(fullResultsSelectors.selectUsers);
   
   readonly currentUser = merge(
@@ -74,7 +73,6 @@ export class FullResultsComponent implements OnInit {
     private readonly predictionDialog: MatDialog,
     private readonly predictionService: PredictionService,
     private readonly store: Store,
-    private readonly themeService: ThemeService,
     private readonly userService: UserService,
   ) {}
 

@@ -1,11 +1,8 @@
 import {ChangeDetectionStrategy, Component} from '@angular/core';
 import {MatDialog} from '@angular/material/dialog';
 import {Store} from '@ngrx/store';
-import {merge} from 'rxjs';
-import {startWith} from 'rxjs/operators';
 import {CURRENT_USER_KEY} from 'src/constants';
 import {LocalStorageService} from '../service/local-storage.service';
-import {UserService} from '../service/user.service';
 import {ThemeService} from '../service/theme.service';
 import {CreateAccountDialog} from './create-account-dialog/create-account-dialog';
 import {HelpDialog} from './help-dialog/help-dialog';
@@ -21,14 +18,8 @@ import * as toolbarSelectors from './store/toolbar.selectors';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ToolbarComponent {
-  readonly isDarkMode = this.store.select(toolbarSelectors.selectIsDarkMode).pipe(
-    startWith(localStorage.getItem('user-theme')),
-  );
-
-  readonly user = merge(
-    this.store.select(toolbarSelectors.selectCurrentUser),
-    this.userService.getCurrentUser(),
-  );
+  readonly isDarkMode = this.store.select(toolbarSelectors.selectIsDarkMode);
+  readonly user = this.store.select(toolbarSelectors.selectCurrentUser);
 
   constructor(
     private readonly createAccountDialog: MatDialog,
@@ -37,7 +28,6 @@ export class ToolbarComponent {
     private readonly loginDialog: MatDialog,
     private readonly store: Store,
     private readonly themeService: ThemeService,
-    private readonly userService: UserService,
   ) {
     this.themeService.initTheme();
   }
