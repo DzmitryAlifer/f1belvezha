@@ -48,7 +48,6 @@ const COUNTRY_MAP = new Map<string, string>()
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class FullResultsComponent {
-  readonly sortSubject = new BehaviorSubject<Sort>({active: 'id', direction: 'asc'});
   readonly isDarkMode = this.themeService.isDarkMode();
   private readonly initialUsers = this.userService.getAllUsers().pipe(shareReplay(1));
   private readonly reloadedUsers = this.behaviorService.isUsersReload().pipe(switchMap(() => this.userService.getAllUsers()));
@@ -75,10 +74,6 @@ export class FullResultsComponent {
     private readonly themeService: ThemeService,
     private readonly userService: UserService,
   ) {}
-
-  sortData(sort: Sort): void {
-    this.sortSubject.next(sort);
-  }
 
   formatDate(dateStr: string): string {
     const date = new Date(dateStr);
