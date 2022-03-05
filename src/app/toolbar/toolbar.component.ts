@@ -6,7 +6,7 @@ import {startWith} from 'rxjs/operators';
 import {CURRENT_USER_KEY} from 'src/constants';
 import {LocalStorageService} from '../service/local-storage.service';
 import {UserService} from '../service/user.service';
-import {Theme, ThemeService} from '../service/theme.service';
+import {ThemeService} from '../service/theme.service';
 import {CreateAccountDialog} from './create-account-dialog/create-account-dialog';
 import {HelpDialog} from './help-dialog/help-dialog';
 import {LoginDialog} from './login-dialog/login-dialog';
@@ -21,7 +21,7 @@ import * as toolbarSelectors from './store/toolbar.selectors';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ToolbarComponent {
-  readonly isDarkMode = this.themeService.isDarkMode().pipe(
+  readonly isDarkMode = this.store.select(toolbarSelectors.selectIsDarkMode).pipe(
     startWith(localStorage.getItem('user-theme')),
   );
 
@@ -58,7 +58,7 @@ export class ToolbarComponent {
   changeAvatar(): void {}
 
   toggleMode(isPrevousModeDark: boolean) {
-    this.themeService.update(isPrevousModeDark ? Theme.Light : Theme.Dark);
+    this.store.dispatch({type: ToolbarActionType.SET_DARK_MODE, payload: {isDarkMode: !isPrevousModeDark}});
   }
 
   showHelp(): void {

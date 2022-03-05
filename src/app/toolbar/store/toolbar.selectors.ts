@@ -13,3 +13,8 @@ export const selectCurrentUser = createSelector(
     selectToolbar,
     (state: ToolbarState) => state.currentUser,
 );
+
+export const selectIsDarkMode = createSelector(
+    selectToolbar,
+    (state: ToolbarState) => state.isDarkMode,
+);
