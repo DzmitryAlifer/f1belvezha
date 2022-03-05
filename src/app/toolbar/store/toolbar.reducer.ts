@@ -1,7 +1,7 @@
-import { Theme } from 'src/app/service/theme.service';
-import { User } from 'src/app/types';
-import { CURRENT_USER_KEY } from 'src/constants';
-import { ToolbarAction, ToolbarActionType} from './toolbar.actions';
+import {Theme} from 'src/app/service/theme.service';
+import {User} from 'src/app/types';
+import {CURRENT_USER_KEY} from 'src/constants';
+import {ToolbarAction, ToolbarActionType} from './toolbar.actions';
 import {ToolbarState} from './toolbar.model';
 
 

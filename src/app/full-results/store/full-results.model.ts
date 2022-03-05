@@ -3,7 +3,7 @@ import {Prediction, Race, User} from 'src/app/types';
 export interface FullResultsState {
     columns: string[];
     currentUser: User | null;
-    currentUserPrediction: Prediction | null;
+    currentUserPredictions: Prediction[];
     isAuthenticated: boolean;
     isLoaded: boolean;
     nextRound: number;

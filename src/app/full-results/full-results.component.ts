@@ -51,12 +51,7 @@ export class FullResultsComponent implements OnInit {
   readonly isDarkMode = this.store.select(toolbarSelectors.selectIsDarkMode);
   readonly users = this.store.select(fullResultsSelectors.selectUsers);
   readonly currentUser = this.store.select(toolbarSelectors.selectCurrentUser);
-
-  readonly currentUserPredictions = this.currentUser.pipe(
-    filter(user => !!user?.id),
-    switchMap(user => this.predictionService.getAllUserPredictions(user?.id!)),
-  );
-
+  readonly currentUserPredictions = this.store.select(fullResultsSelectors.selectCurrentUserPredictions);
   readonly races = this.f1PublicApiService.getCurrentYearSchedule().pipe(shareReplay(1));
   readonly nextRaceRound = this.races.pipe(map(races => races.findIndex(nextRacePredicate) + ROUND_TO_INDEX_OFFSET));
   readonly isLoaded = combineLatest([this.users, this.races]).pipe(map(([users, races]) => !!races && !!users));
@@ -66,18 +61,18 @@ export class FullResultsComponent implements OnInit {
   constructor(
     private readonly f1PublicApiService: F1PublicApiService,
     private readonly predictionDialog: MatDialog,
-    private readonly predictionService: PredictionService,
     private readonly store: Store,
   ) {}
 
   ngOnInit(): void {
     this.store.dispatch({type: FullResultsActionType.LOAD_USERS});
+    this.store.dispatch({type: FullResultsActionType.LOAD_CURRENT_USER_PREDICTIONS});
   }
 
   formatDate(dateStr: string): string {
     const date = new Date(dateStr);
-    const month = new Intl.DateTimeFormat('en', { month: 'short' }).format(date);
-    const day = new Intl.DateTimeFormat('en', { day: '2-digit' }).format(date);
+    const month = new Intl.DateTimeFormat('en', {month: 'short'}).format(date);
+    const day = new Intl.DateTimeFormat('en', {day: '2-digit'}).format(date);
 
     return `${month} ${day}`;
   }
