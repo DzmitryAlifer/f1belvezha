@@ -1,9 +1,11 @@
 import {Action} from '@ngrx/store';
-import {Prediction, User} from 'src/app/types';
+import {Prediction, Race, User} from 'src/app/types';
 
 
 export enum FullResultsActionType {
     SET_LOADED = '[Full Results] Set loaded state',
+    LOAD_RACES = '[Full Results] Load races',
+    LOAD_RACES_SUCCESS = '[Full Results] Load races - success',
     LOAD_USERS = '[Full Results] Load users',
     LOAD_USERS_SUCCESS = '[Full Results] Load users - success',
     LOAD_ALL_PREDICTIONS = '[Full Results] Load all predictions',
@@ -15,6 +17,16 @@ export enum FullResultsActionType {
 export class SetLoaded implements Action {
     readonly type = FullResultsActionType.SET_LOADED;
     constructor(readonly payload: {isLoaded: boolean}) {}
+}
+
+export class LoadRaces implements Action {
+    readonly type = FullResultsActionType.LOAD_RACES;
+    constructor(readonly payload: {}) {}
+}
+
+export class LoadRacesSuccess implements Action {
+    readonly type = FullResultsActionType.LOAD_RACES_SUCCESS;
+    constructor(readonly payload: {races: Race[]}) {}
 }
 
 export class LoadUsers implements Action {
@@ -49,6 +61,8 @@ export class LoadCurrentUserPredictionsSuccess implements Action {
 
 export type FullResultsAction =
     | SetLoaded
+    | LoadRaces
+    | LoadRacesSuccess
     | LoadUsers
     | LoadUsersSuccess
     | LoadAllPredictions

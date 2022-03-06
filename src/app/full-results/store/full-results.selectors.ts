@@ -14,6 +14,11 @@ export const selectIsLoaded = createSelector(
     (state: FullResultsState) => state.isLoaded,
 );
 
+export const selectRaces = createSelector(
+    selectFullResults,
+    (state: FullResultsState) => state.races,
+);
+
 export const selectUsers = createSelector(
     selectFullResults,
     (state: FullResultsState) => state.users,
@@ -27,4 +32,9 @@ export const selectAllPredictions = createSelector(
 export const selectCurrentUserPredictions = createSelector(
     selectFullResults,
     (state: FullResultsState) => state.currentUserPredictions,
+);
+
+export const selectNextRoundPredictions = createSelector(
+    selectFullResults,
+    (state: FullResultsState) => state.nextRoundPredictions,
 );

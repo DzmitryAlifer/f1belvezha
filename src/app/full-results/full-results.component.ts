@@ -3,7 +3,6 @@ import {MatDialog} from '@angular/material/dialog';
 import {Store} from '@ngrx/store';
 import {combineLatest} from 'rxjs';
 import {map, shareReplay} from 'rxjs/operators';
-import {F1PublicApiService} from '../service/f1-public-api.service';
 import {PredictionDialog} from '../prediction-dialog/prediction-dialog';
 import {Prediction, Race} from '../types';
 import * as moment from 'moment';
@@ -54,7 +53,7 @@ export class FullResultsComponent implements OnInit {
   readonly currentUserPredictions = combineLatest([this.currentUser, this.allPredictions]).pipe(
     map(([currentUser, allPredictions]) => allPredictions.filter(prediction => prediction.userid == currentUser?.id)));
 
-  readonly races = this.f1PublicApiService.getCurrentYearSchedule().pipe(shareReplay(1));
+  readonly races = this.store.select(fullResultsSelectors.selectRaces).pipe(shareReplay(1));
   readonly nextRaceRound = this.races.pipe(map(races => races.findIndex(nextRacePredicate) + ROUND_TO_INDEX_OFFSET));
   readonly isLoaded = combineLatest([this.users, this.races]).pipe(map(([users, races]) => !!races && !!users));
 
@@ -72,13 +71,13 @@ export class FullResultsComponent implements OnInit {
   );
 
   constructor(
-    private readonly f1PublicApiService: F1PublicApiService,
     private readonly predictionDialog: MatDialog,
     private readonly store: Store,
   ) {}
 
   ngOnInit(): void {
     this.hasPrediction.subscribe();
+    this.store.dispatch({type: FullResultsActionType.LOAD_RACES});
     this.store.dispatch({type: FullResultsActionType.LOAD_USERS});
     this.store.dispatch({type: FullResultsActionType.LOAD_ALL_PREDICTIONS});
   }
