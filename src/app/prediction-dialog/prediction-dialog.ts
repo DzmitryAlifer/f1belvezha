@@ -2,8 +2,8 @@ import {Component, Inject} from '@angular/core';
 import {FormBuilder, FormControl} from '@angular/forms';
 import {MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
 import {Store} from '@ngrx/store';
-import {combineLatest, Observable} from 'rxjs';
-import {map, shareReplay, startWith, take} from 'rxjs/operators';
+import {combineLatest, ReplaySubject} from 'rxjs';
+import {map, shareReplay} from 'rxjs/operators';
 import {F1PublicApiService} from '../service/f1-public-api.service';
 import {PredictionService} from '../service/prediction.service';
 import {Prediction} from '../types';
@@ -45,20 +45,23 @@ const DRIVER_TEAM_MAPPING = new Map<string, string>()
 })
 export class PredictionDialog {
   readonly PLACE_INDEXES = PLACE_INDEXES;
-
+  readonly raceSelectedName = new ReplaySubject<string>();
   readonly drivers = this.f1PublicApiService.getDrivers();
-  readonly existingPrediction = this.store.select(fullResultsSelectors.selectCurrentUserPredictions).pipe(
+  
+  readonly prediction = this.store.select(fullResultsSelectors.selectCurrentUserPredictions).pipe(
     map(predictions => 
         predictions.find(({userid, round}) => userid == this.data.userId && round === this.data.round) ?? 
             EMPTY_PREDICTION),
+    map(prediction => ({
+      ...prediction,
+      qualification: [...prediction.qualification],
+      race: [...prediction.race],
+    })),
     shareReplay(1),
   );
-  readonly isLoaded = combineLatest([this.drivers, this.existingPrediction])
+  
+  readonly isLoaded = combineLatest([this.drivers, this.prediction])
     .pipe(map(([drivers, prediction]) => !!drivers && !!prediction));
-
-  readonly prediction = this.existingPrediction.pipe(
-    shareReplay(1),
-  );
   
   readonly predictionForm = this.formBuilder.group({
     q1: [''],
