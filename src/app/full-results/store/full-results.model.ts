@@ -7,6 +7,7 @@ export interface FullResultsState {
     isAuthenticated: boolean;
     isLoaded: boolean;
     nextRound: number;
+    predictions: Prediction[];
     races: Race[];
     users: User[];
 }

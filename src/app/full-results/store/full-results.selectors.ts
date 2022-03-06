@@ -19,6 +19,11 @@ export const selectUsers = createSelector(
     (state: FullResultsState) => state.users,
 );
 
+export const selectAllPredictions = createSelector(
+    selectFullResults,
+    (state: FullResultsState) => state.predictions,
+);
+
 export const selectCurrentUserPredictions = createSelector(
     selectFullResults,
     (state: FullResultsState) => state.currentUserPredictions,

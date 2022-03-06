@@ -6,14 +6,18 @@ import {PredictionService} from 'src/app/service/prediction.service';
 import {UserService} from '../../service/user.service';
 import {FullResultsAction, FullResultsActionType} from './full-results.actions';
 import * as toolbarSelectors from '../../toolbar/store/toolbar.selectors';
+import { combineLatest } from 'rxjs';
 
 
 @Injectable()
 export class FullResultsEffects {
     private readonly users = this.userService.getAllUsers();
-    private readonly currentUserPredictions = this.store.select(toolbarSelectors.selectCurrentUser).pipe(
-        filter(currentUser => !!currentUser?.id),
-        switchMap(currentUser => this.predictionService.getAllUserPredictions(currentUser!.id!)),
+    private readonly currentUser = this.store.select(toolbarSelectors.selectCurrentUser);
+    private readonly allPredictions = this.predictionService.getAllPredictions();
+
+    private readonly currentUserPredictions = combineLatest([this.currentUser, this.allPredictions]).pipe(
+        filter(([currentUser, ]) => !!currentUser?.id),
+        map(([currentUser, predictions]) => predictions.filter(prediction => prediction.userid == currentUser!.id!)),
     );
 
     constructor(
@@ -28,6 +32,14 @@ export class FullResultsEffects {
         switchMap(() => this.users.pipe(
             map(users => ({type: FullResultsActionType.LOAD_USERS_SUCCESS, payload: {users}})),
         ))
+    ));
+
+    loadAllPredictions = createEffect(() => this.actions.pipe(
+        ofType(FullResultsActionType.LOAD_ALL_PREDICTIONS),
+        switchMap(() => this.allPredictions.pipe(
+            map(predictions =>
+                ({type: FullResultsActionType.LOAD_ALL_PREDICTIONS_SUCCESS, payload: {predictions}})),
+        )),
     ));
 
     loadCurrentUserPredictions = createEffect(() => this.actions.pipe(

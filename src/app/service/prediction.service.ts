@@ -13,6 +13,10 @@ export class PredictionService {
 
   constructor(private readonly httpService: HttpService) {}
 
+  getAllPredictions(): Observable<Prediction[]> {
+    return this.httpService.getAll<Prediction[]>(PREDICTION_API);
+  }
+
   getAllUserPredictions(userId: number): Observable<Prediction[]> {
     const queryParams: Params = {userId: String(userId)};
     return this.httpService.getByParams<Prediction[]>(PREDICTION_API, queryParams);

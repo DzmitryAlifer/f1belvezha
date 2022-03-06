@@ -6,6 +6,8 @@ export enum FullResultsActionType {
     SET_LOADED = '[Full Results] Set loaded state',
     LOAD_USERS = '[Full Results] Load users',
     LOAD_USERS_SUCCESS = '[Full Results] Load users - success',
+    LOAD_ALL_PREDICTIONS = '[Full Results] Load all predictions',
+    LOAD_ALL_PREDICTIONS_SUCCESS = '[Full Results] Load all predictions - success',
     LOAD_CURRENT_USER_PREDICTIONS = '[Full Results] Load current user predictions',
     LOAD_CURRENT_USER_PREDICTIONS_SUCCESS = '[Full Results] Load current user predictions - success',
 }
@@ -25,6 +27,16 @@ export class LoadUsersSuccess implements Action {
     constructor(readonly payload: {users: User[]}) {}
 }
 
+export class LoadAllPredictions implements Action {
+    readonly type = FullResultsActionType.LOAD_ALL_PREDICTIONS;
+    constructor(readonly payload: {}) {}
+}
+
+export class LoadAllPredictionsSuccess implements Action {
+    readonly type = FullResultsActionType.LOAD_ALL_PREDICTIONS_SUCCESS;
+    constructor(readonly payload: {predictions: Prediction[]}) {}
+}
+
 export class LoadCurrentUserPredictions implements Action {
     readonly type = FullResultsActionType.LOAD_CURRENT_USER_PREDICTIONS;
     constructor(readonly payload: {}) {}
@@ -39,5 +51,7 @@ export type FullResultsAction =
     | SetLoaded
     | LoadUsers
     | LoadUsersSuccess
+    | LoadAllPredictions
+    | LoadAllPredictionsSuccess
     | LoadCurrentUserPredictions
     | LoadCurrentUserPredictionsSuccess;

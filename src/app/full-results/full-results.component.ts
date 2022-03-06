@@ -50,7 +50,9 @@ export class FullResultsComponent implements OnInit {
   readonly isDarkMode = this.store.select(toolbarSelectors.selectIsDarkMode);
   readonly users = this.store.select(fullResultsSelectors.selectUsers);
   readonly currentUser = this.store.select(toolbarSelectors.selectCurrentUser);
-  readonly currentUserPredictions = this.store.select(fullResultsSelectors.selectCurrentUserPredictions);
+  readonly allPredictions = this.store.select(fullResultsSelectors.selectAllPredictions);
+  readonly currentUserPredictions = combineLatest([this.currentUser, this.allPredictions]).pipe(
+    map(([currentUser, allPredictions]) => allPredictions.filter(prediction => prediction.userid == currentUser?.id)));
 
   readonly races = this.f1PublicApiService.getCurrentYearSchedule().pipe(shareReplay(1));
   readonly nextRaceRound = this.races.pipe(map(races => races.findIndex(nextRacePredicate) + ROUND_TO_INDEX_OFFSET));
@@ -78,6 +80,7 @@ export class FullResultsComponent implements OnInit {
   ngOnInit(): void {
     this.hasPrediction.subscribe();
     this.store.dispatch({type: FullResultsActionType.LOAD_USERS});
+    this.store.dispatch({type: FullResultsActionType.LOAD_ALL_PREDICTIONS});
     this.store.dispatch({type: FullResultsActionType.LOAD_CURRENT_USER_PREDICTIONS});
   }
 
