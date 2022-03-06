@@ -69,7 +69,10 @@ export class FullResultsComponent implements OnInit {
 
   ngOnInit(): void {
     this.store.dispatch({type: FullResultsActionType.LOAD_USERS});
-    this.store.dispatch({type: FullResultsActionType.LOAD_CURRENT_USER_PREDICTIONS});
+
+    this.isLoaded.subscribe(() => {
+      this.store.dispatch({type: FullResultsActionType.LOAD_CURRENT_USER_PREDICTIONS});
+    });
   }
 
   formatDate(dateStr: string): string {

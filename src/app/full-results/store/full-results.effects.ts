@@ -1,6 +1,6 @@
 import {Injectable } from '@angular/core';
 import {Actions, createEffect, ofType } from '@ngrx/effects';
-import {map, switchMap} from 'rxjs/operators';
+import {filter, map, switchMap} from 'rxjs/operators';
 import {PredictionService} from 'src/app/service/prediction.service';
 import {UserService} from '../../service/user.service';
 import {FullResultsAction, FullResultsActionType} from './full-results.actions';
@@ -10,7 +10,9 @@ import {FullResultsAction, FullResultsActionType} from './full-results.actions';
 export class FullResultsEffects {
     private readonly users = this.userService.getAllUsers();
     private readonly currentUserPredictions = this.userService.getCurrentUser().pipe(
-        switchMap(currentUser => this.predictionService.getAllUserPredictions(currentUser?.id!)));
+        filter(currentUser => !!currentUser?.id),
+        switchMap(currentUser => this.predictionService.getAllUserPredictions(currentUser!.id!)),
+    );
 
     constructor(
         private actions: Actions<FullResultsAction>,
