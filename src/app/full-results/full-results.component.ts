@@ -2,7 +2,7 @@ import {ChangeDetectionStrategy, Component, OnInit} from '@angular/core';
 import {MatDialog} from '@angular/material/dialog';
 import {Store} from '@ngrx/store';
 import {combineLatest} from 'rxjs';
-import {filter, map, shareReplay, startWith, tap, withLatestFrom} from 'rxjs/operators';
+import {map, shareReplay} from 'rxjs/operators';
 import {F1PublicApiService} from '../service/f1-public-api.service';
 import {PredictionDialog} from '../prediction-dialog/prediction-dialog';
 import {Prediction, Race} from '../types';
@@ -81,7 +81,6 @@ export class FullResultsComponent implements OnInit {
     this.hasPrediction.subscribe();
     this.store.dispatch({type: FullResultsActionType.LOAD_USERS});
     this.store.dispatch({type: FullResultsActionType.LOAD_ALL_PREDICTIONS});
-    this.store.dispatch({type: FullResultsActionType.LOAD_CURRENT_USER_PREDICTIONS});
   }
 
   formatDate(dateStr: string): string {

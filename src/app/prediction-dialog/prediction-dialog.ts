@@ -119,7 +119,9 @@ export class PredictionDialog {
     const predictionResponse = this.data.hasPrediction ? 
         this.predictionService.updatePrediction(prediction) :
         this.predictionService.makePrediction(prediction);
-    predictionResponse.subscribe();
+    predictionResponse.subscribe(() => {
+      this.store.dispatch({type: FullResultsActionType.LOAD_ALL_PREDICTIONS});
+    });
     this.dialogRef.close();
   }
 
