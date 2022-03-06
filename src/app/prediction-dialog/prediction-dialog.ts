@@ -1,5 +1,5 @@
 import {Component, Inject} from '@angular/core';
-import {FormBuilder, FormControl} from '@angular/forms';
+import {AbstractControl, FormControl, FormGroup, ValidationErrors} from '@angular/forms';
 import {MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
 import {Store} from '@ngrx/store';
 import {combineLatest, ReplaySubject} from 'rxjs';
@@ -63,24 +63,23 @@ export class PredictionDialog {
   readonly isLoaded = combineLatest([this.drivers, this.prediction])
     .pipe(map(([drivers, prediction]) => !!drivers && !!prediction));
   
-  readonly predictionForm = this.formBuilder.group({
-    q1: [''],
-    q2: [''],
-    q3: [''],
-    q4: [''],
-    q5: [''],
-    r1: [''],
-    r2: [''],
-    r3: [''],
-    r4: [''],
-    r5: [''],
-  });
+  readonly predictionForm = new FormGroup({
+    q1: new FormControl(),
+    q2: new FormControl(),
+    q3: new FormControl(),
+    q4: new FormControl(),
+    q5: new FormControl(),
+    r1: new FormControl(),
+    r2: new FormControl(),
+    r3: new FormControl(),
+    r4: new FormControl(),
+    r5: new FormControl(),
+  }, {validators: validateUniqueness});
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: {userId: number; round: number, hasPrediction: boolean},
     private readonly dialogRef: MatDialogRef<PredictionDialog>,
     private readonly f1PublicApiService: F1PublicApiService,
-    private readonly formBuilder: FormBuilder,
     private readonly predictionService: PredictionService,
     private readonly store: Store,
   ) {}
@@ -127,4 +126,25 @@ export class PredictionDialog {
   discard(): void {
     this.dialogRef.close();
   }
+}
+
+function validateUniqueness(control: AbstractControl): ValidationErrors | null {
+  const qualificationDriversNotUnique = !areFilledNamesUnique(control, 'q');
+  const raceDriversNotUnique = !areFilledNamesUnique(control, 'r')
+
+  return qualificationDriversNotUnique || raceDriversNotUnique ?
+      {qualificationDriversNotUnique, raceDriversNotUnique} :
+      null;
+}
+
+function areFilledNamesUnique(control: AbstractControl, controlPrefix: 'q' | 'r'): boolean {
+  const filledNames = [
+    control.get(controlPrefix + 1)?.value,
+    control.get(controlPrefix + 2)?.value,
+    control.get(controlPrefix + 3)?.value,
+    control.get(controlPrefix + 4)?.value,
+    control.get(controlPrefix + 5)?.value,
+  ].filter(name => !!name);
+
+  return filledNames.length === new Set(filledNames).size
 }

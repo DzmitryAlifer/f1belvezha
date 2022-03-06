@@ -33,6 +33,12 @@ h2, h3, .button-bar {
     vertical-align: middle;
 }
 
+.errors {
+    display: flex;
+    height: 32px;
+    justify-content: space-around;
+}
+
 .mat-raised-button {
     margin: 8px;
 }
