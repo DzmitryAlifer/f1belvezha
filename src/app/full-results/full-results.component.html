@@ -45,11 +45,13 @@
                     <ng-container *ngIf="race.round === data.nextRaceRound">
                         <mat-icon
                             *ngIf="userData.isCurrentUser"
-                            class="current-user-prediction" 
+                            class="user-prediction current" 
                             (click)="openPredictionDialog(user.id!, race.round, !!data.currentUserHasPrediction)">
                             {{data.currentUserHasPrediction ? 'lightbulb_outline' : 'lightbulb'}}
                         </mat-icon>
-                        <mat-icon *ngIf="!userData.isCurrentUser && hasPrediction(user, data.nextRacePredictions)">
+                        <mat-icon 
+                            *ngIf="!userData.isCurrentUser && hasPrediction(user, data.nextRacePredictions)"
+                            class="user-prediction not-current">
                             lightbulb_outline
                         </mat-icon>
                     </ng-container>

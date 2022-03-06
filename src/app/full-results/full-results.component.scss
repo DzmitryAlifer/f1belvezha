@@ -36,8 +36,14 @@
             width: 55px;
         }
 
-        .current-user-prediction {
-            cursor: pointer;
+        .user-prediction {
+            &.current {
+                cursor: pointer;
+            }
+
+            &.not-current {
+                color: $grey-500;
+            }
         }
     }
 
@@ -51,7 +57,7 @@
         }
 
         tr:nth-child(even) {
-            background-color: $grey-700;
+            background-color: $grey-750;
         }
     }
 }
