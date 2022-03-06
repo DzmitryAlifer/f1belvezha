@@ -4,7 +4,7 @@ import {Store} from '@ngrx/store';
 import {combineLatest} from 'rxjs';
 import {map, shareReplay} from 'rxjs/operators';
 import {PredictionDialog} from '../prediction-dialog/prediction-dialog';
-import {Prediction, Race} from '../types';
+import {Prediction, Race, User} from '../types';
 import * as moment from 'moment';
 import * as fullResultsSelectors from './store/full-results.selectors';
 import {FullResultsActionType} from './store/full-results.actions';
@@ -57,7 +57,10 @@ export class FullResultsComponent implements OnInit {
   readonly nextRaceRound = this.races.pipe(map(races => races.findIndex(nextRacePredicate) + ROUND_TO_INDEX_OFFSET));
   readonly isLoaded = combineLatest([this.users, this.races]).pipe(map(([users, races]) => !!races && !!users));
 
-  readonly hasPrediction = combineLatest([this.currentUserPredictions, this.nextRaceRound]).pipe(
+  readonly nextRacePredictions = combineLatest([this.allPredictions, this.nextRaceRound]).pipe(
+    map(([allPredictions, nextRaceRound]) => allPredictions.filter(prediction => prediction.round === nextRaceRound)));
+
+  readonly currentUserHasPrediction = combineLatest([this.currentUserPredictions, this.nextRaceRound]).pipe(
     map(([currentUserPredictions, round]) => (currentUserPredictions ?? []).some((prediction: Prediction) =>
         prediction.round === round &&
         prediction.qualification.filter(name => !!name).length &&
@@ -76,7 +79,7 @@ export class FullResultsComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.hasPrediction.subscribe();
+    this.currentUserHasPrediction.subscribe();
     this.store.dispatch({type: FullResultsActionType.LOAD_RACES});
     this.store.dispatch({type: FullResultsActionType.LOAD_USERS});
     this.store.dispatch({type: FullResultsActionType.LOAD_ALL_PREDICTIONS});
@@ -103,6 +106,10 @@ export class FullResultsComponent implements OnInit {
       disableClose: true,
       data: {userId, round, hasPrediction},
     });
+  }
+
+  hasPrediction(user: User, nextRacePredictions: Prediction[] | null): boolean {
+    return (nextRacePredictions ?? []).some(prediction => prediction.userid == user.id);
   }
 }
 

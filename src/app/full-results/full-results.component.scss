@@ -35,6 +35,10 @@
             height: 40px;
             width: 55px;
         }
+
+        .current-user-prediction {
+            cursor: pointer;
+        }
     }
 
     tr:nth-child(even) {
