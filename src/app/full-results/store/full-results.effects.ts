@@ -1,15 +1,17 @@
 import {Injectable } from '@angular/core';
-import {Actions, createEffect, ofType } from '@ngrx/effects';
+import {Actions, createEffect, ofType} from '@ngrx/effects';
+import {Store} from '@ngrx/store';
 import {filter, map, switchMap} from 'rxjs/operators';
 import {PredictionService} from 'src/app/service/prediction.service';
 import {UserService} from '../../service/user.service';
 import {FullResultsAction, FullResultsActionType} from './full-results.actions';
+import * as toolbarSelectors from '../../toolbar/store/toolbar.selectors';
 
 
 @Injectable()
 export class FullResultsEffects {
     private readonly users = this.userService.getAllUsers();
-    private readonly currentUserPredictions = this.userService.getCurrentUser().pipe(
+    private readonly currentUserPredictions = this.store.select(toolbarSelectors.selectCurrentUser).pipe(
         filter(currentUser => !!currentUser?.id),
         switchMap(currentUser => this.predictionService.getAllUserPredictions(currentUser!.id!)),
     );
@@ -17,6 +19,7 @@ export class FullResultsEffects {
     constructor(
         private actions: Actions<FullResultsAction>,
         private readonly predictionService: PredictionService,
+        private readonly store: Store,
         private userService: UserService,
     ) {}
 

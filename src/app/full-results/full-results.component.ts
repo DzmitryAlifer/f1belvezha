@@ -2,7 +2,7 @@ import {ChangeDetectionStrategy, Component, OnInit} from '@angular/core';
 import {MatDialog} from '@angular/material/dialog';
 import {Store} from '@ngrx/store';
 import {combineLatest} from 'rxjs';
-import {map, shareReplay} from 'rxjs/operators';
+import {filter, map, shareReplay, startWith, tap, withLatestFrom} from 'rxjs/operators';
 import {F1PublicApiService} from '../service/f1-public-api.service';
 import {PredictionDialog} from '../prediction-dialog/prediction-dialog';
 import {Prediction, Race} from '../types';
@@ -55,7 +55,15 @@ export class FullResultsComponent implements OnInit {
   readonly races = this.f1PublicApiService.getCurrentYearSchedule().pipe(shareReplay(1));
   readonly nextRaceRound = this.races.pipe(map(races => races.findIndex(nextRacePredicate) + ROUND_TO_INDEX_OFFSET));
   readonly isLoaded = combineLatest([this.users, this.races]).pipe(map(([users, races]) => !!races && !!users));
-    
+
+  readonly hasPrediction = combineLatest([this.currentUserPredictions, this.nextRaceRound]).pipe(
+    map(([currentUserPredictions, round]) => (currentUserPredictions ?? []).some((prediction: Prediction) =>
+        prediction.round === round &&
+        prediction.qualification.filter(name => !!name).length &&
+        prediction.race.filter(name => !!name).length,
+      )),
+  );
+
   readonly displayedColumns = this.users.pipe(
     map(users => users.map(user => 'user' + user.id)),
     map(userColumns => ['event', 'circuit', ...userColumns, 'empty', 'stats']),
@@ -68,11 +76,9 @@ export class FullResultsComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    this.hasPrediction.subscribe();
     this.store.dispatch({type: FullResultsActionType.LOAD_USERS});
-
-    this.isLoaded.subscribe(() => {
-      this.store.dispatch({type: FullResultsActionType.LOAD_CURRENT_USER_PREDICTIONS});
-    });
+    this.store.dispatch({type: FullResultsActionType.LOAD_CURRENT_USER_PREDICTIONS});
   }
 
   formatDate(dateStr: string): string {
@@ -96,14 +102,6 @@ export class FullResultsComponent implements OnInit {
       disableClose: true,
       data: {userId, round, hasPrediction},
     });
-  }
-
-  hasPrediction(currentUserPredictions: Prediction[]|null, round: number): boolean {
-    return (currentUserPredictions ?? []).some(prediction => 
-      prediction.round === round && 
-      prediction.qualification.filter(name => !!name).length &&
-      prediction.race.filter(name => !!name).length,
-    );
   }
 }
 

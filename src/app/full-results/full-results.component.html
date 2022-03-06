@@ -1,7 +1,7 @@
 <ng-container *ngIf="{
-    currentUserPredictions: currentUserPredictions | async,
     currentUser: currentUser | async,
     displayedColumns: displayedColumns | async,
+    hasPrediction: hasPrediction | async,
     isDarkMode: isDarkMode | async,
     isLoaded: isLoaded | async,
     nextRaceRound: nextRaceRound | async,
@@ -40,17 +40,12 @@
                     [class.current-user]="userData.isCurrentUser">
                     {{user.firstname}} {{user.lastname ?? ''}}
                 </th>
-                <td class="points" 
-                    mat-cell
-                    *matCellDef="let race">
-                    <ng-container 
-                        *ngIf="{hasPrediction: hasPrediction(data.currentUserPredictions, race.round)} as innerData">
-                        <mat-icon 
-                            *ngIf="userData.isCurrentUser && race.round === data.nextRaceRound" 
-                            (click)="openPredictionDialog(user.id!, race.round, innerData.hasPrediction)">
-                            {{innerData.hasPrediction ? 'lightbulb_outline' : 'lightbulb'}}
-                        </mat-icon>
-                    </ng-container>
+                <td class="points" mat-cell *matCellDef="let race">
+                    <mat-icon 
+                        *ngIf="userData.isCurrentUser && race.round === data.nextRaceRound" 
+                        (click)="openPredictionDialog(user.id!, race.round, !!data.hasPrediction)">
+                        {{data.hasPrediction ? 'lightbulb_outline' : 'lightbulb'}}
+                    </mat-icon>
                 </td>
             </ng-container>
         </ng-container>
