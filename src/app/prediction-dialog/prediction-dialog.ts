@@ -1,5 +1,5 @@
 import {Component, Inject} from '@angular/core';
-import {AbstractControl, FormControl, FormGroup, ValidationErrors} from '@angular/forms';
+import {AbstractControl, FormControl, FormGroup, ValidationErrors, Validators} from '@angular/forms';
 import {MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
 import {Store} from '@ngrx/store';
 import {combineLatest, ReplaySubject} from 'rxjs';
@@ -64,17 +64,17 @@ export class PredictionDialog {
     .pipe(map(([drivers, prediction]) => !!drivers && !!prediction));
   
   readonly predictionForm = new FormGroup({
-    q1: new FormControl(),
-    q2: new FormControl(),
-    q3: new FormControl(),
-    q4: new FormControl(),
-    q5: new FormControl(),
-    r1: new FormControl(),
-    r2: new FormControl(),
-    r3: new FormControl(),
-    r4: new FormControl(),
-    r5: new FormControl(),
-  }, {validators: validateUniqueness});
+    q1: defineRequiredField(),
+    q2: defineRequiredField(),
+    q3: defineRequiredField(),
+    q4: defineRequiredField(),
+    q5: defineRequiredField(),
+    r1: defineRequiredField(),
+    r2: defineRequiredField(),
+    r3: defineRequiredField(),
+    r4: defineRequiredField(),
+    r5: defineRequiredField(),
+  }, {validators: validateForm});
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: {userId: number; round: number, hasPrediction: boolean},
@@ -130,7 +130,11 @@ export class PredictionDialog {
   }
 }
 
-function validateUniqueness(control: AbstractControl): ValidationErrors | null {
+function defineRequiredField(): FormControl {
+  return new FormControl('', Validators.required);
+}
+
+function validateForm(control: AbstractControl): ValidationErrors | null {
   const qualificationDriversNotUnique = !areFilledNamesUnique(control, 'q');
   const raceDriversNotUnique = !areFilledNamesUnique(control, 'r')
 
