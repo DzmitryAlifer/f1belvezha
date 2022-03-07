@@ -33,10 +33,13 @@
 
         .circuit {
             height: 40px;
+            vertical-align: middle;
             width: 55px;
         }
 
         .user-prediction {
+            vertical-align: middle;
+
             &.current {
                 cursor: pointer;
             }
