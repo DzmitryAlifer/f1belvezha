@@ -1,1 +1,23 @@
 export const CURRENT_USER_KEY = 'currentUser';
+
+export const DRIVER_TEAM_MAPPING = new Map<string, string>()
+    .set('Hamilton', 'mercedes')
+    .set('Russell', 'mercedes')
+    .set('Verstappen', 'red_bull')
+    .set('Pérez', 'red_bull')
+    .set('Sainz', 'ferrari')
+    .set('Leclerc', 'ferrari')
+    .set('Norris', 'mclaren')
+    .set('Ricciardo', 'mclaren')
+    .set('Ocon', 'alpine')
+    .set('Alonso', 'alpine')
+    .set('Gasly', 'alphatauri')
+    .set('Tsunoda', 'alphatauri')
+    .set('Stroll', 'aston_martin')
+    .set('Vettel', 'aston_martin')
+    .set('Albon', 'williams')
+    .set('Latifi', 'williams')
+    .set('Bottas', 'alfa')
+    .set('Zhou', 'alfa')
+    .set('Schumacher', 'haas')
+    .set('Mazepin', 'haas');

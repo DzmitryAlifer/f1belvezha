@@ -13,9 +13,10 @@
         </ng-container>
 
         <ng-container matColumnDef="name">
-            <th mat-header-cell *matHeaderCellDef>Name</th>
-            <td mat-cell *matCellDef="let driverStanding">
-                {{driverStanding.Driver.familyName}}
+            <th mat-header-cell *matHeaderCellDef>Driver</th>
+            <td class="driver" mat-cell *matCellDef="let driverStanding">
+                <img class="bolid" [src]="getBolidPath(driverStanding.Driver.familyName)" />
+                <span class="name">{{driverStanding.Driver.familyName}}</span>
             </td>
         </ng-container>
 

@@ -5,7 +5,7 @@
     margin: 0 50px;
     top: 50%;
     transform: translateY(-50%);
-    width: 180px;
+    width: 270px;
 
     .drag-icon {
         color: $grey-500;
@@ -35,8 +35,22 @@
         }
 
         .mat-cell {
-            font-size: 12px;
+            font-size: 14px;
             font-weight: 500;
+
+            &.driver {
+                text-align: left;
+
+                .bolid {
+                    padding: 0 12px;
+                    vertical-align: middle;
+                    width: 80px;
+                }
+
+                .name {
+                    vertical-align: middle;
+                }
+            }
         }
     }   
 }

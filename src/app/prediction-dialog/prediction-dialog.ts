@@ -9,33 +9,12 @@ import {PredictionService} from '../service/prediction.service';
 import {Prediction} from '../types';
 import * as fullResultsSelectors from '../full-results/store/full-results.selectors';
 import {FullResultsActionType} from '../full-results/store/full-results.actions';
+import {DRIVER_TEAM_MAPPING} from 'src/constants';
 
 
 export const PREDICTION_PLACES_NUMBER = 5;
 const PLACE_INDEXES = Array.from({length: PREDICTION_PLACES_NUMBER}, (v, i) => i);
 const EMPTY_PREDICTION: Prediction = {qualification: ['', '', '', '', ''], race: ['', '', '', '', '']};
-
-const DRIVER_TEAM_MAPPING = new Map<string, string>()
-    .set('Hamilton', 'mercedes')
-    .set('Russell', 'mercedes')
-    .set('Verstappen', 'red_bull')
-    .set('Pérez', 'red_bull')
-    .set('Sainz', 'ferrari')
-    .set('Leclerc', 'ferrari')
-    .set('Norris', 'mclaren')
-    .set('Ricciardo', 'mclaren')
-    .set('Ocon', 'alpine')
-    .set('Alonso', 'alpine')
-    .set('Gasly', 'alphatauri')
-    .set('Tsunoda', 'alphatauri')
-    .set('Stroll', 'aston_martin')
-    .set('Vettel', 'aston_martin')
-    .set('Albon', 'williams')
-    .set('Latifi', 'williams')
-    .set('Bottas', 'alfa')
-    .set('Zhou', 'alfa')
-    .set('Schumacher', 'haas')    
-    .set('Mazepin', 'haas');
 
 
 @Component({
