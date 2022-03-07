@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {Observable} from 'rxjs';
 import {map} from 'rxjs/operators';
-import {Driver, DriversResponse, Race, RacesResponse, Team, TeamsResponse} from '../types';
+import {Driver, DriversResponse, DriverStanding, DriverStandingsResponse, Race, RacesResponse, Team, TeamsResponse} from '../types';
 import {HttpClient} from '@angular/common/http';
 
 
@@ -44,6 +44,7 @@ const NEW_DRIVERS = new Map<string, Driver>()
 @Injectable({providedIn: 'root'})
 export class F1PublicApiService {
   private drivers: Observable<Driver[]>|null = null;
+  private driverStandings: Observable<DriverStanding[]> | null = null;
 
   constructor(private readonly httpClient: HttpClient) {}
 
@@ -69,5 +70,14 @@ export class F1PublicApiService {
     }
 
     return this.drivers;
+  }
+
+  getDriverStandings(): Observable<DriverStanding[]> {
+    if (!this.driverStandings) {
+      this.driverStandings = this.httpClient.get<DriverStandingsResponse>(`${F1_PUBLIC_API}${CURRENT_YEAR}/driverStandings.json`).pipe(
+        map(response => response.MRData.StandingsTable.StandingsLists[0].DriverStandings));
+    }
+
+    return this.driverStandings;
   }
 }

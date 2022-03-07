@@ -1,15 +1,17 @@
-import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { DriversStandingComponent } from './drivers-standing.component';
-
+import {NgModule} from '@angular/core';
+import {CommonModule} from '@angular/common';
+import {MatCardModule} from '@angular/material/card';
+import {MatTableModule} from '@angular/material/table';
+import {DriversStandingComponent} from './drivers-standing.component';
 
 
 @NgModule({
-  declarations: [
-    DriversStandingComponent
-  ],
   imports: [
-    CommonModule
-  ]
+    CommonModule,
+    MatCardModule,
+    MatTableModule,
+  ],
+  declarations: [DriversStandingComponent],
+  exports: [DriversStandingComponent],
 })
-export class DriversStandingModule { }
+export class DriversStandingModule {}

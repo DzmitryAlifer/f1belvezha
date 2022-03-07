@@ -13,12 +13,22 @@ import {DropPoint} from './types';
 export class AppComponent {
   positionX = 100;
   positionY = 100;
-  readonly savedPosition = this.localStorageService.getItem<DropPoint>('dropPointUserStanding') ?? {x: 0, y: 0};
+  
+  readonly savedUserStandingPosition = 
+      this.localStorageService.getItem<DropPoint>('dropPointUserStanding') ?? {x: 0, y: 0};
+
+  readonly savedDriverStandingPosition =
+    this.localStorageService.getItem<DropPoint>('dropPointDriverStanding') ?? { x: 0, y: 0 };
 
   constructor(private readonly localStorageService: LocalStorageService) {}
 
-  savePosition(event: CdkDragEnd): void {
+  saveUserStandingsPosition(event: CdkDragEnd): void {
     const dragPosition: DropPoint = event.source.getFreeDragPosition();
     this.localStorageService.setItem('dropPointUserStanding', dragPosition);
+  }
+
+  saveDriverStandingsPosition(event: CdkDragEnd): void {
+    const dragPosition: DropPoint = event.source.getFreeDragPosition();
+    this.localStorageService.setItem('dropPointDriverStanding', dragPosition);
   }
 }

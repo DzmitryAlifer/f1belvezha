@@ -31,6 +31,18 @@ export interface TeamsResponse {
     };
 }
 
+export interface DriverStandingsResponse {
+    MRData: {
+        StandingsTable: {
+            StandingsLists: Standings[];
+        };
+    };
+}
+
+export interface Standings {
+    DriverStandings: DriverStanding[];
+}
+
 export interface Race {
     round: number;
     Circuit: {
@@ -58,6 +70,13 @@ export interface Driver {
     dateOfBirth: string;
     nationality: string;
     constructorId?: string;
+}
+
+export interface DriverStanding {
+    position: number;
+    points: number;
+    wins: number;
+    Driver: Driver;
 }
 
 export interface Params {

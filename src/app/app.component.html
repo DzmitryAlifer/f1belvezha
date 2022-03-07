@@ -2,11 +2,18 @@
 
 <div class="page-container">
   <full-results></full-results>
+  
   <users-standing 
       cdkDrag
-      [cdkDragFreeDragPosition]="savedPosition"
-      (cdkDragEnded)="savePosition($event)">
+      [cdkDragFreeDragPosition]="savedUserStandingPosition"
+      (cdkDragEnded)="saveUserStandingsPosition($event)">
   </users-standing>
+  
+  <drivers-standing 
+      cdkDrag
+      [cdkDragFreeDragPosition]="savedDriverStandingPosition"
+      (cdkDragEnded)="saveDriverStandingsPosition($event)">
+  </drivers-standing>
 </div>
 
 <router-outlet></router-outlet>
