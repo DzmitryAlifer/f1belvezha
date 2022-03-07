@@ -7,6 +7,14 @@
     transform: translateY(-50%);
     width: 180px;
 
+    .drag-icon {
+        color: $grey-500;
+        cursor: grab;
+        position: absolute;
+        right: 6px;
+        top: 6px;
+    }
+
     .mat-table {
         width: 100%;
 
@@ -15,11 +23,11 @@
         }
 
         .mat-header-row, .mat-row {
-            height: 36px;
+            height: 32px;
         }
 
         .mat-header-cell, .mat-cell {
-            padding: 8px;
+            padding: 6px;
         }
 
         .mat-header-cell {
