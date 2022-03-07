@@ -1,3 +1,5 @@
+@import '../../styles.scss';
+
 .standing {
     position: fixed;
     margin: 0 50px;
@@ -5,19 +7,40 @@
     transform: translateY(-50%);
     width: 180px;
 
-    .title {
-        cursor: move;
-    }
+    .mat-table {
+        width: 100%;
 
-    .mat-header-row, .mat-row {
-        height: 40px;
-    }
+        .title {
+            cursor: move;
+        }
 
-    .mat-header-cell, .mat-cell {
-        padding: 8px;
-    }
+        .mat-header-row, .mat-row {
+            height: 36px;
+        }
 
-    .mat-header-cell {
-        text-align: center;
-    }
+        .mat-header-cell, .mat-cell {
+            padding: 8px;
+        }
+
+        .mat-header-cell {
+            text-align: center;
+        }
+
+        .mat-cell {
+            font-size: 12px;
+            font-weight: 500;
+
+            &.current-user {
+                color: $blue-800;
+            }
+        }
+
+        
+        &.dark {
+            .current-user {
+                color: $blue-200;
+            }
+        }
+    }   
 }
+

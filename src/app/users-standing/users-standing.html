@@ -1,25 +1,26 @@
 <mat-card  *ngIf="{
-
+    currentUser: currentUser | async,
+    isDarkMode: isDarkMode | async
 } as data" class="standing mat-elevation-z8">
     <h1 class="title">Users</h1>
-    <table mat-table [dataSource]="users">
+    <table mat-table [class.dark]="data.isDarkMode" [dataSource]="users">
         <ng-container matColumnDef="place">
             <th mat-header-cell *matHeaderCellDef>Plc</th>
-            <td mat-cell  *matCellDef="let user; let index = index">
+            <td mat-cell *matCellDef="let user; let index = index" [class.current-user]="user.id == data.currentUser?.id">
                 {{index + 1}}
             </td>
         </ng-container>
 
         <ng-container matColumnDef="name">
             <th mat-header-cell *matHeaderCellDef>Name</th>
-            <td mat-cell *matCellDef="let user">
+            <td mat-cell *matCellDef="let user" [class.current-user]="user.id == data.currentUser?.id">
                 {{user.firstname + ' ' + (user.lastname ?? '')}}
             </td>
         </ng-container>
 
         <ng-container matColumnDef="points">
             <th mat-header-cell *matHeaderCellDef>Pts</th>
-            <td mat-cell *matCellDef="let user">
+            <td mat-cell *matCellDef="let user" [class.current-user]="user.id == data.currentUser?.id">
                 {{user.seasonpoints}}
             </td>
         </ng-container>
