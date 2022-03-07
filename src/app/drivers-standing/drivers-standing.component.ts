@@ -1,15 +1,13 @@
-import { Component, OnInit } from '@angular/core';
+import {ChangeDetectionStrategy, Component} from '@angular/core';
+
 
 @Component({
   selector: 'app-drivers-standing',
   templateUrl: './drivers-standing.component.html',
-  styleUrls: ['./drivers-standing.component.scss']
+  styleUrls: ['./drivers-standing.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class DriversStandingComponent implements OnInit {
+export class DriversStandingComponent {
 
-  constructor() { }
-
-  ngOnInit(): void {
-  }
-
+  constructor() {}
 }

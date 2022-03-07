@@ -4,9 +4,20 @@
     top: 50%;
     transform: translateY(-50%);
     width: 180px;
-    height: 300px;
 
     .title {
         cursor: move;
+    }
+
+    .mat-header-row, .mat-row {
+        height: 40px;
+    }
+
+    .mat-header-cell, .mat-cell {
+        padding: 8px;
+    }
+
+    .mat-header-cell {
+        text-align: center;
     }
 }
