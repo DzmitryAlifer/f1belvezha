@@ -32,7 +32,7 @@ export class ToolbarEffects {
         ofType(ToolbarActionType.SET_LOCKED_LAYOUT),
         switchMap(() => this.isLockedLayout.pipe(
             tap(isLockedLayout => {
-                localStorage.setItem('isLockedLayout', String(isLockedLayout));
+                localStorage.setItem('layout', isLockedLayout ? 'locked' : 'unlocked');
             }),
             map(() => ({type: ToolbarActionType.SET_LOCKED_LAYOUT_SUCCESS})),
         )),

@@ -8,7 +8,7 @@ import {ToolbarState} from './toolbar.model';
 export const initialState: ToolbarState = {
     currentUser: getStoredUser(),
     isDarkMode: localStorage.getItem('user-theme') === Theme.Dark,
-    isLockedLayout: localStorage.getItem('isLockedLayout') === 'true',
+    isLockedLayout: localStorage.getItem('layout') !== 'unlocked',
 };
 
 

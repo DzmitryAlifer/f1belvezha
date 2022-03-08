@@ -32,7 +32,7 @@ export class ToolbarComponent {
     private readonly themeService: ThemeService,
   ) {
     this.themeService.initTheme();
-    localStorageService.setItem('isLockedLayout', false);
+    localStorage.setItem('layout', 'locked');
   }
 
   createAccount(): void {
