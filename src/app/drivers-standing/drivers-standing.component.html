@@ -1,11 +1,11 @@
 <mat-card *ngIf="{
     isDarkMode: isDarkMode | async,
     isLockedLayout: isLockedLayout | async
-} as data" class="standing mat-elevation-z8">
+} as data" class="standing mat-elevation-z8" [class.dark]="data.isDarkMode">
     <mat-icon *ngIf="!data.isLockedLayout" class="drag-icon">drag_indicator</mat-icon>
     <h1 class="title">Drivers</h1>
 
-    <table mat-table [class.dark]="data.isDarkMode" [dataSource]="driverStandings">
+    <table mat-table [dataSource]="driverStandings">
         <ng-container matColumnDef="place">
             <th mat-header-cell *matHeaderCellDef>Plc</th>
             <td mat-cell *matCellDef="let driverStanding">

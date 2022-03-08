@@ -51,6 +51,10 @@
     }
 
     tr:nth-child(even) {
+        background-color: $grey-250;
+    }
+
+    tr:nth-child(odd) {
         background-color: $grey-100;
     }
 
@@ -61,6 +65,10 @@
 
         tr:nth-child(even) {
             background-color: $grey-750;
+        }
+
+        tr:nth-child(odd) {
+            background-color: $grey-800;
         }
     }
 }

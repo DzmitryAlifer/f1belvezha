@@ -42,13 +42,19 @@
                 color: $blue-800;
             }
         }
-
-        
-        &.dark {
-            .current-user {
-                color: $blue-200;
-            }
-        }
     }   
 }
 
+.standing, .mat-header-cell, .mat-cell {
+    background-color: $grey-100;
+}
+
+.dark {
+    &.standing, .mat-header-cell, .mat-cell {
+        background-color: $grey-800;
+    }
+
+    .current-user {
+        color: $blue-200 !important;
+    }
+}

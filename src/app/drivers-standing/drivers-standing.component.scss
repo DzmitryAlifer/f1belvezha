@@ -54,3 +54,13 @@
         }
     }   
 }
+
+.standing, .mat-header-cell, .mat-cell {
+    background-color: $grey-100;
+}
+
+.dark {
+    &.standing, .mat-header-cell, .mat-cell {
+        background-color: $grey-800;
+    }
+}
