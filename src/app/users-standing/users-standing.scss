@@ -58,3 +58,11 @@
         color: $blue-200 !important;
     }
 }
+
+::ng-deep .mat-column-name {
+    display: block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    width: 170px;
+}
