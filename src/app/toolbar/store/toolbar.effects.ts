@@ -10,6 +10,7 @@ import * as toolbarSelectors from './toolbar.selectors';
 @Injectable()
 export class ToolbarEffects {
     private readonly isDarkMode = this.store.select(toolbarSelectors.selectIsDarkMode);
+    private readonly isLockedLayout = this.store.select(toolbarSelectors.selectIsLockedLayout);
 
     constructor(
         private actions: Actions<ToolbarAction>,
@@ -24,6 +25,16 @@ export class ToolbarEffects {
                 this.themeService.update(isDarkMode ? Theme.Dark : Theme.Light);
             }),
             map(() => ({type: ToolbarActionType.SET_DARK_MODE_SUCCESS})),
+        )),
+    ));
+
+    setLockedLayout = createEffect(() => this.actions.pipe(
+        ofType(ToolbarActionType.SET_LOCKED_LAYOUT),
+        switchMap(() => this.isLockedLayout.pipe(
+            tap(isLockedLayout => {
+                localStorage.setItem('isLockedLayout', String(isLockedLayout));
+            }),
+            map(() => ({type: ToolbarActionType.SET_LOCKED_LAYOUT_SUCCESS})),
         )),
     ));
 }

@@ -1,8 +1,9 @@
 <mat-card *ngIf="{
     currentUser: currentUser | async,
-    isDarkMode: isDarkMode | async
+    isDarkMode: isDarkMode | async,
+    isLockedLayout: isLockedLayout | async
 } as data" class="standing mat-elevation-z8">
-    <mat-icon class="drag-icon">drag_indicator</mat-icon>
+    <mat-icon *ngIf="!data.isLockedLayout" class="drag-icon">drag_indicator</mat-icon>
     <h1 class="title">Users</h1>
 
     <table mat-table [class.dark]="data.isDarkMode" [dataSource]="users">

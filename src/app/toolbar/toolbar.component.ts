@@ -1,6 +1,7 @@
 import {ChangeDetectionStrategy, Component} from '@angular/core';
 import {MatDialog} from '@angular/material/dialog';
 import {Store} from '@ngrx/store';
+import {delay} from 'rxjs/operators';
 import {CURRENT_USER_KEY} from 'src/constants';
 import {LocalStorageService} from '../service/local-storage.service';
 import {ThemeService} from '../service/theme.service';
@@ -19,6 +20,7 @@ import * as toolbarSelectors from './store/toolbar.selectors';
 })
 export class ToolbarComponent {
   readonly isDarkMode = this.store.select(toolbarSelectors.selectIsDarkMode);
+  readonly isLockedLayout = this.store.select(toolbarSelectors.selectIsLockedLayout).pipe(delay(200));
   readonly user = this.store.select(toolbarSelectors.selectCurrentUser);
 
   constructor(
@@ -30,6 +32,7 @@ export class ToolbarComponent {
     private readonly themeService: ThemeService,
   ) {
     this.themeService.initTheme();
+    localStorageService.setItem('isLockedLayout', false);
   }
 
   createAccount(): void {
@@ -53,5 +56,9 @@ export class ToolbarComponent {
 
   showHelp(): void {
     this.helpDialog.open(HelpDialog, {width: '500px'});
+  }
+
+  toggleLayoutLock(wasLayoutLocked: boolean) {
+    this.store.dispatch({type: ToolbarActionType.SET_LOCKED_LAYOUT, payload: {isLockedLayout: !wasLayoutLocked}});
   }
 }

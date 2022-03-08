@@ -15,6 +15,7 @@ export class DriversStandingComponent {
   readonly columns = ['place', 'name', 'points'];
 
   readonly isDarkMode = this.store.select(toolbarSelectors.selectIsDarkMode);
+  readonly isLockedLayout = this.store.select(toolbarSelectors.selectIsLockedLayout);
   readonly driverStandings = this.f1PublicApiService.getDriverStandings();
 
   constructor(

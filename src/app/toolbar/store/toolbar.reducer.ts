@@ -8,6 +8,7 @@ import {ToolbarState} from './toolbar.model';
 export const initialState: ToolbarState = {
     currentUser: getStoredUser(),
     isDarkMode: localStorage.getItem('user-theme') === Theme.Dark,
+    isLockedLayout: localStorage.getItem('isLockedLayout') === 'true',
 };
 
 
@@ -18,6 +19,9 @@ export function toolbarReducer(state: ToolbarState = initialState, action: Toolb
 
         case ToolbarActionType.SET_DARK_MODE:
             return {...state, isDarkMode: action.payload.isDarkMode};
+
+        case ToolbarActionType.SET_LOCKED_LAYOUT:
+            return {...state, isLockedLayout: action.payload.isLockedLayout};
 
         default:
             return state;

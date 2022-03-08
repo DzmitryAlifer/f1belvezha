@@ -18,3 +18,8 @@ export const selectIsDarkMode = createSelector(
     selectToolbar,
     (state: ToolbarState) => state.isDarkMode,
 );
+
+export const selectIsLockedLayout = createSelector(
+    selectToolbar,
+    (state: ToolbarState) => state.isLockedLayout,
+);

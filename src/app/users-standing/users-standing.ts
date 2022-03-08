@@ -15,6 +15,7 @@ export class UsersStandingComponent {
   readonly columns = ['place', 'name', 'points'];
 
   readonly isDarkMode = this.store.select(toolbarSelectors.selectIsDarkMode);
+  readonly isLockedLayout = this.store.select(toolbarSelectors.selectIsLockedLayout);
   readonly users = this.store.select(fullResultsSelectors.selectUsers).pipe(
     map(users => [...users].sort((left, right) => (left.seasonpoints > right.seasonpoints) ? -1 : 1)));
   readonly currentUser = this.store.select(toolbarSelectors.selectCurrentUser);

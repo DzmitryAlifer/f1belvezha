@@ -1,5 +1,6 @@
 <mat-toolbar *ngIf="{
     isDarkMode: isDarkMode | async,
+    isLockedLayout: isLockedLayout | async,
     user: user | async
 } as data">
     <mat-toolbar-row>
@@ -20,9 +21,15 @@
         </button>
 
         <mat-menu #settingsMenu="matMenu">
-            <button *ngIf="true" disabled mat-menu-item>
-                <mat-icon>lock</mat-icon>
-                Lock layout
+            <button mat-menu-item (click)="toggleLayoutLock(!!data.isLockedLayout)">
+                <ng-container *ngIf="data.isLockedLayout">
+                    <mat-icon>lock_open</mat-icon>
+                    Unlock layout
+                </ng-container>
+                <ng-container *ngIf="!data.isLockedLayout">
+                    <mat-icon>lock</mat-icon>
+                    Lock layout
+                </ng-container>
             </button>
 
             <button *ngIf="false" disabled mat-menu-item>
