@@ -59,7 +59,7 @@
     }
 }
 
-::ng-deep .mat-column-name {
+:host ::ng-deep .mat-column-name {
     display: block;
     overflow: hidden;
     text-overflow: ellipsis;
