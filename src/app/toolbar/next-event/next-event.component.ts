@@ -1,22 +1,44 @@
 import {ChangeDetectionStrategy, Component, OnInit} from '@angular/core';
 import {Store} from '@ngrx/store';
 import * as moment from 'moment';
-import {DisplayEvent, EventSchedule, EventType} from 'src/app/types';
+import { getFlagLink } from 'src/app/full-results/common';
 import * as toolbarSelectors from '../store/toolbar.selectors';
+
+
+export enum EventType {
+  Qualification = 'qualification',
+  Race = 'race',
+}
+
+export interface EventSchedule {
+  location: string;
+  qualification: DateRange;
+  race: DateRange;
+}
+
+export interface DisplayEvent {
+  location: string;
+  eventType: EventType;
+  start?: moment.Moment;
+  end?: moment.Moment;
+}
+
+export interface DateRange {
+  start: moment.Moment;
+  end: moment.Moment;
+}
 
 
 const NOW = moment();
 
 const SCHEDULE: EventSchedule[] = [{
   location: 'Bahrain',
-  timezone: 'Asia/Bahrain',
-  qualification: {start: moment('2022-03-19T18:00:00'), end: moment('2022-03-19T19:00:00')},
-  race: {start: moment('2022-03-20T18:00:00'), end: moment('2022-03-20T20:00:00')},
+  qualification: {start: moment('2022-03-19T18:00:00+03:00'), end: moment('2022-03-19T19:00:00+03:00')},
+  race: {start: moment('2022-03-20T18:00:00+03:00'), end: moment('2022-03-20T20:00:00+03:00')},
 }, {
   location: 'Saudi Arabia',
-  timezone: 'Asia/Riyadh',
-  qualification: {start: moment('2022-03-26T18:00:00'), end: moment('2022-03-26T19:00:00')},
-  race: {start: moment('2022-03-27T19:00:00'), end: moment('2022-03-27T21:00:00')},
+  qualification: {start: moment('2022-03-26T18:00:00+03:00'), end: moment('2022-03-26T19:00:00+03:00')},
+  race: {start: moment('2022-03-27T19:00:00+03:00'), end: moment('2022-03-27T21:00:00+03:00')},
 }];
 
 
@@ -33,39 +55,47 @@ export class NextEventComponent implements OnInit {
   constructor(private readonly store: Store) {}
 
   ngOnInit(): void {}
+
+  getFlagLink(countryName: string): string {
+    return getFlagLink(countryName);
+  }
+
+  getCountDown(start: moment.Moment): string {
+    return '';
+  }
 }
 
 function findNextEvent(): DisplayEvent {
-  const nextEventIndex = SCHEDULE.findIndex(event => event.qualification.start.tz(event.timezone).isAfter(NOW));
+  const nextEventIndex = SCHEDULE.findIndex(event => event.qualification.start.isAfter(NOW));
   const previousEvent = SCHEDULE[nextEventIndex - 1];
   
-  if (previousEvent.race.end.tz(previousEvent.timezone).isBefore(NOW)) {
+  if (nextEventIndex === 0 || previousEvent.race.end.isBefore(NOW)) {
     return {
       location: SCHEDULE[nextEventIndex].location,
       eventType: EventType.Qualification,
-      start: SCHEDULE[nextEventIndex].qualification.start.tz(previousEvent.timezone),
+      start: SCHEDULE[nextEventIndex].qualification.start,
     };
   }
 
-  if (previousEvent.race.start.tz(previousEvent.timezone).isBefore(NOW)) {
+  if (previousEvent.race.start.isBefore(NOW)) {
     return {
       location: previousEvent.location,
       eventType: EventType.Race,
-      end: previousEvent.race.end.tz(previousEvent.timezone),
+      end: previousEvent.race.end,
     };
   }
 
-  if (previousEvent.qualification.end.tz(previousEvent.timezone).isBefore(NOW)) {
+  if (previousEvent.qualification.end.isBefore(NOW)) {
     return {
       location: previousEvent.location,
       eventType: EventType.Race,
-      start: previousEvent.race.start.tz(previousEvent.timezone),
+      start: previousEvent.race.start,
     };
   }
 
   return {
     location: previousEvent.location,
     eventType: EventType.Qualification,
-    start: previousEvent.qualification.end.tz(previousEvent.timezone),
+    start: previousEvent.qualification.end,
   };
 }

@@ -6,8 +6,8 @@ import {NextEventComponent} from './next-event.component';
 @NgModule({
   imports: [
     CommonModule,
-  ]
+  ],
   declarations: [NextEventComponent],
   exports: [NextEventComponent],
 })
-export class NextEventModule { }
+export class NextEventModule {}

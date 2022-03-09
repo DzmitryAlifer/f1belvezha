@@ -1,5 +1,3 @@
-import * as moment from "moment";
-
 export interface User {
     username: string;
     firstname: string;
@@ -96,28 +94,4 @@ export interface Prediction {
     round?: number;
     qualification: string[];
     race: string[];
-}
-
-export interface EventSchedule {
-    location: string;
-    timezone: string;
-    qualification: DateRange;
-    race: DateRange;
-}
-
-export interface DisplayEvent {
-    location: string;
-    eventType: EventType;
-    start?: moment.Moment;
-    end?: moment.Moment;
-}
-
-export interface DateRange {
-    start: moment.Moment;
-    end: moment.Moment;
-}
-
-export enum EventType {
-    Qualification = 'qualification',
-    Race = 'race',
 }

@@ -15,6 +15,7 @@ import {ToolbarModule} from './toolbar/toolbar.module';
 import {CreateAccountDialogModule} from './toolbar/create-account-dialog/create-account-dialog.module';
 import {HelpDialogModule} from './toolbar/help-dialog/help-dialog.module';
 import {LoginDialogModule} from './toolbar/login-dialog/login-dialog.module';
+import {NextEventModule} from './toolbar/next-event/next-event.module';
 import {UsersStandingModule} from './users-standing/users-standing.module';
 import {PredictionDialogModule} from './prediction-dialog/prediction-dialog.module';
 
@@ -31,11 +32,12 @@ import {PredictionDialogModule} from './prediction-dialog/prediction-dialog.modu
     HttpClientModule,
     HelpDialogModule,
     LoginDialogModule,
+    MatSidenavModule,
+    MatSlideToggleModule,
+    NextEventModule,
     PredictionDialogModule,
     ToolbarModule,
     UsersStandingModule,
-    MatSlideToggleModule,
-    MatSidenavModule,
     StoreModule.forRoot({}),
     EffectsModule.forRoot([]),
   ],

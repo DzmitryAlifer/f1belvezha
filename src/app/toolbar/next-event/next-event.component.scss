@@ -1,6 +1,19 @@
 @import '../../../styles.scss';
 
 .panel {
+    align-items: center;
     display: flex;
     height: 40px;
+
+    .flag {
+        border: 1px solid grey;
+        border-radius: 2px;
+        height: 16px;
+        margin: 0 8px 3px 8px;
+        vertical-align: middle;
+    }
+
+    .event-type {
+        padding: 0 8px;
+    }
 }

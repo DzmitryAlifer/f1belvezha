@@ -9,6 +9,7 @@ import {MatSlideToggleModule} from '@angular/material/slide-toggle';
 import {MatSidenavModule} from '@angular/material/sidenav';
 import {StoreModule} from '@ngrx/store';
 import {EffectsModule} from '@ngrx/effects';
+import {NextEventModule} from './next-event/next-event.module';
 import {ToolbarEffects} from './store/toolbar.effects';
 import {toolbarReducer} from './store/toolbar.reducer';
 import {ToolbarComponent} from './toolbar.component';
@@ -24,6 +25,7 @@ import {ToolbarComponent} from './toolbar.component';
     MatSidenavModule,
     MatToolbarModule,
     MatSlideToggleModule,
+    NextEventModule,
     StoreModule.forFeature('toolbar', toolbarReducer),
     EffectsModule.forFeature([ToolbarEffects]),
   ],
