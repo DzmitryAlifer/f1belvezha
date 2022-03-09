@@ -25,8 +25,8 @@ const EMPTY_PREDICTION: Prediction = {qualification: ['', '', '', '', ''], race:
 export class PredictionDialog {
   readonly PLACE_INDEXES = PLACE_INDEXES;
   readonly raceSelectedName = new ReplaySubject<string>();
-  readonly drivers = this.f1PublicApiService.getDrivers();
-  
+  readonly drivers = this.f1PublicApiService.getDriverStandings();
+
   readonly prediction = this.store.select(fullResultsSelectors.selectCurrentUserPredictions).pipe(
     map(predictions => 
         predictions.find(({userid, round}) => userid == this.data.userId && round === this.data.round) ?? 

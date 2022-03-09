@@ -24,9 +24,9 @@
                         <span>{{data.prediction.qualification[placeIndex]}}</span>
                     </mat-select-trigger>
                             
-                    <mat-option *ngFor="let driver of data.drivers" [value]="driver.familyName" >
-                        <img class="bolid" [src]="getBolidPath(driver.familyName)" />
-                        <span class="name">{{driver.familyName}}</span>
+                    <mat-option *ngFor="let driver of data.drivers" [value]="driver.Driver.familyName" >
+                        <img class="bolid" [src]="getBolidPath(driver.Driver.familyName)" />
+                        <span class="name">{{driver.Driver.familyName}}</span>
                     </mat-option>
                 </mat-select>
             </mat-form-field>
@@ -51,9 +51,9 @@
                         <span>{{data.prediction.race[placeIndex]}}</span>
                     </mat-select-trigger>
                         
-                    <mat-option *ngFor="let driver of data.drivers" [value]="driver.familyName" >
-                        <img class="bolid" [src]="getBolidPath(driver.familyName)" />
-                        <span class="name">{{driver.familyName}}</span>
+                    <mat-option *ngFor="let driver of data.drivers" [value]="driver.Driver.familyName" >
+                        <img class="bolid" [src]="getBolidPath(driver.Driver.familyName)" />
+                        <span class="name">{{driver.Driver.familyName}}</span>
                     </mat-option>
                 </mat-select>
             </mat-form-field>
