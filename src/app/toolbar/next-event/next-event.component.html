@@ -1,7 +1,7 @@
-<div>
-    <div>Next GP name</div>
+<div class="panel">
+    <div class="location">{{nextEvent.location}}</div>
     <div>
-        <div>Event name</div>
-        <div>Remaining time</div>
+        <div class="event-type">{{nextEvent.eventType}}</div>
+        <div class="time">{{nextEvent.start ? 'start: ' + nextEvent.start : 'now'}}</div>
     </div>
 </div>>

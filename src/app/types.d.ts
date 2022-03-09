@@ -100,14 +100,24 @@ export interface Prediction {
 
 export interface EventSchedule {
     location: string;
-    practice1: DateRange;
-    practice2: DateRange;
-    practice3: DateRange;
+    timezone: string;
     qualification: DateRange;
     race: DateRange;
+}
+
+export interface DisplayEvent {
+    location: string;
+    eventType: EventType;
+    start?: moment.Moment;
+    end?: moment.Moment;
 }
 
 export interface DateRange {
     start: moment.Moment;
     end: moment.Moment;
+}
+
+export enum EventType {
+    Qualification = 'qualification',
+    Race = 'race',
 }
