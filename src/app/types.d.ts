@@ -1,3 +1,5 @@
+import * as moment from "moment";
+
 export interface User {
     username: string;
     firstname: string;
@@ -94,4 +96,18 @@ export interface Prediction {
     round?: number;
     qualification: string[];
     race: string[];
+}
+
+export interface EventSchedule {
+    location: string;
+    practice1: DateRange;
+    practice2: DateRange;
+    practice3: DateRange;
+    qualification: DateRange;
+    race: DateRange;
+}
+
+export interface DateRange {
+    start: moment.Moment;
+    end: moment.Moment;
 }
