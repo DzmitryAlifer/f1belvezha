@@ -20,4 +20,4 @@ export const DRIVER_TEAM_MAPPING = new Map<string, string>()
     .set('Bottas', 'alfa')
     .set('Zhou', 'alfa')
     .set('Schumacher', 'haas')
-    .set('Mazepin', 'haas');
+    .set('Magnussen', 'haas');
