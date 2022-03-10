@@ -46,7 +46,7 @@
                         <button *ngIf="userData.isCurrentUser"
                             mat-icon-button
                             onclick="this.blur()"
-                            (click)="openPredictionDialog(user.id!, race.round, !!data.currentUserHasPrediction)">
+                            (click)="openPredictionDialog(user.id!, race.round, !!data.currentUserHasPrediction, false, false)">
                             <mat-icon class="user-prediction current">
                                 {{data.currentUserHasPrediction ? 'lightbulb_outline' : 'lightbulb'}}
                             </mat-icon>

@@ -12,6 +12,15 @@ import {FullResultsActionType} from '../full-results/store/full-results.actions'
 import {DRIVER_TEAM_MAPPING} from 'src/constants';
 
 
+export interface PredictionDialogData {
+  userId: number; 
+  round: number, 
+  hasPrediction: boolean;
+  isQualificationLocked: boolean;
+  isRaceLocked: boolean;
+}
+
+
 export const PREDICTION_PLACES_NUMBER = 5;
 const PLACE_INDEXES = Array.from({length: PREDICTION_PLACES_NUMBER}, (v, i) => i);
 const EMPTY_PREDICTION: Prediction = {qualification: ['', '', '', '', ''], race: ['', '', '', '', '']};
@@ -55,8 +64,11 @@ export class PredictionDialog {
     r5: defineRequiredField(),
   }, {validators: validateForm});
 
+  readonly isQualificationLocked = new ReplaySubject<boolean>();
+  readonly isRaceLocked = new ReplaySubject<boolean>();
+
   constructor(
-    @Inject(MAT_DIALOG_DATA) public data: {userId: number; round: number, hasPrediction: boolean},
+    @Inject(MAT_DIALOG_DATA) public data: PredictionDialogData,
     private readonly dialogRef: MatDialogRef<PredictionDialog>,
     private readonly f1PublicApiService: F1PublicApiService,
     private readonly predictionService: PredictionService,

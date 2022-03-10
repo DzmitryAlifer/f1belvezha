@@ -78,10 +78,10 @@ export class FullResultsComponent implements OnInit {
     return `/assets/images/circuits/${countryName}.png`;
   }
 
-  openPredictionDialog(userId: number, round: number, hasPrediction: boolean): void {
+  openPredictionDialog(userId: number, round: number, hasPrediction: boolean, isQualificationLocked: boolean, isRaceLocked: boolean): void {
     this.predictionDialog.open(PredictionDialog, {
       disableClose: true,
-      data: {userId, round, hasPrediction},
+      data: {userId, round, hasPrediction, isQualificationLocked, isRaceLocked},
     });
   }
 

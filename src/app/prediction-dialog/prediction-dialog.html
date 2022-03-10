@@ -1,19 +1,25 @@
-<h2>Predict results</h2>
+<h2>Prediction</h2>
 
 <form *ngIf="{
     drivers: drivers | async,
     isLoaded: isLoaded | async,
+    isQualificationLocked: isQualificationLocked | async,
+    isRaceLocked: isRaceLocked | async,
     prediction: prediction | async
 } as data" [formGroup]="predictionForm" (ngSubmit)="submit()">
 <div class="places">    
     <fieldset *ngIf="data.isLoaded" class="event">
-        <h3>Qualification</h3>
+        <h3>
+            Qualification
+            <mat-icon *ngIf="data.isQualificationLocked" class="lock">lock</mat-icon>
+        </h3>
             
         <ng-container *ngFor="let placeIndex of PLACE_INDEXES">
             <mat-form-field *ngIf="data.prediction">
                 <mat-label>Place {{placeIndex + 1}}</mat-label>
                         
                 <mat-select
+                    [disabled]="data.isQualificationLocked ?? false"
                     [formControlName]="'q' + (placeIndex + 1)" 
                     [(value)]="data.prediction.qualification[placeIndex]">
                             
@@ -34,13 +40,17 @@
     </fieldset>
 
     <fieldset *ngIf="data.isLoaded" class="event">
-        <h3>Race</h3>
+        <h3>
+            Race
+            <mat-icon *ngIf="data.isRaceLocked" class="lock">lock</mat-icon>
+        </h3>
             
         <ng-container *ngFor="let placeIndex of PLACE_INDEXES">
             <mat-form-field *ngIf="data.prediction">
                 <mat-label>Place {{placeIndex + 1}}</mat-label>
                     
                 <mat-select
+                    [disabled]="data.isRaceLocked ?? false"
                     [formControlName]="'r' + (placeIndex + 1)" 
                     [(value)]="data.prediction.race[placeIndex]">
                         
