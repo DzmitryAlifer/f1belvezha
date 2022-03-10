@@ -1,8 +1,22 @@
 <div class="panel">
-    <!-- <div class="location">
+     <div class="location">
         <img class="flag" [src]="getFlagLink(nextEvent.location)" />
         {{nextEvent.location}}
     </div>
-    <div class="event-type">{{nextEvent.eventType}}</div>
-    <div class="time">{{nextEvent.start ? getCountDown(nextEvent.start) : 'now'}}</div> -->
+    <div class="event-type"><i>{{nextEvent.eventType}}</i></div>
+
+    <table class="countdown">
+        <tr class="units">
+            <td>days</td>
+            <td>hours</td>
+            <td>mins</td>
+            <td>secs</td>
+        </tr>
+        <tr class="numbers">
+            <td id="days"></td>
+            <td id="hours"></td>
+            <td id="mins"></td>
+            <td id="seconds"></td>
+        </tr>
+    </table>
 </div>
