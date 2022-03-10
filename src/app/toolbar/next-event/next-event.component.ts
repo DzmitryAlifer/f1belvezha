@@ -6,7 +6,7 @@ import * as toolbarSelectors from '../store/toolbar.selectors';
 
 
 export enum EventType {
-  Qualification = 'qualification',
+  Qualification = 'qual',
   Race = 'race',
 }
 

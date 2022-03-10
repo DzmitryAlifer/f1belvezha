@@ -18,12 +18,17 @@
     }
 
     .countdown {
+        margin-top: -3px;
+        
         .units {
             font-size: 10px;
         }
 
-        .numbers {
-            font-size: 14px;
+        .digits {
+            color: $red-600;
+            font-family: 'digital7-mono';
+            font-weight: 600;
+            font-size: 20px;
         }
 
         td {
