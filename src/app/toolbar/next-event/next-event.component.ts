@@ -29,7 +29,7 @@ export interface DateRange {
 }
 
 
-const NOW = moment();
+let NOW = moment();
 
 const SCHEDULE: EventSchedule[] = [{
   location: 'Bahrain',
@@ -64,19 +64,26 @@ export class NextEventComponent implements AfterViewInit {
 
   setCountDown() {
     const nextEvent = findNextEvent();
-    const difference = moment.duration(nextEvent.start?.diff(moment())).asMilliseconds(); 
-    let seconds = Math.floor(difference / 1000);
-    let minutes = Math.floor(seconds / 60);
-    let hours = Math.floor(minutes / 60);
-    const days = Math.floor(hours / 24);
-    hours %= 24;
-    minutes %= 60;
-    seconds %= 60;
 
-    document.getElementById('days')!.innerText = (days < 10 ? '0' + days : days).toString();
-    document.getElementById('hours')!.innerText = (hours < 10 ? '0' + hours : hours).toString();
-    document.getElementById('mins')!.innerText = (minutes < 10 ? '0' + minutes : minutes).toString();
-    document.getElementById('seconds')!.innerText = (seconds < 10 ? '0' + seconds : seconds).toString();
+    if (nextEvent.start) {
+      const difference = moment.duration(nextEvent.start?.diff(moment())).asMilliseconds(); 
+      let seconds = Math.floor(difference / 1000);
+      let minutes = Math.floor(seconds / 60);
+      let hours = Math.floor(minutes / 60);
+      const days = Math.floor(hours / 24);
+      hours %= 24;
+      minutes %= 60;
+      seconds %= 60;
+      document.getElementById('days')!.innerText = (days < 10 ? '0' + days : days).toString();
+      document.getElementById('hours')!.innerText = (hours < 10 ? '0' + hours : hours).toString();
+      document.getElementById('mins')!.innerText = (minutes < 10 ? '0' + minutes : minutes).toString();
+      document.getElementById('seconds')!.innerText = (seconds < 10 ? '0' + seconds : seconds).toString();
+    } else {
+      document.getElementById('days')!.innerText = 'n';
+      document.getElementById('hours')!.innerText = 'o';
+      document.getElementById('mins')!.innerText = 'w';
+      document.getElementById('seconds')!.innerText = '';
+    }
 
     setInterval(this.setCountDown, 1000);
   }
@@ -113,6 +120,6 @@ function findNextEvent(): DisplayEvent {
   return {
     location: previousEvent.location,
     eventType: EventType.Qualification,
-    start: previousEvent.qualification.end,
+    end: previousEvent.qualification.end,
   };
 }
