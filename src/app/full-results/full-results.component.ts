@@ -9,7 +9,7 @@ import * as moment from 'moment';
 import * as fullResultsSelectors from './store/full-results.selectors';
 import {FullResultsActionType} from './store/full-results.actions';
 import * as toolbarSelectors from '../toolbar/store/toolbar.selectors';
-import { getFlagLink } from './common';
+import {getFlagLink} from '../common';
 
 
 const NOW = moment();
