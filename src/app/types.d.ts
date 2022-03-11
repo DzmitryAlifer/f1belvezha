@@ -95,3 +95,10 @@ export interface Prediction {
     qualification: string[];
     race: string[];
 }
+
+export interface CountDownDigits {
+    daysDigits: string;
+    hoursDigits: string;
+    minutesDigits: string;
+    secondsDigits: string;
+}

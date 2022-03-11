@@ -1,4 +1,6 @@
 import * as moment from 'moment';
+import {interval, Observable} from 'rxjs';
+import {map, startWith} from 'rxjs/operators';
 import {DisplayEvent, EventSchedule, EventType} from './toolbar/next-event/next-event.component';
 
 
@@ -80,4 +82,12 @@ export function findNextEvent(): DisplayEvent {
         eventType: EventType.Qualification,
         end: previousEvent.qualification.end,
     };
+}
+
+export function getNextEvent(): Observable<DisplayEvent> {
+    // Finds next event each 2 minutes
+    return interval(2 * 60 * 1000).pipe(
+        map(() => findNextEvent()),
+        startWith(findNextEvent()),
+    );
 }

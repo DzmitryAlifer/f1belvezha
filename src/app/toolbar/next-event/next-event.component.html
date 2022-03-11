@@ -1,9 +1,12 @@
-<div class="panel">
+<div *ngIf="{
+    nextEvent: nextEvent | async
+} as data" class="panel">
      <div class="location">
-        <img class="flag" [src]="getFlagLink(nextEvent.location)" />
-        {{nextEvent.location}}
+        <img class="flag" [src]="getFlagLink(data.nextEvent?.location!)" />
+        {{data.nextEvent?.location}}
     </div>
-    <div class="event-type"><i>{{nextEvent.eventType}}</i></div>
+    
+    <div class="event-type"><i>{{data.nextEvent?.eventType}}</i></div>
 
     <table class="countdown">
         <tr class="units">
