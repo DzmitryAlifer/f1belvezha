@@ -3,7 +3,7 @@ import {Store} from '@ngrx/store';
 import * as moment from 'moment';
 import {combineLatest, interval} from 'rxjs';
 import {map} from 'rxjs/operators';
-import {findNextEvent, getFlagLink, getNextEvent} from 'src/app/common';
+import {getFlagLink, getNextEvent} from 'src/app/common';
 import {CountDownDigits} from 'src/app/types';
 import * as toolbarSelectors from '../store/toolbar.selectors';
 

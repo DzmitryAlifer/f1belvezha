@@ -10,6 +10,8 @@ import {Prediction} from '../types';
 import * as fullResultsSelectors from '../full-results/store/full-results.selectors';
 import {FullResultsActionType} from '../full-results/store/full-results.actions';
 import {DRIVER_TEAM_MAPPING} from 'src/constants';
+import {getNextEvent} from '../common';
+import { EventType } from '../toolbar/next-event/next-event.component';
 
 
 export interface PredictionDialogData {
@@ -64,8 +66,11 @@ export class PredictionDialog {
     r5: defineRequiredField(),
   }, {validators: validateForm});
 
-  readonly isQualificationLocked = new ReplaySubject<boolean>();
-  readonly isRaceLocked = new ReplaySubject<boolean>();
+  private readonly nextEvent = getNextEvent();
+  readonly isQualificationLocked = this.nextEvent.pipe(
+    map(event => event.eventType === EventType.Qualification && !!event.end));
+  readonly isRaceLocked = this.nextEvent.pipe(
+    map(event => event.eventType === EventType.Race && !!event.end));
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: PredictionDialogData,

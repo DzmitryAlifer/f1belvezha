@@ -1,17 +1,17 @@
 import * as moment from 'moment';
 import {interval, Observable} from 'rxjs';
-import {map, startWith} from 'rxjs/operators';
+import {map, shareReplay, startWith} from 'rxjs/operators';
 import {DisplayEvent, EventSchedule, EventType} from './toolbar/next-event/next-event.component';
 
 
 export const SCHEDULE: EventSchedule[] = [{
     location: 'Bahrain',
-    qualification: { start: moment('2022-03-19T18:00:00+03:00'), end: moment('2022-03-19T19:00:00+03:00') },
-    race: { start: moment('2022-03-20T18:00:00+03:00'), end: moment('2022-03-20T20:00:00+03:00') },
+    qualification: {start: moment('2022-03-19T18:00:00+03:00'), end: moment('2022-03-19T19:00:00+03:00')},
+    race: {start: moment('2022-03-20T18:00:00+03:00'), end: moment('2022-03-20T20:00:00+03:00')},
 }, {
     location: 'Saudi Arabia',
-    qualification: { start: moment('2022-03-26T18:00:00+03:00'), end: moment('2022-03-26T19:00:00+03:00') },
-    race: { start: moment('2022-03-27T19:00:00+03:00'), end: moment('2022-03-27T21:00:00+03:00') },
+    qualification: {start: moment('2022-03-26T18:00:00+03:00'), end: moment('2022-03-26T19:00:00+03:00')},
+    race: {start: moment('2022-03-27T19:00:00+03:00'), end: moment('2022-03-27T21:00:00+03:00')},
 }];
 
 const NOW = moment();
@@ -45,7 +45,7 @@ export function getFlagLink(countryName: string): string {
     return `http://purecatamphetamine.github.io/country-flag-icons/3x2/${COUNTRY_MAP.get(countryName)}.svg`;
 }
 
-export function findNextEvent(): DisplayEvent {
+function findNextEvent(): DisplayEvent {
     const nextEventIndex = SCHEDULE.findIndex(event => event.qualification.start.isAfter(NOW));
     const previousEvent = SCHEDULE[nextEventIndex - 1];
 
@@ -89,5 +89,6 @@ export function getNextEvent(): Observable<DisplayEvent> {
     return interval(2 * 60 * 1000).pipe(
         map(() => findNextEvent()),
         startWith(findNextEvent()),
+        shareReplay(1),
     );
 }
