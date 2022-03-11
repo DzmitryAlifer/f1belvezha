@@ -3,15 +3,15 @@
 <form *ngIf="{
     drivers: drivers | async,
     isLoaded: isLoaded | async,
-    isQualificationLocked: isQualificationLocked | async,
-    isRaceLocked: isRaceLocked | async,
+    isQualificationEditable: isQualificationEditable | async,
+    isRaceEditable: isRaceEditable | async,
     prediction: prediction | async
 } as data" [formGroup]="predictionForm" (ngSubmit)="submit()">
 <div class="places">    
     <fieldset *ngIf="data.isLoaded" class="event">
         <h3>
             Qualification
-            <mat-icon *ngIf="data.isQualificationLocked" class="lock">lock</mat-icon>
+            <mat-icon *ngIf="!data.isQualificationEditable" class="lock">lock</mat-icon>
         </h3>
             
         <ng-container *ngFor="let placeIndex of PLACE_INDEXES">
@@ -19,7 +19,7 @@
                 <mat-label>Place {{placeIndex + 1}}</mat-label>
                         
                 <mat-select
-                    [disabled]="data.isQualificationLocked ?? false"
+                    [disabled]="!data.isQualificationEditable"
                     [formControlName]="'q' + (placeIndex + 1)" 
                     [(value)]="data.prediction.qualification[placeIndex]">
                             
@@ -42,7 +42,7 @@
     <fieldset *ngIf="data.isLoaded" class="event">
         <h3>
             Race
-            <mat-icon *ngIf="data.isRaceLocked" class="lock">lock</mat-icon>
+            <mat-icon *ngIf="!data.isRaceEditable" class="lock">lock</mat-icon>
         </h3>
             
         <ng-container *ngFor="let placeIndex of PLACE_INDEXES">
@@ -50,7 +50,7 @@
                 <mat-label>Place {{placeIndex + 1}}</mat-label>
                     
                 <mat-select
-                    [disabled]="data.isRaceLocked ?? false"
+                    [disabled]="!data.isRaceEditable"
                     [formControlName]="'r' + (placeIndex + 1)" 
                     [(value)]="data.prediction.race[placeIndex]">
                         
@@ -79,7 +79,13 @@
         </mat-error>
     </div>
     <div class="button-bar">
-        <button mat-raised-button color="primary" type="submit" [disabled]="!predictionForm.valid">Submit</button>
+        <button 
+            mat-raised-button
+            color="primary"
+            type="submit"
+            [disabled]="!predictionForm.valid || !data.isRaceEditable">
+            Submit
+        </button>
         <button mat-raised-button type="button" (click)="discard()">Discard</button>
     </div>
 </form>

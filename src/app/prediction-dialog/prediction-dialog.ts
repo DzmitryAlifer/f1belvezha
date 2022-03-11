@@ -3,7 +3,7 @@ import {AbstractControl, FormControl, FormGroup, ValidationErrors, Validators} f
 import {MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
 import {Store} from '@ngrx/store';
 import {combineLatest, ReplaySubject} from 'rxjs';
-import {map, shareReplay} from 'rxjs/operators';
+import {filter, map, shareReplay} from 'rxjs/operators';
 import {F1PublicApiService} from '../service/f1-public-api.service';
 import {PredictionService} from '../service/prediction.service';
 import {Prediction} from '../types';
@@ -66,11 +66,14 @@ export class PredictionDialog {
     r5: defineRequiredField(),
   }, {validators: validateForm});
 
-  private readonly nextEvent = getNextEvent();
-  readonly isQualificationLocked = this.nextEvent.pipe(
-    map(event => event.eventType === EventType.Qualification && !!event.end));
-  readonly isRaceLocked = this.nextEvent.pipe(
-    map(event => event.eventType === EventType.Race && !!event.end));
+  private readonly nextEvent = getNextEvent().pipe(filter(event => event.round === this.data.round));
+  readonly isQualificationEditable = this.nextEvent.pipe(
+    map(event => event.eventType === EventType.Qualification && !!event.start));
+  readonly isRaceEditable = combineLatest([this.nextEvent, this.isQualificationEditable]).pipe(
+    map(([event, isQualificationEditable]) => 
+      isQualificationEditable || 
+      event.eventType === EventType.Qualification && !!event.end ||
+      event.eventType === EventType.Race && !!event.start));
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: PredictionDialogData,
