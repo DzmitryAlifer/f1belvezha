@@ -1,10 +1,11 @@
 import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
+import {CoinModule} from '../coin/coin.module';
 import {PointsComponent} from './points.component';
 
 
 @NgModule({
-  imports: [CommonModule],
+  imports: [CoinModule, CommonModule],
   declarations: [PointsComponent],
   exports: [PointsComponent],
 })

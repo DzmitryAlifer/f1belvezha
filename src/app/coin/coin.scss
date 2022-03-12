@@ -1,3 +1,37 @@
 @import '../../styles.scss';
 
 
+$circle-size: 12px;
+
+
+.coins {
+    display: inline-flex;
+
+    .coin {
+        border: 1px solid $grey-600;
+        border-radius: calc($circle-size / 2 + 1px);
+        color: $grey-900;
+        font-size: 10px;
+        height: $circle-size;
+        line-height: $circle-size;
+        margin: 0 auto;
+        position: relative;
+        width: $circle-size;
+
+        &:nth-child(2) {
+            left: -10px;
+        }
+
+        &:nth-child(3) {
+            left: -20px;
+        }
+
+        &:nth-child(4) {
+            left: -30px;
+        }
+
+        &:nth-child(5) {
+            left: -40px;
+        }
+    }
+}

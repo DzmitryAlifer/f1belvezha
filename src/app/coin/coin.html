@@ -1,1 +1,5 @@
-<p>coin works!</p>
+<div class="coins">
+    <div *ngFor="let index of Array(amount).fill(0)" class="coin" [style.background-color]="color">
+        <b>{{value}}</b>
+    </div>
+</div>
