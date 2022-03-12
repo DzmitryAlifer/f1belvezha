@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {Observable} from 'rxjs';
 import {map} from 'rxjs/operators';
-import {Driver, DriverStanding, DriverStandingsResponse, Race, RacesResponse, Result, ResultsResponse, Team, TeamsResponse} from '../types';
+import {DriverStanding, DriverStandingsResponse, Race, RacesResponse, Result, ResultsResponse, Team, TeamsResponse} from '../types';
 import {HttpClient} from '@angular/common/http';
 
 
@@ -11,7 +11,6 @@ const CURRENT_YEAR = new Date().getFullYear();
 
 @Injectable({providedIn: 'root'})
 export class F1PublicApiService {
-  private drivers: Observable<Driver[]>|null = null;
   private driverStandings: Observable<DriverStanding[]> | null = null;
 
   constructor(private readonly httpClient: HttpClient) {}
@@ -36,12 +35,12 @@ export class F1PublicApiService {
   }
 
   getQualifyingResults(round: number): Observable<Map<string, number>> {
-    return this.httpClient.get<ResultsResponse>(`${F1_PUBLIC_API}${CURRENT_YEAR - 1}/${round}/qualifying.json`).pipe(
+    return this.httpClient.get<ResultsResponse>(`${F1_PUBLIC_API}${CURRENT_YEAR}/${round}/qualifying.json`).pipe(
       map(response => this.convertApiResponse(response.MRData.RaceTable.Races[0].QualifyingResults!)));
   }
 
   getRaceResults(round: number): Observable<Map<string, number>> {
-    return this.httpClient.get<ResultsResponse>(`${F1_PUBLIC_API}${CURRENT_YEAR - 1}/${round}/results.json`).pipe(
+    return this.httpClient.get<ResultsResponse>(`${F1_PUBLIC_API}${CURRENT_YEAR}/${round}/results.json`).pipe(
       map(response => this.convertApiResponse(response.MRData.RaceTable.Races[0].Results!)));
   }
 
