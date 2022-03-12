@@ -1,14 +1,15 @@
 import {Injectable } from '@angular/core';
 import {Actions, createEffect, ofType} from '@ngrx/effects';
 import {Store} from '@ngrx/store';
-import {filter, map, switchMap} from 'rxjs/operators';
+import {combineLatest} from 'rxjs';
+import {debounceTime, filter, map, switchMap} from 'rxjs/operators';
 import {PredictionService} from 'src/app/service/prediction.service';
 import {UserService} from '../../service/user.service';
 import {FullResultsAction, FullResultsActionType} from './full-results.actions';
 import * as toolbarSelectors from '../../toolbar/store/toolbar.selectors';
-import {combineLatest} from 'rxjs';
 import {F1PublicApiService} from 'src/app/service/f1-public-api.service';
 import {ResultService} from 'src/app/service/result.service';
+import {calculateRoundPoints} from 'src/app/common';
 
 
 @Injectable()
@@ -22,6 +23,23 @@ export class FullResultsEffects {
     private readonly currentUserPredictions = combineLatest([this.currentUser, this.allPredictions]).pipe(
         filter(([currentUser, ]) => !!currentUser?.id),
         map(([currentUser, predictions]) => predictions.filter(prediction => prediction.userid == currentUser!.id!)),
+    );
+
+    private readonly currentYearPoints = combineLatest([this.currentYearResults, this.allPredictions, this.users]).pipe(
+        debounceTime(0),
+        map(([results, allRacesPredictions, users]) => 
+            users.reduce((userResults, user) => {
+                const allRacesUserPredictions = allRacesPredictions.filter(prediction => prediction.userid == user.id!);
+                const singleUserResults = allRacesUserPredictions.reduce((acc, prediction) => {
+                    const round = prediction.round!
+                    const roundResult = results[round - 1];
+                    const userRoundPoints = calculateRoundPoints(roundResult, prediction);
+                    acc.set(round, userRoundPoints);
+                    return acc;
+                }, new Map<number, number[][]>());
+                userResults.set(user.id!, singleUserResults);
+                return userResults;
+            }, new Map<number, Map<number, number[][]>>())),
     );
 
     constructor(
@@ -68,5 +86,13 @@ export class FullResultsEffects {
             map(currentUserPredictions => 
                 ({type: FullResultsActionType.LOAD_CURRENT_USER_PREDICTIONS_SUCCESS, payload: {currentUserPredictions}})),
         )),
+    ));
+
+    loadYearPoints = createEffect(() => this.actions.pipe(
+        ofType(FullResultsActionType.CALCULATE_CURRENT_YEAR_POINTS),
+        switchMap(() => this.currentYearPoints.pipe(
+            map(currentYearPoints => 
+                ({type: FullResultsActionType.CALCULATE_CURRENT_YEAR_POINTS_SUCCESS, payload: {currentYearPoints}})),
+        ))
     ));
 }

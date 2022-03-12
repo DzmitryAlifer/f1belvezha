@@ -2,7 +2,11 @@ import * as moment from 'moment';
 import {interval, Observable} from 'rxjs';
 import {map, shareReplay, startWith} from 'rxjs/operators';
 import {DisplayEvent, EventSchedule, EventType} from './toolbar/next-event/next-event.component';
+import {Prediction, ResultDb} from './types';
 
+
+const DRIVER_IN_LIST_PTS = 1;
+const DRIVER_PLACE_PTS = 2;
 
 export const SCHEDULE: EventSchedule[] = [{
     location: 'Bahrain',
@@ -91,4 +95,20 @@ export function getNextEvent(): Observable<DisplayEvent> {
         startWith(findNextEvent()),
         shareReplay(1),
     );
+}
+
+export function calculateRoundPoints(roundResult: ResultDb, prediction: Prediction): number[][] {
+    const qualifyngPredictionPoints = calculateEventPoints(roundResult.qualifying, prediction.qualification);
+    const racePredictionPoints = calculateEventPoints(roundResult.race, prediction.race);
+
+    return [qualifyngPredictionPoints, racePredictionPoints];
+}
+
+function calculateEventPoints(actualDrivers: string[], predictedDrivers: string[]): number[] {
+    const driversInListPoints = actualDrivers.reduce((acc, actualDriver) => 
+            acc + (predictedDrivers.includes(actualDriver) ? DRIVER_IN_LIST_PTS : 0), 0);
+    const driversPlacePoints = actualDrivers.reduce((acc, actualDriver, index) =>
+        acc + (actualDriver === predictedDrivers[index] ? DRIVER_PLACE_PTS : 0), 0);
+
+    return [driversInListPoints, driversPlacePoints];
 }

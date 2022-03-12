@@ -43,3 +43,8 @@ export const selectNextRoundPredictions = createSelector(
     selectFullResults,
     (state: FullResultsState) => state.nextRoundPredictions,
 );
+
+export const selectCurrentYearPoints = createSelector(
+    selectFullResults,
+    (state: FullResultsState) => state.currentYearPoints,
+);

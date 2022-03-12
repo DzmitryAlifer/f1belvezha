@@ -51,19 +51,24 @@ export class FullResultsComponent implements OnInit {
     map(userColumns => ['event', 'circuit', ...userColumns, 'empty', 'stats']),
   );
 
-  readonly results = this.store.select(fullResultsSelectors.selectCurrentYearResults);
+  private readonly results = this.store.select(fullResultsSelectors.selectCurrentYearResults);
+  readonly points = this.store.select(fullResultsSelectors.selectCurrentYearPoints);
 
   constructor(
     private readonly predictionDialog: MatDialog,
     private readonly store: Store,
-  ) {}
+  ) { 
+    this.results.subscribe(r => console.log(r));
+    this.points.subscribe(r => console.log(r));
+  }
 
   ngOnInit(): void {
     this.currentUserHasPrediction.subscribe();
     this.store.dispatch({type: FullResultsActionType.LOAD_RACES});
     this.store.dispatch({type: FullResultsActionType.LOAD_USERS});
-    this.store.dispatch({type: FullResultsActionType.LOAD_CURRENT_YEAR_RESULTS});
     this.store.dispatch({type: FullResultsActionType.LOAD_ALL_PREDICTIONS});
+    this.store.dispatch({type: FullResultsActionType.LOAD_CURRENT_YEAR_RESULTS});
+    this.store.dispatch({type: FullResultsActionType.CALCULATE_CURRENT_YEAR_POINTS});
   }
 
   formatDate(dateStr: string): string {

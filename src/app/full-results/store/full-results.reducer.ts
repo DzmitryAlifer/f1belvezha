@@ -6,6 +6,7 @@ export const initialState: FullResultsState = {
     columns: ['event', 'circuit', 'empty', 'stats'],
     currentUser: null,
     currentUserPredictions: [],
+    currentYearPoints: new Map<number, Map<number, number[][]>>(),
     currentYearResults: [],
     isAuthenticated: false,
     isLoaded: false,
@@ -27,6 +28,7 @@ export function fullResultsReducer(state: FullResultsState = initialState, actio
         case FullResultsActionType.LOAD_CURRENT_YEAR_RESULTS:
         case FullResultsActionType.LOAD_ALL_PREDICTIONS:
         case FullResultsActionType.LOAD_CURRENT_USER_PREDICTIONS:
+        case FullResultsActionType.CALCULATE_CURRENT_YEAR_POINTS:
             return {...state, isLoaded: false};
 
         case FullResultsActionType.LOAD_RACES_SUCCESS:
@@ -44,6 +46,8 @@ export function fullResultsReducer(state: FullResultsState = initialState, actio
         case FullResultsActionType.LOAD_CURRENT_USER_PREDICTIONS_SUCCESS:
             return {...state, currentUserPredictions: action.payload.currentUserPredictions, isLoaded: true};
 
+        case FullResultsActionType.CALCULATE_CURRENT_YEAR_POINTS_SUCCESS:
+            return { ...state, currentYearPoints: action.payload.currentYearPoints, isLoaded: true};
         default:
             return state;
     }

@@ -14,6 +14,8 @@ export enum FullResultsActionType {
     LOAD_ALL_PREDICTIONS_SUCCESS = '[Full Results] Load all predictions - success',
     LOAD_CURRENT_USER_PREDICTIONS = '[Full Results] Load current user predictions',
     LOAD_CURRENT_USER_PREDICTIONS_SUCCESS = '[Full Results] Load current user predictions - success',
+    CALCULATE_CURRENT_YEAR_POINTS = '[Full Results] Calculate current year points',
+    CALCULATE_CURRENT_YEAR_POINTS_SUCCESS = '[Full Results] Calculate current year points - success',
 }
 
 export class SetLoaded implements Action {
@@ -71,6 +73,16 @@ export class LoadCurrentUserPredictionsSuccess implements Action {
     constructor(readonly payload: {currentUserPredictions: Prediction[]}) {}
 }
 
+export class CalculateCurrentYearPoints implements Action {
+    readonly type = FullResultsActionType.CALCULATE_CURRENT_YEAR_POINTS;
+    constructor(readonly payload: {}) {}
+}
+
+export class CalculateCurrentYearPointsSuccess implements Action {
+    readonly type = FullResultsActionType.CALCULATE_CURRENT_YEAR_POINTS_SUCCESS;
+    constructor(readonly payload: {currentYearPoints: Map<number, Map<number, number[][]>>}) {}
+}
+
 export type FullResultsAction =
     | SetLoaded
     | LoadRaces
@@ -82,4 +94,6 @@ export type FullResultsAction =
     | LoadAllPredictions
     | LoadAllPredictionsSuccess
     | LoadCurrentUserPredictions
-    | LoadCurrentUserPredictionsSuccess;
+    | LoadCurrentUserPredictionsSuccess
+    | CalculateCurrentYearPoints
+    | CalculateCurrentYearPointsSuccess;

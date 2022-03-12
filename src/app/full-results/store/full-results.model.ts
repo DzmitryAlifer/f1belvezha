@@ -4,6 +4,7 @@ export interface FullResultsState {
     columns: string[];
     currentUser: User | null;
     currentUserPredictions: Prediction[];
+    currentYearPoints: Map<number, Map<number, number[][]>>;
     currentYearResults: ResultDb[];
     isAuthenticated: boolean;
     isLoaded: boolean;
