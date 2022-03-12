@@ -117,3 +117,11 @@ export interface Result {
     position: number;
     Driver: Driver;
 }
+
+export interface ResultDb {
+    id: number;
+    year: number;
+    round: number;
+    qualifying: string[];
+    race: string[];
+}

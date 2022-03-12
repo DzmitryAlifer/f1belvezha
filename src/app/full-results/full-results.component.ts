@@ -2,7 +2,7 @@ import {ChangeDetectionStrategy, Component, OnInit} from '@angular/core';
 import {MatDialog} from '@angular/material/dialog';
 import {Store} from '@ngrx/store';
 import {combineLatest} from 'rxjs';
-import {map, shareReplay} from 'rxjs/operators';
+import {debounceTime, map, shareReplay} from 'rxjs/operators';
 import {PredictionDialog} from '../prediction-dialog/prediction-dialog';
 import {Prediction, Race, User} from '../types';
 import * as moment from 'moment';
@@ -35,6 +35,7 @@ export class FullResultsComponent implements OnInit {
   readonly isLoaded = combineLatest([this.users, this.races]).pipe(map(([users, races]) => !!races && !!users));
 
   readonly nextRacePredictions = combineLatest([this.allPredictions, this.nextRaceRound]).pipe(
+    debounceTime(0),
     map(([allPredictions, nextRaceRound]) => allPredictions.filter(prediction => prediction.round === nextRaceRound)));
 
   readonly currentUserHasPrediction = combineLatest([this.currentUserPredictions, this.nextRaceRound]).pipe(
