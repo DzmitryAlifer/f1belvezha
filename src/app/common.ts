@@ -5,8 +5,8 @@ import {DisplayEvent, EventSchedule, EventType} from './toolbar/next-event/next-
 import {Prediction, ResultDb} from './types';
 
 
-const DRIVER_IN_LIST_PTS = 1;
-const DRIVER_PLACE_PTS = 2;
+export const DRIVER_IN_LIST_PTS = 1;
+export const DRIVER_PLACE_PTS = 2;
 
 export const SCHEDULE: EventSchedule[] = [{
     location: 'Bahrain',
@@ -106,9 +106,9 @@ export function calculateRoundPoints(roundResult: ResultDb, prediction: Predicti
 
 function calculateEventPoints(actualDrivers: string[], predictedDrivers: string[]): number[] {
     const driversInListPoints = actualDrivers.reduce((acc, actualDriver) => 
-            acc + (predictedDrivers.includes(actualDriver) ? DRIVER_IN_LIST_PTS : 0), 0);
+            acc + (predictedDrivers.includes(actualDriver) ? 1 : 0), 0);
     const driversPlacePoints = actualDrivers.reduce((acc, actualDriver, index) =>
-        acc + (actualDriver === predictedDrivers[index] ? DRIVER_PLACE_PTS : 0), 0);
+        acc + (actualDriver === predictedDrivers[index] ? 1 : 0), 0);
 
     return [driversInListPoints, driversPlacePoints];
 }
