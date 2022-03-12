@@ -4,6 +4,7 @@ export interface FullResultsState {
     columns: string[];
     currentUser: User | null;
     currentUserPredictions: Prediction[];
+    currentYearResults: ResultDb[];
     isAuthenticated: boolean;
     isLoaded: boolean;
     nextRound: number;
@@ -11,5 +12,4 @@ export interface FullResultsState {
     predictions: Prediction[];
     races: Race[];
     users: User[];
-    yearResults: ResultDb[];
 }

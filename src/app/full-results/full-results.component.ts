@@ -51,6 +51,8 @@ export class FullResultsComponent implements OnInit {
     map(userColumns => ['event', 'circuit', ...userColumns, 'empty', 'stats']),
   );
 
+  readonly results = this.store.select(fullResultsSelectors.selectCurrentYearResults);
+
   constructor(
     private readonly predictionDialog: MatDialog,
     private readonly store: Store,
@@ -60,7 +62,7 @@ export class FullResultsComponent implements OnInit {
     this.currentUserHasPrediction.subscribe();
     this.store.dispatch({type: FullResultsActionType.LOAD_RACES});
     this.store.dispatch({type: FullResultsActionType.LOAD_USERS});
-    this.store.dispatch({type: FullResultsActionType.LOAD_YEAR_RESULTS});
+    this.store.dispatch({type: FullResultsActionType.LOAD_CURRENT_YEAR_RESULTS});
     this.store.dispatch({type: FullResultsActionType.LOAD_ALL_PREDICTIONS});
   }
 

@@ -24,6 +24,11 @@ export const selectUsers = createSelector(
     (state: FullResultsState) => state.users,
 );
 
+export const selectCurrentYearResults = createSelector(
+    selectFullResults,
+    (state: FullResultsState) => state.currentYearResults,
+);
+
 export const selectAllPredictions = createSelector(
     selectFullResults,
     (state: FullResultsState) => state.predictions,

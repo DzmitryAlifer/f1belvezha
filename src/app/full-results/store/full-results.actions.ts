@@ -8,8 +8,8 @@ export enum FullResultsActionType {
     LOAD_RACES_SUCCESS = '[Full Results] Load races - success',
     LOAD_USERS = '[Full Results] Load users',
     LOAD_USERS_SUCCESS = '[Full Results] Load users - success',
-    LOAD_YEAR_RESULTS = '[Full Results] Load current year results',
-    LOAD_YEAR_RESULTS_SUCCESS = '[Full Results] Load current year results - success',
+    LOAD_CURRENT_YEAR_RESULTS = '[Full Results] Load current year results',
+    LOAD_CURRENT_YEAR_RESULTS_SUCCESS = '[Full Results] Load current year results - success',
     LOAD_ALL_PREDICTIONS = '[Full Results] Load all predictions',
     LOAD_ALL_PREDICTIONS_SUCCESS = '[Full Results] Load all predictions - success',
     LOAD_CURRENT_USER_PREDICTIONS = '[Full Results] Load current user predictions',
@@ -41,14 +41,14 @@ export class LoadUsersSuccess implements Action {
     constructor(readonly payload: {users: User[]}) {}
 }
 
-export class LoadYearResults implements Action {
-    readonly type = FullResultsActionType.LOAD_YEAR_RESULTS;
+export class LoadCurrentYearResults implements Action {
+    readonly type = FullResultsActionType.LOAD_CURRENT_YEAR_RESULTS;
     constructor(readonly payload: {}) {}
 }
 
-export class LoadYearResultsSuccess implements Action {
-    readonly type = FullResultsActionType.LOAD_YEAR_RESULTS_SUCCESS;
-    constructor(readonly payload: {yearResults: ResultDb[]}) {}
+export class LoadCurrentYearResultsSuccess implements Action {
+    readonly type = FullResultsActionType.LOAD_CURRENT_YEAR_RESULTS_SUCCESS;
+    constructor(readonly payload: {currentYearResults: ResultDb[]}) {}
 }
 
 export class LoadAllPredictions implements Action {
@@ -77,8 +77,8 @@ export type FullResultsAction =
     | LoadRacesSuccess
     | LoadUsers
     | LoadUsersSuccess
-    | LoadYearResults
-    | LoadYearResultsSuccess
+    | LoadCurrentYearResults
+    | LoadCurrentYearResultsSuccess
     | LoadAllPredictions
     | LoadAllPredictionsSuccess
     | LoadCurrentUserPredictions

@@ -6,6 +6,7 @@ export const initialState: FullResultsState = {
     columns: ['event', 'circuit', 'empty', 'stats'],
     currentUser: null,
     currentUserPredictions: [],
+    currentYearResults: [],
     isAuthenticated: false,
     isLoaded: false,
     nextRound: 0,
@@ -13,7 +14,6 @@ export const initialState: FullResultsState = {
     predictions: [],
     races: [],
     users: [],
-    yearResults: [],
 };
 
 
@@ -24,7 +24,7 @@ export function fullResultsReducer(state: FullResultsState = initialState, actio
 
         case FullResultsActionType.LOAD_RACES:
         case FullResultsActionType.LOAD_USERS:
-        case FullResultsActionType.LOAD_YEAR_RESULTS:
+        case FullResultsActionType.LOAD_CURRENT_YEAR_RESULTS:
         case FullResultsActionType.LOAD_ALL_PREDICTIONS:
         case FullResultsActionType.LOAD_CURRENT_USER_PREDICTIONS:
             return {...state, isLoaded: false};
@@ -35,8 +35,8 @@ export function fullResultsReducer(state: FullResultsState = initialState, actio
         case FullResultsActionType.LOAD_USERS_SUCCESS:
             return {...state, users: action.payload.users, isLoaded: true};
 
-        case FullResultsActionType.LOAD_YEAR_RESULTS_SUCCESS:
-            return {...state, yearResults: action.payload.yearResults, isLoaded: true};
+        case FullResultsActionType.LOAD_CURRENT_YEAR_RESULTS_SUCCESS:
+            return {...state, currentYearResults: action.payload.currentYearResults, isLoaded: true};
 
         case FullResultsActionType.LOAD_ALL_PREDICTIONS_SUCCESS:
             return {...state, predictions: action.payload.predictions, isLoaded: true};

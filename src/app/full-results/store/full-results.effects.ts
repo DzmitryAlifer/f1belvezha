@@ -15,7 +15,7 @@ import {ResultService} from 'src/app/service/result.service';
 export class FullResultsEffects {
     private readonly users = this.userService.getAllUsers();
     private readonly currentUser = this.store.select(toolbarSelectors.selectCurrentUser);
-    private readonly yearResults = this.resultService.getYearResults(new Date().getFullYear());
+    private readonly currentYearResults = this.resultService.getYearResults(new Date().getFullYear());
     private readonly allPredictions = this.predictionService.getAllPredictions();
     private readonly races = this.f1PublicApiService.getCurrentYearSchedule();
 
@@ -48,9 +48,9 @@ export class FullResultsEffects {
     ));
 
     loadYearResults = createEffect(() => this.actions.pipe(
-        ofType(FullResultsActionType.LOAD_YEAR_RESULTS),
-        switchMap(() => this.yearResults.pipe(
-            map(yearResults => ({type: FullResultsActionType.LOAD_YEAR_RESULTS_SUCCESS, payload: {yearResults}})),
+        ofType(FullResultsActionType.LOAD_CURRENT_YEAR_RESULTS),
+        switchMap(() => this.currentYearResults.pipe(
+            map(currentYearResults => ({type: FullResultsActionType.LOAD_CURRENT_YEAR_RESULTS_SUCCESS, payload: {currentYearResults}})),
         ))
     ));
 
