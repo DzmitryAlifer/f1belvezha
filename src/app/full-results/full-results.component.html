@@ -6,6 +6,7 @@
     isLoaded: isLoaded | async,
     nextRacePredictions: nextRacePredictions | async,
     nextRaceRound: nextRaceRound | async,
+    points: points | async,
     users: users | async
  } as data">
     <table *ngIf="data.isLoaded; else spinner"
@@ -42,6 +43,10 @@
                     {{user.firstname}} {{user.lastname ?? ''}}
                 </th>
                 <td class="points" mat-cell *matCellDef="let race">
+                    <ng-container *ngIf="!!data.points && !!data.nextRaceRound && race.round < data.nextRaceRound!">
+                        <points [points]="getPoints(data.points, user, race)" [isCurrentUser]="userData.isCurrentUser"></points>
+                    </ng-container>
+                    
                     <ng-container *ngIf="race.round === data.nextRaceRound">
                         <button *ngIf="userData.isCurrentUser"
                             mat-icon-button

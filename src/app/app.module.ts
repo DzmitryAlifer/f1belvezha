@@ -17,6 +17,7 @@ import {HelpDialogModule} from './toolbar/help-dialog/help-dialog.module';
 import {LoginDialogModule} from './toolbar/login-dialog/login-dialog.module';
 import {NextEventModule} from './toolbar/next-event/next-event.module';
 import {UsersStandingModule} from './users-standing/users-standing.module';
+import {PointsModule} from './points/points.module';
 import {PredictionDialogModule} from './prediction-dialog/prediction-dialog.module';
 
 
@@ -35,6 +36,7 @@ import {PredictionDialogModule} from './prediction-dialog/prediction-dialog.modu
     MatSidenavModule,
     MatSlideToggleModule,
     NextEventModule,
+    PointsModule,
     PredictionDialogModule,
     ToolbarModule,
     UsersStandingModule,

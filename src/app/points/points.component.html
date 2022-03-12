@@ -1,5 +1,18 @@
-<div>
-    <div class="qualifying">Q: {{DRIVER_IN_LIST_PTS}}*{{points[0][0]}} + {{DRIVER_PLACE_PTS}}*{{points[0][1]}}</div>
-    <div class="race">R: {{DRIVER_IN_LIST_PTS}}*{{points[1][0]}} + {{DRIVER_PLACE_PTS}}*{{points[1][1]}}</div>
-    <div class="total"><b>{{total}}</b></div>
-</div>
+<ng-container *ngIf="{
+    isDarkMode: isDarkMode | async,
+    totalPoints: getTotalPoints()
+} as data">
+    <div *ngIf="data.totalPoints" [class.current-user]="isCurrentUser" [class.dark]="data.isDarkMode">
+        <div class="qualifying">
+            <span *ngIf="!!points[0][0]">Q: {{DRIVER_IN_LIST_PTS}}*{{points[0][0]}}</span>
+            <span *ngIf="!!points[0][1]"> + {{DRIVER_PLACE_PTS}}*{{points[0][1]}}</span>
+        </div>
+
+        <div class="race">
+            <span *ngIf="!!points[1][0]">R: {{DRIVER_IN_LIST_PTS}}*{{points[1][0]}}</span>
+            <span *ngIf="!!points[1][1]"> + {{DRIVER_PLACE_PTS}}*{{points[1][1]}}</span>
+        </div>
+        
+        <div class="total"><b>{{data.totalPoints}}</b></div>
+    </div>
+</ng-container>

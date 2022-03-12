@@ -12,7 +12,7 @@ import * as toolbarSelectors from '../toolbar/store/toolbar.selectors';
 import {getFlagLink} from '../common';
 
 
-const NOW = moment('2022-03-20T10:00:00Z');
+const NOW = moment();
 const ROUND_TO_INDEX_OFFSET = 2;
 
     
@@ -85,6 +85,10 @@ export class FullResultsComponent implements OnInit {
 
   getCircuitPath(countryName: string): string {
     return `/assets/images/circuits/${countryName}.png`;
+  }
+
+  getPoints(points: Map<number, Map<number, number[][]>>, user: User, race: Race): number[][] {
+    return points.get(user.id!)?.get(race.round) ?? [[0, 0], [0, 0]];
   }
 
   openPredictionDialog(userId: number, round: number, hasPrediction: boolean, isQualificationLocked: boolean, isRaceLocked: boolean): void {

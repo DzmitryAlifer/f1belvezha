@@ -11,6 +11,7 @@ import {EffectsModule} from '@ngrx/effects';
 import {FullResultsComponent} from './full-results.component';
 import {FullResultsEffects} from './store/full-results.effects';
 import {fullResultsReducer} from './store/full-results.reducer';
+import {PointsModule} from '../points/points.module';
 
 
 @NgModule({
@@ -22,10 +23,11 @@ import {fullResultsReducer} from './store/full-results.reducer';
     MatProgressSpinnerModule,
     MatSlideToggleModule,
     MatTableModule,
+    PointsModule,
     StoreModule.forFeature('fullResults', fullResultsReducer),
     EffectsModule.forFeature([FullResultsEffects]),
   ],
   declarations: [FullResultsComponent],
   exports: [FullResultsComponent],
 })
-export class FullResultsModule { }
+export class FullResultsModule {}

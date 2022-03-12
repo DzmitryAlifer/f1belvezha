@@ -1,0 +1,14 @@
+@import '../../styles.scss';
+
+
+.current-user {
+    color: $blue-800;
+
+    &.dark {
+        color: $blue-200;
+    }
+}
+
+.qualifying, .race {
+    font-size: 10px;
+}

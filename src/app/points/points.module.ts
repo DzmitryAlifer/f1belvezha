@@ -6,6 +6,6 @@ import {PointsComponent} from './points.component';
 @NgModule({
   imports: [CommonModule],
   declarations: [PointsComponent],
-  exports[PointsComponent],
+  exports: [PointsComponent],
 })
 export class PointsModule {}
