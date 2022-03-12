@@ -66,7 +66,9 @@ export class PredictionDialog {
     r5: defineRequiredField(),
   }, {validators: validateForm});
 
-  private readonly nextEvent = getNextEvent().pipe(filter(event => event.round === this.data.round));
+  private readonly nextEvent = getNextEvent().pipe(
+    filter(event => event.round === this.data.round),
+    shareReplay(1));
   readonly isQualificationEditable = this.nextEvent.pipe(
     map(event => event.eventType === EventType.Qualification && !!event.start));
   readonly isRaceEditable = combineLatest([this.nextEvent, this.isQualificationEditable]).pipe(

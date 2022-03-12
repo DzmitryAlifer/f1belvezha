@@ -51,6 +51,8 @@ export interface Race {
         };
     };
     date: string;
+    QualifyingResults?: Result[];
+    Results?: Result[];
 }
 
 export interface Team {
@@ -101,4 +103,17 @@ export interface CountDownDigits {
     hoursDigits: string;
     minutesDigits: string;
     secondsDigits: string;
+}
+
+export interface ResultsResponse {
+    MRData: {
+        RaceTable: {
+            Races: Race[];
+        }
+    };
+}
+
+export interface Result {
+    position: number;
+    Driver: Driver;
 }

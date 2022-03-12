@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {Observable} from 'rxjs';
 import {map} from 'rxjs/operators';
-import {Driver, DriversResponse, DriverStanding, DriverStandingsResponse, Race, RacesResponse, Team, TeamsResponse} from '../types';
+import { Driver, DriversResponse, DriverStanding, DriverStandingsResponse, Race, RacesResponse, Result, ResultsResponse, Team, TeamsResponse} from '../types';
 import {HttpClient} from '@angular/common/http';
 
 
@@ -79,5 +79,22 @@ export class F1PublicApiService {
     }
 
     return this.driverStandings;
+  }
+
+  getQualifyingResults(round: number): Observable<Map<string, number>> {
+    return this.httpClient.get<ResultsResponse>(`${F1_PUBLIC_API}${CURRENT_YEAR - 1}/${round}/qualifying.json`).pipe(
+      map(response => this.convertApiResponse(response.MRData.RaceTable.Races[0].QualifyingResults!)));
+  }
+
+  getRaceResults(round: number): Observable<Map<string, number>> {
+    return this.httpClient.get<ResultsResponse>(`${F1_PUBLIC_API}${CURRENT_YEAR - 1}/${round}/results.json`).pipe(
+      map(response => this.convertApiResponse(response.MRData.RaceTable.Races[0].Results!)));
+  }
+
+  private convertApiResponse(apiResults: Result[]) {
+    return apiResults.reduce((resultsMap, qualifyingResult) => {
+      resultsMap.set(qualifyingResult.Driver.driverId, qualifyingResult.position);
+      return resultsMap;
+    }, new Map<string, number>());
   }
 }
