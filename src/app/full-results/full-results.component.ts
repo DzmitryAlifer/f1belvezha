@@ -12,7 +12,8 @@ import * as toolbarSelectors from '../toolbar/store/toolbar.selectors';
 import {getFlagLink} from '../common';
 
 
-const NOW = moment('2022-03-20T10:00:00Z');
+const NOW = moment();
+// const NOW = moment('2022-03-20T10:00:00Z');
 const ROUND_TO_INDEX_OFFSET = 2;
 
     
