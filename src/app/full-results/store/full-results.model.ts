@@ -1,4 +1,4 @@
-import {Prediction, Race, User} from 'src/app/types';
+import {Prediction, Race, ResultDb, User} from 'src/app/types';
 
 export interface FullResultsState {
     columns: string[];
@@ -11,4 +11,5 @@ export interface FullResultsState {
     predictions: Prediction[];
     races: Race[];
     users: User[];
+    yearResults: ResultDb[];
 }

@@ -8,12 +8,14 @@ import {FullResultsAction, FullResultsActionType} from './full-results.actions';
 import * as toolbarSelectors from '../../toolbar/store/toolbar.selectors';
 import {combineLatest} from 'rxjs';
 import {F1PublicApiService} from 'src/app/service/f1-public-api.service';
+import {ResultService} from 'src/app/service/result.service';
 
 
 @Injectable()
 export class FullResultsEffects {
     private readonly users = this.userService.getAllUsers();
     private readonly currentUser = this.store.select(toolbarSelectors.selectCurrentUser);
+    private readonly yearResults = this.resultService.getYearResults(new Date().getFullYear());
     private readonly allPredictions = this.predictionService.getAllPredictions();
     private readonly races = this.f1PublicApiService.getCurrentYearSchedule();
 
@@ -26,6 +28,7 @@ export class FullResultsEffects {
         private actions: Actions<FullResultsAction>,
         private readonly f1PublicApiService: F1PublicApiService,
         private readonly predictionService: PredictionService,
+        private readonly resultService: ResultService,
         private readonly store: Store,
         private readonly userService: UserService,
     ) {}
@@ -41,6 +44,13 @@ export class FullResultsEffects {
         ofType(FullResultsActionType.LOAD_USERS),
         switchMap(() => this.users.pipe(
             map(users => ({type: FullResultsActionType.LOAD_USERS_SUCCESS, payload: {users}})),
+        ))
+    ));
+
+    loadYearResults = createEffect(() => this.actions.pipe(
+        ofType(FullResultsActionType.LOAD_YEAR_RESULTS),
+        switchMap(() => this.yearResults.pipe(
+            map(yearResults => ({type: FullResultsActionType.LOAD_YEAR_RESULTS_SUCCESS, payload: {yearResults}})),
         ))
     ));
 

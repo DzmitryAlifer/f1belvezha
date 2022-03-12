@@ -13,6 +13,7 @@ export const initialState: FullResultsState = {
     predictions: [],
     races: [],
     users: [],
+    yearResults: [],
 };
 
 
@@ -23,6 +24,7 @@ export function fullResultsReducer(state: FullResultsState = initialState, actio
 
         case FullResultsActionType.LOAD_RACES:
         case FullResultsActionType.LOAD_USERS:
+        case FullResultsActionType.LOAD_YEAR_RESULTS:
         case FullResultsActionType.LOAD_ALL_PREDICTIONS:
         case FullResultsActionType.LOAD_CURRENT_USER_PREDICTIONS:
             return {...state, isLoaded: false};
@@ -33,8 +35,11 @@ export function fullResultsReducer(state: FullResultsState = initialState, actio
         case FullResultsActionType.LOAD_USERS_SUCCESS:
             return {...state, users: action.payload.users, isLoaded: true};
 
+        case FullResultsActionType.LOAD_YEAR_RESULTS_SUCCESS:
+            return {...state, yearResults: action.payload.yearResults, isLoaded: true};
+
         case FullResultsActionType.LOAD_ALL_PREDICTIONS_SUCCESS:
-            return { ...state, predictions: action.payload.predictions, isLoaded: true};
+            return {...state, predictions: action.payload.predictions, isLoaded: true};
 
         case FullResultsActionType.LOAD_CURRENT_USER_PREDICTIONS_SUCCESS:
             return {...state, currentUserPredictions: action.payload.currentUserPredictions, isLoaded: true};

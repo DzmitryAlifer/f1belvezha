@@ -60,6 +60,7 @@ export class FullResultsComponent implements OnInit {
     this.currentUserHasPrediction.subscribe();
     this.store.dispatch({type: FullResultsActionType.LOAD_RACES});
     this.store.dispatch({type: FullResultsActionType.LOAD_USERS});
+    this.store.dispatch({type: FullResultsActionType.LOAD_YEAR_RESULTS});
     this.store.dispatch({type: FullResultsActionType.LOAD_ALL_PREDICTIONS});
   }
 
