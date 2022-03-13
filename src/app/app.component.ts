@@ -4,6 +4,7 @@ import {Store} from '@ngrx/store';
 import {LocalStorageService} from './service/local-storage.service';
 import {DropPoint} from './types';
 import * as toolbarSelectors from './toolbar/store/toolbar.selectors';
+import {Page} from './enums';
 
 
 @Component({
@@ -13,10 +14,10 @@ import * as toolbarSelectors from './toolbar/store/toolbar.selectors';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AppComponent {
-  positionX = 100;
-  positionY = 100;
+  readonly Page = Page;
   
   readonly isLockedLayout = this.store.select(toolbarSelectors.selectIsLockedLayout);
+  readonly page = this.store.select(toolbarSelectors.selectPage);
 
   readonly savedUserStandingPosition = 
       this.localStorageService.getItem<DropPoint>('dropPointUserStanding') ?? {x: 0, y: 0};

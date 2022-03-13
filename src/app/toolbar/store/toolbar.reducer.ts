@@ -1,3 +1,4 @@
+import {Page} from 'src/app/enums';
 import {Theme} from 'src/app/service/theme.service';
 import {User} from 'src/app/types';
 import {CURRENT_USER_KEY} from 'src/constants';
@@ -10,6 +11,7 @@ export const initialState: ToolbarState = {
     isDarkMode: localStorage.getItem('user-theme') === Theme.Dark,
     isLoaded: false,
     isLockedLayout: localStorage.getItem('layout') !== 'unlocked',
+    page: Page.FullResults,
     playersResults: [],
 };
 
@@ -27,6 +29,9 @@ export function toolbarReducer(state: ToolbarState = initialState, action: Toolb
 
         case ToolbarActionType.SET_LOCKED_LAYOUT:
             return {...state, isLockedLayout: action.payload.isLockedLayout};
+        
+        case ToolbarActionType.SHOW_PAGE:
+            return {...state, page: action.payload.page};
 
         case ToolbarActionType.LOAD_PLAYERS_RESULTS_SUCCESS:
             return {...state, playersResults: action.payload.playersResults, isLoaded: true};

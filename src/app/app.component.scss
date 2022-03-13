@@ -17,4 +17,8 @@ toolbar {
     right: 0;
     text-align: center;
     top: $toolbar-height;
+
+    .disabled {
+        display: none;
+    }
 }

@@ -1,10 +1,14 @@
 <toolbar></toolbar>
 
-<div *ngIf="{isLockedLayout: isLockedLayout | async} as data" class="page-container">
-  <full-results></full-results>
-  
+<div *ngIf="{
+  isLockedLayout: isLockedLayout | async,
+  page: page | async
+} as data" class="page-container">
+  <full-results [class.disabled]="data.page !== Page.FullResults"></full-results>
+    
   <drivers-standing 
       cdkDrag
+      [class.disabled]="data.page !== Page.FullResults"
       [cdkDragDisabled]="data.isLockedLayout"
       [cdkDragFreeDragPosition]="savedDriverStandingPosition"
       (cdkDragEnded)="saveDriverStandingsPosition($event)">
@@ -12,10 +16,15 @@
 
   <users-standing 
       cdkDrag
+      [class.disabled]="data.page !== Page.FullResults"
       [cdkDragDisabled]="data.isLockedLayout"
       [cdkDragFreeDragPosition]="savedUserStandingPosition"
       (cdkDragEnded)="saveUserStandingsPosition($event)">
   </users-standing>
+
+  <div [class.disabled]="data.page !== Page.Charts">
+
+  </div>
 </div>
 
 <router-outlet></router-outlet>

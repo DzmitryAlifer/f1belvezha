@@ -1,3 +1,4 @@
+import {Page} from 'src/app/enums';
 import {PlayerRoundResult, User} from 'src/app/types';
 
 
@@ -6,5 +7,6 @@ export interface ToolbarState {
     isDarkMode: boolean;
     isLoaded: boolean;
     isLockedLayout: boolean;
+    page: Page;
     playersResults: PlayerRoundResult[];
 }

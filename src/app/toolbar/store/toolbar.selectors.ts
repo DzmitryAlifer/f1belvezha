@@ -6,6 +6,7 @@ const selectToolbarState = createFeatureSelector<ToolbarState>('toolbar');
 const selectToolbar = createSelector(selectToolbarState, (state: ToolbarState) => state);
 
 export const selectCurrentUser = createSelector(selectToolbar, (state: ToolbarState) => state.currentUser);
+export const selectPage = createSelector(selectToolbar, (state: ToolbarState) => state.page);
 export const selectIsDarkMode = createSelector(selectToolbar, (state: ToolbarState) => state.isDarkMode);
 export const selectIsLockedLayout = createSelector(selectToolbar, (state: ToolbarState) => state.isLockedLayout);
 export const selectIsLoaded = createSelector(selectToolbar, (state: ToolbarState) => state?.isLoaded);

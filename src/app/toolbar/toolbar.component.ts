@@ -3,6 +3,7 @@ import {MatDialog} from '@angular/material/dialog';
 import {Store} from '@ngrx/store';
 import {delay} from 'rxjs/operators';
 import {CURRENT_USER_KEY} from 'src/constants';
+import {Page} from '../enums';
 import {LocalStorageService} from '../service/local-storage.service';
 import {ThemeService} from '../service/theme.service';
 import {CreateAccountDialog} from './create-account-dialog/create-account-dialog';
@@ -26,10 +27,12 @@ enum Language {
 })
 export class ToolbarComponent {
   readonly Language = Language;
+  readonly Page = Page;
 
   readonly isDarkMode = this.store.select(toolbarSelectors.selectIsDarkMode);
   readonly isLockedLayout = this.store.select(toolbarSelectors.selectIsLockedLayout).pipe(delay(200));
   readonly user = this.store.select(toolbarSelectors.selectCurrentUser);
+  readonly page = this.store.select(toolbarSelectors.selectPage);
 
   constructor(
     private readonly createAccountDialog: MatDialog,
@@ -61,6 +64,12 @@ export class ToolbarComponent {
 
   toggleMode(isPrevousModeDark: boolean) {
     this.store.dispatch({type: ToolbarActionType.SET_DARK_MODE, payload: {isDarkMode: !isPrevousModeDark}});
+  }
+
+  showPage(page: Page): void {
+    setTimeout(() => {
+      this.store.dispatch({type: ToolbarActionType.SHOW_PAGE, payload: {page}});
+    }, 100);
   }
 
   showHelp(): void {
