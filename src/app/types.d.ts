@@ -118,7 +118,7 @@ export interface Result {
     Driver: Driver;
 }
 
-export interface ResultDb {
+export interface DriverRoundResult {
     id: number;
     year: number;
     round: number;

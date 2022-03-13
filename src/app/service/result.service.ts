@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {Observable} from 'rxjs';
-import {Params, ResultDb} from '../types';
+import {DriverRoundResult, Params} from '../types';
 import {HttpService} from './http.service';
 
 
@@ -9,8 +9,13 @@ export class ResultService {
 
   constructor(private readonly httpService: HttpService) {}
 
-  getDriverYearResults(year: number): Observable<ResultDb[]> {
+  getDriverYearResults(year: number): Observable<DriverRoundResult[]> {
     const queryParams: Params = {year: String(year)};
-    return this.httpService.getByParams<ResultDb[]>('/driverResult', queryParams);
+    return this.httpService.getByParams<DriverRoundResult[]>('/driverResult', queryParams);
+  }
+
+  getUserYearResults(year: number): Observable<DriverRoundResult[]> {
+    const queryParams: Params = { year: String(year) };
+    return this.httpService.getByParams<DriverRoundResult[]>('/driverResult', queryParams);
   }
 }

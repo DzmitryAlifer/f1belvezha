@@ -2,7 +2,7 @@ import * as moment from 'moment';
 import {interval, Observable} from 'rxjs';
 import {map, shareReplay, startWith} from 'rxjs/operators';
 import {DisplayEvent, EventSchedule, EventType} from './toolbar/next-event/next-event.component';
-import {Prediction, ResultDb} from './types';
+import {DriverRoundResult, Prediction} from './types';
 
 
 export const DRIVER_IN_LIST_PTS = 1;
@@ -97,7 +97,7 @@ export function getNextEvent(): Observable<DisplayEvent> {
     );
 }
 
-export function calculateRoundPoints(roundResult: ResultDb, prediction: Prediction): number[][] {
+export function calculateRoundPoints(roundResult: DriverRoundResult, prediction: Prediction): number[][] {
     const qualifyngPredictionPoints = calculateEventPoints(roundResult.qualifying, prediction.qualification);
     const racePredictionPoints = calculateEventPoints(roundResult.race, prediction.race);
 
