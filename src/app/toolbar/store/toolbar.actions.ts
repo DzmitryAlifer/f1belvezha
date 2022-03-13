@@ -1,5 +1,5 @@
 import {Action} from '@ngrx/store';
-import {User} from 'src/app/types';
+import {PlayerRoundResult, User} from 'src/app/types';
 
 
 export enum ToolbarActionType {
@@ -8,6 +8,8 @@ export enum ToolbarActionType {
     SET_DARK_MODE_SUCCESS = '[Toolbar] Set dark mode - success',
     SET_LOCKED_LAYOUT = '[Toolbar] Set locked layout',
     SET_LOCKED_LAYOUT_SUCCESS = '[Toolbar] Set locked layout - success',
+    LOAD_PLAYERS_RESULTS = '[Toolbar] Load players results',
+    LOAD_PLAYERS_RESULTS_SUCCESS = '[Toolbar] Load players results - success',
 }
 
 export class SetCurrentUser implements Action {
@@ -25,7 +27,19 @@ export class SetLockedLayout implements Action {
     constructor(readonly payload: {isLockedLayout: boolean}) {}
 }
 
+export class LoadPlayersResults implements Action {
+    readonly type = ToolbarActionType.LOAD_PLAYERS_RESULTS;
+    constructor(readonly payload: {}) {}
+}
+
+export class LoadPlayersResultsSuccess implements Action {
+    readonly type = ToolbarActionType.LOAD_PLAYERS_RESULTS_SUCCESS;
+    constructor(readonly payload: {playersResults: PlayerRoundResult[]}) {}
+}
+
 export type ToolbarAction =
     | SetCurrentUser
     | SetDarkMode
-    | SetLockedLayout;
+    | SetLockedLayout
+    | LoadPlayersResults
+    | LoadPlayersResultsSuccess;

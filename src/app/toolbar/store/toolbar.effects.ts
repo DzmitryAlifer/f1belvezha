@@ -1,20 +1,45 @@
 import {Injectable} from '@angular/core';
 import {Actions, createEffect, ofType} from '@ngrx/effects';
 import {Store} from '@ngrx/store';
-import {map, switchMap, tap} from 'rxjs/operators';
+import {combineLatest} from 'rxjs';
+import {debounceTime, map, switchMap, tap} from 'rxjs/operators';
 import {Theme, ThemeService} from 'src/app/service/theme.service';
 import {ToolbarAction, ToolbarActionType} from './toolbar.actions';
 import * as toolbarSelectors from './toolbar.selectors';
+import * as fullResultsSelectors from '../../full-results/store/full-results.selectors';
+import {PredictionService} from '../../service/prediction.service';
+import {ResultService} from '../../service/result.service';
+import {DriverRoundResult, PlayerRoundResult, Prediction} from 'src/app/types';
+
+
+const CURRENT_YEAR = new Date().getFullYear();
 
 
 @Injectable()
 export class ToolbarEffects {
     private readonly isDarkMode = this.store.select(toolbarSelectors.selectIsDarkMode);
     private readonly isLockedLayout = this.store.select(toolbarSelectors.selectIsLockedLayout);
+    private readonly driverResults = this.store.select(fullResultsSelectors.selectCurrentYearResults);
+    private readonly playersResults = this.resultService.getPlayersYearResults(CURRENT_YEAR);
+    private readonly allPredictions = this.predictionService.getAllPredictions();
+
+    private readonly unprocessedDriversResults = combineLatest([this.driverResults, this.playersResults]).pipe(
+        debounceTime(0),
+        map(([driverResults, playersResults]) =>
+            driverResults.filter(driverResult =>
+                !playersResults.some(playersResult => playersResult.round === driverResult.round))));
+
+    private readonly newPlayersResults = combineLatest([this.unprocessedDriversResults, this.allPredictions]).pipe(
+        map(([driverResults, predictions]) =>
+            driverResults.map(driverResult =>
+                predictions.filter(({ round }) => round === driverResult.round).map(prediction =>
+                    getPlayerResult(prediction, driverResult))).flat()));
 
     constructor(
         private actions: Actions<ToolbarAction>,
         private readonly store: Store,
+        private readonly predictionService: PredictionService,
+        private readonly resultService: ResultService,
         private themeService: ThemeService,
     ) {}
 
@@ -37,4 +62,34 @@ export class ToolbarEffects {
             map(() => ({type: ToolbarActionType.SET_LOCKED_LAYOUT_SUCCESS})),
         )),
     ));
+
+    getPlayersYearResults = createEffect(() => this.actions.pipe(
+        ofType(ToolbarActionType.LOAD_PLAYERS_RESULTS),
+        switchMap(() => this.newPlayersResults.pipe(
+            switchMap(playersResults => this.resultService.addPlayersResults(playersResults).pipe(
+                switchMap(() => this.resultService.getPlayersYearResults(CURRENT_YEAR)),
+                map(playersResults => ({type: ToolbarActionType.LOAD_PLAYERS_RESULTS_SUCCESS, payload: {playersResults}})),
+            )),
+        )),
+    ));
+}
+
+function getPlayerResult(prediction: Prediction, { year, round, qualifying, race }: DriverRoundResult): PlayerRoundResult {
+    return {
+        userid: prediction.userid!,
+        year,
+        round,
+        qual_guessed_on_list: intersection(prediction.qualification, qualifying),
+        qual_guessed_position: getSamePlaces(prediction.qualification, qualifying),
+        race_guessed_on_list: intersection(prediction.race, race),
+        race_guessed_position: getSamePlaces(prediction.race, race),
+    };
+}
+
+function intersection(left: string[], right: string[]): string[] {
+    return left.filter(element => right.includes(element));
+}
+
+function getSamePlaces(left: string[], right: string[]): string[] {
+    return left.filter((element, index) => right.indexOf(element) === index);
 }

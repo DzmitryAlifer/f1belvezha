@@ -41,6 +41,7 @@ export class ToolbarComponent {
   ) {
     this.themeService.initTheme();
     localStorage.setItem('layout', 'locked');
+    this.store.dispatch({type: ToolbarActionType.LOAD_PLAYERS_RESULTS}); 
   }
 
   createAccount(): void {

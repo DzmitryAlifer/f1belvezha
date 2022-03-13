@@ -12,8 +12,8 @@ import * as toolbarSelectors from '../toolbar/store/toolbar.selectors';
 import {getFlagLink} from '../common';
 
 
-// const NOW = moment();
-const NOW = moment('2022-03-20T10:00:00Z');
+const NOW = moment();
+// const NOW = moment('2022-03-20T10:00:00Z');
 const ROUND_TO_INDEX_OFFSET = 2;
 
     
@@ -52,7 +52,6 @@ export class FullResultsComponent implements OnInit {
     map(userColumns => ['event', 'circuit', ...userColumns, 'empty', 'stats']),
   );
 
-  private readonly results = this.store.select(fullResultsSelectors.selectCurrentYearResults);
   readonly points = this.store.select(fullResultsSelectors.selectCurrentYearPoints);
 
   constructor(

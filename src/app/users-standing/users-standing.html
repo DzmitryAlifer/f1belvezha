@@ -4,27 +4,29 @@
     isLockedLayout: isLockedLayout | async
 } as data" class="standing mat-elevation-z8" [class.dark]="data.isDarkMode">
     <mat-icon *ngIf="!data.isLockedLayout" class="drag-icon">drag_indicator</mat-icon>
-    <h1 class="title">Users</h1>
+    <h1 class="title">Players</h1>
 
-    <table mat-table [dataSource]="users">
+    <table mat-table [dataSource]="sortedPlayersYearPoints">
         <ng-container matColumnDef="place">
             <th mat-header-cell *matHeaderCellDef>Plc</th>
-            <td mat-cell *matCellDef="let user; let index = index" [class.current-user]="user.id == data.currentUser?.id">
+            <td mat-cell 
+                *matCellDef="let playerPoints; let index = index" 
+                [class.current-user]="playerPoints.user.id == data.currentUser?.id">
                 {{index + 1}}
             </td>
         </ng-container>
 
         <ng-container matColumnDef="name">
             <th mat-header-cell *matHeaderCellDef>Name</th>
-            <td mat-cell *matCellDef="let user" [class.current-user]="user.id == data.currentUser?.id">
-                {{user.firstname + ' ' + (user.lastname ?? '')}}
+            <td mat-cell *matCellDef="let playerPoints" [class.current-user]="playerPoints.user.id == data.currentUser?.id">
+                {{playerPoints.user.firstname + ' ' + (playerPoints.user.lastname ?? '')}}
             </td>
         </ng-container>
 
         <ng-container matColumnDef="points">
             <th mat-header-cell *matHeaderCellDef>Pts</th>
-            <td mat-cell *matCellDef="let user" [class.current-user]="user.id == data.currentUser?.id">
-                {{user.seasonpoints}}
+            <td mat-cell *matCellDef="let playerPoints" [class.current-user]="playerPoints.user.id == data.currentUser?.id">
+                {{playerPoints.points}}
             </td>
         </ng-container>
 

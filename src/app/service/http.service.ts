@@ -1,6 +1,7 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from  '@angular/common/http';
 import {Observable} from 'rxjs';
+import {map} from 'rxjs/operators';
 import {Params} from '../types';
 
 
@@ -26,7 +27,8 @@ export class HttpService {
   }
 
   post<T>(apiPath: string, entity: T): Observable<T> {
-    return this.httpClient.post<T>(`${API_DOMAIN}${apiPath}`, entity);
+    const response = this.httpClient.post<T>(`${API_DOMAIN}${apiPath}`, entity);
+    return Array.isArray(entity) ? response.pipe(map(() => entity)) : response;
   }
 
   put<T>(apiPath: string, entity: T): Observable<T> {

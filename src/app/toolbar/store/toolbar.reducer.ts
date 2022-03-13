@@ -8,12 +8,17 @@ import {ToolbarState} from './toolbar.model';
 export const initialState: ToolbarState = {
     currentUser: getStoredUser(),
     isDarkMode: localStorage.getItem('user-theme') === Theme.Dark,
+    isLoaded: false,
     isLockedLayout: localStorage.getItem('layout') !== 'unlocked',
+    playersResults: [],
 };
 
 
 export function toolbarReducer(state: ToolbarState = initialState, action: ToolbarAction): ToolbarState {
     switch (action.type) {
+        case ToolbarActionType.LOAD_PLAYERS_RESULTS:
+            return {...state, isLoaded: false};
+
         case ToolbarActionType.SET_CURRENT_USER:
             return {...state, currentUser: action.payload.currentUser};
 
@@ -22,6 +27,9 @@ export function toolbarReducer(state: ToolbarState = initialState, action: Toolb
 
         case ToolbarActionType.SET_LOCKED_LAYOUT:
             return {...state, isLockedLayout: action.payload.isLockedLayout};
+
+        case ToolbarActionType.LOAD_PLAYERS_RESULTS_SUCCESS:
+            return {...state, playersResults: action.payload.playersResults, isLoaded: true};
 
         default:
             return state;

@@ -82,7 +82,7 @@ export interface DriverStanding {
 }
 
 export interface Params {
-    [param: string]: string;
+    [param: string]: string | number;
 }
 
 export interface DropPoint {
@@ -124,4 +124,19 @@ export interface DriverRoundResult {
     round: number;
     qualifying: string[];
     race: string[];
+}
+
+export interface PlayerRoundResult {
+    userid: number;
+    year: number;
+    round: number;
+    qual_guessed_on_list: string[];
+    qual_guessed_position: string[];
+    race_guessed_on_list: string[];
+    race_guessed_position: string[];
+}
+
+export interface UserPoints {
+    user: User;
+    points: number;
 }
