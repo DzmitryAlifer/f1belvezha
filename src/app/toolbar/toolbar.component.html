@@ -47,11 +47,6 @@
                 <button mat-menu-item (click)="setLanguage(Language.English)">English</button>
                 <button mat-menu-item (click)="setLanguage(Language.Russian)">Russian</button>
             </mat-menu>
-
-            <button disabled mat-menu-item>
-                <mat-icon>settings</mat-icon>
-                Setting 2
-            </button>
         </mat-menu>
         
         <button mat-icon-button class="user" [matMenuTriggerFor]="userMenu">
