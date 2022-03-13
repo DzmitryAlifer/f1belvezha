@@ -38,10 +38,15 @@
                 Unlock layout
             </button>
 
-            <button disabled mat-menu-item>
-                <mat-icon>settings</mat-icon>
-                Setting 1
+            <button [disabled]="data.user?.id !== 44" mat-menu-item [matMenuTriggerFor]="languageMenu">
+                <mat-icon>language</mat-icon>
+                Language
             </button>
+
+            <mat-menu #languageMenu="matMenu">
+                <button mat-menu-item (click)="setLanguage(Language.English)">English</button>
+                <button mat-menu-item (click)="setLanguage(Language.Russian)">Russian</button>
+            </mat-menu>
 
             <button disabled mat-menu-item>
                 <mat-icon>settings</mat-icon>

@@ -58,10 +58,7 @@ export class FullResultsComponent implements OnInit {
   constructor(
     private readonly predictionDialog: MatDialog,
     private readonly store: Store,
-  ) { 
-    this.results.subscribe(r => console.log(r));
-    this.points.subscribe(r => console.log(r));
-  }
+  ) {}
 
   ngOnInit(): void {
     this.currentUserHasPrediction.subscribe();

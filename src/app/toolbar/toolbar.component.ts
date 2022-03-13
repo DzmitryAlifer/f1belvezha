@@ -12,6 +12,12 @@ import {ToolbarActionType} from './store/toolbar.actions';
 import * as toolbarSelectors from './store/toolbar.selectors';
 
 
+enum Language {
+  English = 'en',
+  Russian = 'ru',
+}
+
+
 @Component({
   selector: 'toolbar',
   templateUrl: './toolbar.component.html',
@@ -19,6 +25,8 @@ import * as toolbarSelectors from './store/toolbar.selectors';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ToolbarComponent {
+  readonly Language = Language;
+
   readonly isDarkMode = this.store.select(toolbarSelectors.selectIsDarkMode);
   readonly isLockedLayout = this.store.select(toolbarSelectors.selectIsLockedLayout).pipe(delay(200));
   readonly user = this.store.select(toolbarSelectors.selectCurrentUser);
@@ -58,7 +66,22 @@ export class ToolbarComponent {
     this.helpDialog.open(HelpDialog, {width: '500px'});
   }
 
-  toggleLayoutLock(wasLayoutLocked: boolean) {
+  toggleLayoutLock(wasLayoutLocked: boolean): void {
     this.store.dispatch({type: ToolbarActionType.SET_LOCKED_LAYOUT, payload: {isLockedLayout: !wasLayoutLocked}});
+  }
+
+  // For testing purposes
+  setLanguage(language: Language): void {
+    if (language === Language.English) {
+      setTimeout(() => {
+        alert(language);
+      }, 3000);
+    }
+
+    if (language === Language.Russian) {
+      setTimeout(() => {
+        alert(language);
+      }, 5000);
+    }
   }
 }
