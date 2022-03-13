@@ -9,8 +9,8 @@ export class ResultService {
 
   constructor(private readonly httpService: HttpService) {}
 
-  getYearResults(year: number): Observable<ResultDb[]> {
+  getDriverYearResults(year: number): Observable<ResultDb[]> {
     const queryParams: Params = {year: String(year)};
-    return this.httpService.getByParams<ResultDb[]>('/result', queryParams);
+    return this.httpService.getByParams<ResultDb[]>('/driverResult', queryParams);
   }
 }

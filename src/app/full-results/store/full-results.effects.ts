@@ -16,7 +16,7 @@ import {calculateRoundPoints} from 'src/app/common';
 export class FullResultsEffects {
     private readonly users = this.userService.getAllUsers();
     private readonly currentUser = this.store.select(toolbarSelectors.selectCurrentUser);
-    private readonly currentYearResults = this.resultService.getYearResults(new Date().getFullYear());
+    private readonly currentYearResults = this.resultService.getDriverYearResults(new Date().getFullYear());
     private readonly allPredictions = this.predictionService.getAllPredictions();
     private readonly races = this.f1PublicApiService.getCurrentYearSchedule();
 
