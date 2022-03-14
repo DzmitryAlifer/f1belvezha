@@ -9,6 +9,7 @@ import {EffectsModule} from '@ngrx/effects';
 import {StoreModule} from '@ngrx/store';
 import {AppRoutingModule} from './app-routing.module';
 import {AppComponent} from './app.component';
+import {ChartsModule} from './charts/charts.module';
 import {CoinModule} from './coin/coin.module';
 import {DriversStandingModule} from './drivers-standing/drivers-standing.module';
 import {FullResultsModule} from './full-results/full-results.module';
@@ -27,6 +28,7 @@ import {PredictionDialogModule} from './prediction-dialog/prediction-dialog.modu
     AppRoutingModule,
     BrowserAnimationsModule,
     BrowserModule,
+    ChartsModule,
     CoinModule,
     CreateAccountDialogModule,
     DragDropModule,

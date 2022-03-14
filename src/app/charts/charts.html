@@ -1,0 +1,6 @@
+<mat-card *ngIf="{
+    chartOptions: chartOptions | async
+} as data">
+    <mat-card-title>Most selected driver</mat-card-title>
+    <div echarts [options]="data.chartOptions!" class="demo-chart"></div>
+</mat-card>
