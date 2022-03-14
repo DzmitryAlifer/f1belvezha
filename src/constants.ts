@@ -1,3 +1,4 @@
+export const PREDICTION_PLACES_NUMBER = 5;
 export const CURRENT_USER_KEY = 'currentUser';
 
 export const DRIVER_TEAM_MAPPING = new Map<string, string>()

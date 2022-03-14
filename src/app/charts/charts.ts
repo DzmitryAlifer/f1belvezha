@@ -2,10 +2,11 @@ import {ChangeDetectionStrategy, Component} from '@angular/core';
 import {Store} from '@ngrx/store';
 import {EChartsOption} from 'echarts';
 import {combineLatest} from 'rxjs';
-import {map} from 'rxjs/operators';
-import {TEAM_DRIVER_COLORS} from 'src/constants';
+import {debounceTime, map, shareReplay} from 'rxjs/operators';
+import {PREDICTION_PLACES_NUMBER, TEAM_DRIVER_COLORS} from 'src/constants';
 import * as fullResultsSelectors from '../full-results/store/full-results.selectors'; 
 import * as toolbarSelectors from '../toolbar/store/toolbar.selectors';
+import {PlayerRoundResult} from '../types';
 
 
 interface PlayerSuccessPct {
@@ -38,33 +39,63 @@ export class ChartsComponent {
     map(driversMap => Array.from(driversMap, ([name, value]) => ({name, value}))),
   );
 
-  readonly chartOptions = combineLatest([this.driversCount, this.isDarkMode]).pipe(
-    map(([driversCount, isDarkMode]) => getChartOptions(driversCount, isDarkMode)));
+  private readonly playersSuccessRates = combineLatest([this.users, this.allPredictions, this.playersYearResults]).pipe(
+    debounceTime(0),
+    map(([users, allPredictions, results]) => users.reduce((map, user) => {
+      const userId = user.id!;
+      const playerFullName = user.firstname + (user.lastname ? ' ' + user.lastname : '');
+      const predictionsNumber = allPredictions.filter(prediction => prediction.userid == userId).length;
+      const singlePlayerResults = results.filter(result => result.userid === userId);
+      const singlePlayerSuccessPct = map.get(playerFullName) ?? 
+          {userId, correctInList: 0, correctPosition: 0, predictionsNumber: 0};
+      return map.set(playerFullName, {
+        userId,
+        correctInList: singlePlayerSuccessPct.correctInList + countGettingsInList(singlePlayerResults),
+        correctPosition: singlePlayerSuccessPct.correctPosition + countCorrectPositions(singlePlayerResults),
+        predictionsNumber: singlePlayerSuccessPct.predictionsNumber + predictionsNumber,
+      });
+    }, new Map<string, PlayerSuccessPct>())),
+    shareReplay(1),
+  );
 
-  // readonly chartOptions2 = combineLatest([this.users, this.playersYearResults]).pipe(
-  //   map(([users, results]) => users.reduce((map, user) => {
-  //     const userId = user.id!;
-  //     const singlePlayerResults = results.filter(result => result.userid === userId);
-  //     const singlePlayerSuccessPct = map.get(userId) ?? 
-  //         {userId, correctInList: 0, correctPosition: 0, predictionsNumber: 0};
-  //     map.set(userId, {
-  //       userId,
-  //       correctInList: singlePlayerSuccessPct.correctInList + singlePlayerResults.find(),
-  //       correctPosition: 0,
-  //       predictionsNumber: 0,
-  //     });
-      
-  //     return map;
-  //   }, new Map<number, PlayerSuccessPct>())),
-  // );
+  private readonly playersCorrectInListRate = this.playersSuccessRates.pipe(
+    map(playersMap => Array.from(playersMap, ([name, value]) => 
+        ({name, value: value.correctInList * PREDICTION_PLACES_NUMBER * 2 / value.predictionsNumber}))),
+    map(list => list.filter(item => !!item.value).sort((left, right) => right.value - left.value)),
+  );
+
+  private readonly playersCorrectPositionRate = this.playersSuccessRates.pipe(
+    map(playersMap => Array.from(playersMap, ([name, value]) =>
+        ({name, value: value.correctPosition * PREDICTION_PLACES_NUMBER * 2 / value.predictionsNumber}))),
+    map(list => list.filter(item => !!item.value).sort((left, right) => right.value - left.value)),
+  );
+
+  readonly chartOptions1 = combineLatest([this.driversCount, this.isDarkMode]).pipe(
+    map(([driversCount, isDarkMode]) => getPieChartOptions(driversCount, isDarkMode, TEAM_DRIVER_COLORS)));
+
+  readonly chartOptions2 = combineLatest([this.playersCorrectInListRate, this.isDarkMode]).pipe(
+    map(([playersCorrectInListRate, isDarkMode]) => getBarChartOptions(playersCorrectInListRate)));  
+
+  readonly chartOptions3 = combineLatest([this.playersCorrectPositionRate, this.isDarkMode]).pipe(
+      map(([playersCorrectInListRate, isDarkMode]) => getBarChartOptions(playersCorrectInListRate)));  
 
   constructor(private readonly store: Store) {}
 }
 
-function getChartOptions(data: Array<{ name: string, value: number }>, isDarkMode: boolean): EChartsOption {
+function countGettingsInList(singlePlayerResults: PlayerRoundResult[]): number {
+  return singlePlayerResults.reduce((sum, result) => 
+      sum + result.qual_guessed_on_list.length + result.race_guessed_on_list.length, 0);
+}
+
+function countCorrectPositions(singlePlayerResults: PlayerRoundResult[]): number {
+  return singlePlayerResults.reduce((sum, result) =>
+      sum + result.qual_guessed_position.length + result.race_guessed_position.length, 0);
+}
+
+function getPieChartOptions(data: Array<{name: string, value: number}>, isDarkMode: boolean, customColors?: any): EChartsOption { 
   return {
     tooltip: {trigger: 'item'},
-    series: [{
+    series: {
       type: 'pie',
       colorBy: 'data',
       data,
@@ -77,10 +108,25 @@ function getChartOptions(data: Array<{ name: string, value: number }>, isDarkMod
         }
       },
       itemStyle: {
-        color: (param: any) => TEAM_DRIVER_COLORS[param.name] || '#5470c6',
+        color: customColors ? ({name}: any) => customColors[name] : undefined,
         borderColor: isDarkMode ? '#424242' : '#e0e0e0',
         borderWidth: 1,
       },
-    }],
+    },
+  };
+}
+
+function getBarChartOptions(data: Array<{name: string, value: number}>): EChartsOption {
+  return {
+    xAxis: {
+      type: 'category',
+      data: data.map(({name}) => name),
+      axisLabel: { interval: 0, rotate: 30 },
+    },
+    yAxis: {type: 'value'},
+    series: {
+      type: 'bar',
+      data: data.map(({value}) => value),
+    },  
   };
 } 

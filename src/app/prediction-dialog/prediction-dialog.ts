@@ -9,7 +9,7 @@ import {PredictionService} from '../service/prediction.service';
 import {Prediction} from '../types';
 import * as fullResultsSelectors from '../full-results/store/full-results.selectors';
 import {FullResultsActionType} from '../full-results/store/full-results.actions';
-import {DRIVER_TEAM_MAPPING} from 'src/constants';
+import {DRIVER_TEAM_MAPPING, PREDICTION_PLACES_NUMBER} from 'src/constants';
 import {getNextEvent} from '../common';
 import { EventType } from '../toolbar/next-event/next-event.component';
 
@@ -23,7 +23,6 @@ export interface PredictionDialogData {
 }
 
 
-export const PREDICTION_PLACES_NUMBER = 5;
 const PLACE_INDEXES = Array.from({length: PREDICTION_PLACES_NUMBER}, (v, i) => i);
 const EMPTY_PREDICTION: Prediction = {qualification: ['', '', '', '', ''], race: ['', '', '', '', '']};
 
