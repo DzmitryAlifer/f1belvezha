@@ -3,6 +3,7 @@ import {Store} from '@ngrx/store';
 import {EChartsOption} from 'echarts';
 import {combineLatest} from 'rxjs';
 import {map} from 'rxjs/operators';
+import {TEAM_DRIVER_COLORS} from 'src/constants';
 import * as fullResultsSelectors from '../full-results/store/full-results.selectors'; 
 import * as toolbarSelectors from '../toolbar/store/toolbar.selectors';
 
@@ -35,12 +36,6 @@ export class ChartsComponent {
 }
 
 function getChartOptions(data: Array<{ name: string, value: number }>, isDarkMode: boolean): EChartsOption {
-  const countryColors: any = {
-    Hamilton: '#ffffff',
-    Verstappen: '#dddddd',
-    Bottas: '#ff0000',
-  };
-
   return {
     tooltip: {trigger: 'item'},
     series: [{
@@ -56,9 +51,7 @@ function getChartOptions(data: Array<{ name: string, value: number }>, isDarkMod
         }
       },
       itemStyle: {
-      //   color: function (param: any) {
-      //     return countryColors[param.name] || '#ffee77';
-      //   }
+        color: (param: any) => TEAM_DRIVER_COLORS[param.name] || '#5470c6',
         borderColor: isDarkMode ? '#424242' : '#e0e0e0',
         borderWidth: 1,
       },
