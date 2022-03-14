@@ -8,6 +8,14 @@ import * as fullResultsSelectors from '../full-results/store/full-results.select
 import * as toolbarSelectors from '../toolbar/store/toolbar.selectors';
 
 
+interface PlayerSuccessPct {
+  userId: number;
+  correctInList: number;
+  correctPosition: number;
+  predictionsNumber: number;
+}
+
+
 @Component({
   selector: 'charts',
   templateUrl: './charts.html',
@@ -16,6 +24,7 @@ import * as toolbarSelectors from '../toolbar/store/toolbar.selectors';
 })
 export class ChartsComponent {
   private readonly isDarkMode = this.store.select(toolbarSelectors.selectIsDarkMode);
+  private readonly users = this.store.select(fullResultsSelectors.selectUsers);
   private readonly playersYearResults = this.store.select(toolbarSelectors.selectPlayersResults);
   private readonly allPredictions = this.store.select(fullResultsSelectors.selectAllPredictions);
   
@@ -31,6 +40,23 @@ export class ChartsComponent {
 
   readonly chartOptions = combineLatest([this.driversCount, this.isDarkMode]).pipe(
     map(([driversCount, isDarkMode]) => getChartOptions(driversCount, isDarkMode)));
+
+  // readonly chartOptions2 = combineLatest([this.users, this.playersYearResults]).pipe(
+  //   map(([users, results]) => users.reduce((map, user) => {
+  //     const userId = user.id!;
+  //     const singlePlayerResults = results.filter(result => result.userid === userId);
+  //     const singlePlayerSuccessPct = map.get(userId) ?? 
+  //         {userId, correctInList: 0, correctPosition: 0, predictionsNumber: 0};
+  //     map.set(userId, {
+  //       userId,
+  //       correctInList: singlePlayerSuccessPct.correctInList + singlePlayerResults.find(),
+  //       correctPosition: 0,
+  //       predictionsNumber: 0,
+  //     });
+      
+  //     return map;
+  //   }, new Map<number, PlayerSuccessPct>())),
+  // );
 
   constructor(private readonly store: Store) {}
 }
