@@ -1,10 +1,11 @@
 <mat-card *ngIf="{
     currentUser: currentUser | async,
     isDarkMode: isDarkMode | async,
-    isLockedLayout: isLockedLayout | async
+    isLockedLayout: isLockedLayout | async,
+    language: language | async
 } as data" class="standing mat-elevation-z8" [class.dark]="data.isDarkMode">
     <mat-icon *ngIf="!data.isLockedLayout" class="drag-icon">drag_indicator</mat-icon>
-    <h1 class="title">Players</h1>
+    <h1 class="title">{{data.language === Language.English ? 'Players' : 'Игроки'}}</h1>
 
     <table mat-table [dataSource]="sortedPlayersYearPoints">
         <ng-container matColumnDef="place">

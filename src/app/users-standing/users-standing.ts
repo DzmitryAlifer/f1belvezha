@@ -2,6 +2,7 @@ import {AfterViewInit, ChangeDetectionStrategy, Component} from '@angular/core';
 import {Store} from '@ngrx/store';
 import {filter, map, switchMap, withLatestFrom} from 'rxjs/operators'; 
 import {DRIVER_IN_LIST_PTS, DRIVER_PLACE_PTS} from '../common';
+import {Language} from '../enums';
 import * as fullResultsSelectors from '../full-results/store/full-results.selectors';
 import {ToolbarActionType} from '../toolbar/store/toolbar.actions';
 import * as toolbarSelectors from '../toolbar/store/toolbar.selectors';
@@ -16,7 +17,9 @@ import {PlayerRoundResult, User, UserPoints} from '../types';
 })
 export class UsersStandingComponent implements AfterViewInit {
   readonly columns = ['place', 'name', 'points'];
+  readonly Language = Language;
 
+  readonly language = this.store.select(toolbarSelectors.selectLanguage);
   readonly isDarkMode = this.store.select(toolbarSelectors.selectIsDarkMode);
   readonly isLockedLayout = this.store.select(toolbarSelectors.selectIsLockedLayout);
   readonly users = this.store.select(fullResultsSelectors.selectUsers).pipe(
