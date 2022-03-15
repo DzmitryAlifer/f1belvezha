@@ -3,7 +3,7 @@ import {MatDialog} from '@angular/material/dialog';
 import {Store} from '@ngrx/store';
 import {delay} from 'rxjs/operators';
 import {CURRENT_USER_KEY} from 'src/constants';
-import {Page} from '../enums';
+import {Language, Page} from '../enums';
 import {LocalStorageService} from '../service/local-storage.service';
 import {ThemeService} from '../service/theme.service';
 import {CreateAccountDialog} from './create-account-dialog/create-account-dialog';
@@ -11,12 +11,6 @@ import {HelpDialog} from './help-dialog/help-dialog';
 import {LoginDialog} from './login-dialog/login-dialog';
 import {ToolbarActionType} from './store/toolbar.actions';
 import * as toolbarSelectors from './store/toolbar.selectors';
-
-
-enum Language {
-  English = 'en',
-  Russian = 'ru',
-}
 
 
 @Component({
@@ -84,13 +78,13 @@ export class ToolbarComponent {
   setLanguage(language: Language): void {
     if (language === Language.English) {
       setTimeout(() => {
-        alert(language);
+        this.store.dispatch({type: ToolbarActionType.SET_LANGUAGE, payload: {language}});
       }, 3000);
     }
 
     if (language === Language.Russian) {
       setTimeout(() => {
-        alert(language);
+        this.store.dispatch({type: ToolbarActionType.SET_LANGUAGE, payload: {language}});
       }, 5000);
     }
   }

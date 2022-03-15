@@ -1,4 +1,4 @@
-import {Page} from 'src/app/enums';
+import {Language, Page} from 'src/app/enums';
 import {Theme} from 'src/app/service/theme.service';
 import {User} from 'src/app/types';
 import {CURRENT_USER_KEY} from 'src/constants';
@@ -11,6 +11,7 @@ export const initialState: ToolbarState = {
     isDarkMode: localStorage.getItem('user-theme') === Theme.Dark,
     isLoaded: false,
     isLockedLayout: localStorage.getItem('layout') !== 'unlocked',
+    language: (localStorage.getItem('language') ?? 'English') as Language,
     page: Page.FullResults,
     playersResults: [],
 };
@@ -18,6 +19,9 @@ export const initialState: ToolbarState = {
 
 export function toolbarReducer(state: ToolbarState = initialState, action: ToolbarAction): ToolbarState {
     switch (action.type) {
+        case ToolbarActionType.SET_LANGUAGE:
+            return {...state, language: action.payload.language};
+
         case ToolbarActionType.LOAD_PLAYERS_RESULTS:
             return {...state, isLoaded: false};
 

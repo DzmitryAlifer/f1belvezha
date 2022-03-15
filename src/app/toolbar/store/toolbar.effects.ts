@@ -17,6 +17,7 @@ const CURRENT_YEAR = new Date().getFullYear();
 
 @Injectable()
 export class ToolbarEffects {
+    private readonly language = this.store.select(toolbarSelectors.selectLanguage);
     private readonly isDarkMode = this.store.select(toolbarSelectors.selectIsDarkMode);
     private readonly isLockedLayout = this.store.select(toolbarSelectors.selectIsLockedLayout);
     private readonly driverResults = this.store.select(fullResultsSelectors.selectCurrentYearResults);
@@ -42,6 +43,16 @@ export class ToolbarEffects {
         private readonly resultService: ResultService,
         private themeService: ThemeService,
     ) {}
+
+    setLanguage = createEffect(() => this.actions.pipe(
+        ofType(ToolbarActionType.SET_LANGUAGE),
+        switchMap(() => this.language.pipe(
+            tap(language => {
+                localStorage.setItem('language', language);
+            }),
+            map(() => ({type: ToolbarActionType.SET_LANGUAGE_SUCCESS})),
+        )),
+    ));
 
     setTheme = createEffect(() => this.actions.pipe(
         ofType(ToolbarActionType.SET_DARK_MODE),

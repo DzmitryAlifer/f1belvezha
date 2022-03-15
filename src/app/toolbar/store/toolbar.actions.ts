@@ -1,9 +1,11 @@
 import {Action} from '@ngrx/store';
-import {Page} from 'src/app/enums';
+import {Language, Page} from 'src/app/enums';
 import {PlayerRoundResult, User} from 'src/app/types';
 
 
 export enum ToolbarActionType {
+    SET_LANGUAGE = '[Toolbar] - Set language',
+    SET_LANGUAGE_SUCCESS = '[Toolbar] - Set language - success',
     SET_CURRENT_USER = '[Toolbar] Set current user',
     SET_DARK_MODE = '[Toolbar] Set dark mode',
     SET_DARK_MODE_SUCCESS = '[Toolbar] Set dark mode - success',
@@ -12,6 +14,11 @@ export enum ToolbarActionType {
     SHOW_PAGE = '[Toolbar] Show page',
     LOAD_PLAYERS_RESULTS = '[Toolbar] Load players results',
     LOAD_PLAYERS_RESULTS_SUCCESS = '[Toolbar] Load players results - success',
+}
+
+export class SetLanguage implements Action {
+    readonly type = ToolbarActionType.SET_LANGUAGE;
+    constructor(readonly payload: {language: Language}) {}
 }
 
 export class SetCurrentUser implements Action {
@@ -45,6 +52,7 @@ export class LoadPlayersResultsSuccess implements Action {
 }
 
 export type ToolbarAction =
+    | SetLanguage
     | SetCurrentUser
     | SetDarkMode
     | SetLockedLayout

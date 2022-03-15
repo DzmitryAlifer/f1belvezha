@@ -5,6 +5,7 @@ import {ToolbarState} from './toolbar.model';
 const selectToolbarState = createFeatureSelector<ToolbarState>('toolbar');
 const selectToolbar = createSelector(selectToolbarState, (state: ToolbarState) => state);
 
+export const selectLanguage = createSelector(selectToolbar, (state: ToolbarState) => state.language);
 export const selectCurrentUser = createSelector(selectToolbar, (state: ToolbarState) => state.currentUser);
 export const selectPage = createSelector(selectToolbar, (state: ToolbarState) => state.page);
 export const selectIsDarkMode = createSelector(selectToolbar, (state: ToolbarState) => state.isDarkMode);
