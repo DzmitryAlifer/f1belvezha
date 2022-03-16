@@ -3,6 +3,7 @@ import {CommonModule} from '@angular/common';
 import {HttpClientModule} from '@angular/common/http';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {MatButtonModule} from '@angular/material/button';
+import {MatCheckboxModule} from '@angular/material/checkbox';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatInputModule} from '@angular/material/input';
 import {StoreModule} from '@ngrx/store';
@@ -18,6 +19,7 @@ import {toolbarReducer} from '../store/toolbar.reducer';
     FormsModule, 
     HttpClientModule,
     MatButtonModule,
+    MatCheckboxModule,
     MatFormFieldModule, 
     MatInputModule, 
     ReactiveFormsModule,

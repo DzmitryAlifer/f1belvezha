@@ -7,7 +7,8 @@ import {UserService} from 'src/app/service/user.service';
 import {LocalStorageService} from 'src/app/service/local-storage.service';
 import {CURRENT_USER_KEY} from 'src/constants';
 import {ToolbarActionType} from '../store/toolbar.actions';
-import { debounceTime, distinctUntilChanged, first, map, Observable } from 'rxjs';
+import {Observable, of} from 'rxjs';
+import {catchError, debounceTime, distinctUntilChanged, first, map, switchMap} from 'rxjs/operators';
 
 
 @Component({
@@ -16,11 +17,12 @@ import { debounceTime, distinctUntilChanged, first, map, Observable } from 'rxjs
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class LoginDialog {
+  keepSignedIn = false;
   readonly usernames = this.store.select(fullResultsSelectors.selectUsernames);
 
   readonly loginForm = this.formBuilder.group({
     'username': [null, [Validators.required], this.verifyUsername()],
-    'password': [null, [Validators.required]],
+    'password': [null, [Validators.required], this.verifyPassword()],
   });
 
   constructor(
@@ -46,13 +48,28 @@ export class LoginDialog {
     };
   }
 
+  private verifyPassword(): AsyncValidatorFn {
+    return (): Observable<{[key: string]: any} | null> => {
+      return this.loginForm.valueChanges.pipe(
+        debounceTime(500),
+        distinctUntilChanged(),
+        switchMap(params => this.userService.login(params)),
+        catchError(() => of(null)),
+        map(currentUser => currentUser ? null : ({'invalidPassword': true})),
+        first(),
+      );
+    };
+  }
+
   login(): void {
     this.userService.login(this.loginForm.value).subscribe(currentUser => {
       this.store.dispatch({type: ToolbarActionType.SET_CURRENT_USER, payload: {currentUser}});
-      this.localStorageService.setItem(CURRENT_USER_KEY, currentUser);
+      this.cancel();
+
+      if (this.keepSignedIn) {
+        this.localStorageService.setItem(CURRENT_USER_KEY, currentUser);
+      }
     });
-    
-    this.cancel();
   }
 
   cancel(): void {
