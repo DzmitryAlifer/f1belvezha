@@ -42,11 +42,11 @@ export class ToolbarComponent {
   }
 
   createAccount(): void {
-    this.createAccountDialog.open(CreateAccountDialog, { disableClose: true, width: '270px'});
+    this.createAccountDialog.open(CreateAccountDialog, {disableClose: true, width: '270px'});
   }
 
   login(): void {
-    this.loginDialog.open(LoginDialog, {disableClose: true});
+    this.loginDialog.open(LoginDialog, {disableClose: true, width: '270px'});
   }
 
   logout(): void {

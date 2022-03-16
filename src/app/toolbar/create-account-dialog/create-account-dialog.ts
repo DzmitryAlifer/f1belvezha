@@ -6,7 +6,7 @@ import { debounceTime, distinctUntilChanged, first, map} from 'rxjs/operators';
 import {UserService} from 'src/app/service/user.service';
 import {FullResultsActionType} from 'src/app/full-results/store/full-results.actions';
 import * as fullResultsSelectors from 'src/app/full-results/store/full-results.selectors';
-import {Observable } from 'rxjs';
+import {Observable} from 'rxjs';
 
 
 // const PASSWORD_REGEXP = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.{8,})/;
@@ -14,14 +14,12 @@ const PASSWORD_REGEXP = /^.{8,24}$/;
 
 
 @Component({
-  selector: 'create-account-dialog1',
   templateUrl: './create-account-dialog.html',
   styleUrls: ['./create-account-dialog.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CreateAccountDialog {
-  readonly usernames = this.store.select(fullResultsSelectors.selectUsers).pipe(
-    map(users => users.map(({username}) => username)));
+  readonly usernames = this.store.select(fullResultsSelectors.selectUsernames);
 
   readonly accountForm = this.formBuilder.group({
     'firstname': [null, [Validators.required, Validators.maxLength(24)]],
