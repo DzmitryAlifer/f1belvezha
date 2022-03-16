@@ -25,7 +25,7 @@ export class CreateAccountDialog {
 
   readonly accountForm = this.formBuilder.group({
     'firstname': [null, [Validators.required, Validators.maxLength(24)]],
-    'lastname': [null],
+    'lastname': [null, [Validators.maxLength(24)]],
     'username': [null, [Validators.required, Validators.minLength(6), Validators.maxLength(24)], this.verifyUsername()],
     'password': [null, [Validators.required, Validators.minLength(8), Validators.maxLength(24), this.verifyPassword]],
   });
@@ -42,7 +42,7 @@ export class CreateAccountDialog {
   }
 
   private verifyUsername(): AsyncValidatorFn {
-    return (control: AbstractControl): Observable<{ [key: string]: any } | null> => {
+    return (control: AbstractControl): Observable<{[key: string]: any} | null> => {
       return this.usernames.pipe(
         debounceTime(500),
         distinctUntilChanged(),
