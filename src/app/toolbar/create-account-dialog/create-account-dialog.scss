@@ -2,6 +2,14 @@ h2 {
     text-align: center;
 }
 
-.mat-raised-button {
-    margin: 8px;
+.mat-form-field {
+    width: 220px;
+}
+
+.button-bar {
+    text-align: center;
+
+    .mat-raised-button {
+        margin: 8px;
+    }
 }

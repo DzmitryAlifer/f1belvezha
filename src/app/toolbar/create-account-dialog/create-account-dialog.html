@@ -4,25 +4,33 @@
     <p><mat-form-field>
         <mat-label>First name</mat-label>
         <input matInput formControlName="firstname">
+        <mat-hint>Will appear to other users as you first name</mat-hint>
+        <mat-error *ngIf="hasError('firstname', 'maxlength')">Name is too long</mat-error>
     </mat-form-field></p>
 
     <p><mat-form-field>
         <mat-label>Last name</mat-label>
         <input matInput formControlName="lastname">
+        <mat-hint>Will appear to other users as you last name</mat-hint>
+        <mat-error *ngIf="hasError('lastname', 'maxlength')">Name is too long</mat-error>
     </mat-form-field></p>
 
     <p><mat-form-field>
         <mat-label>Login</mat-label>
         <input matInput formControlName="username">
-        <mat-hint>Hint</mat-hint>
+        <mat-hint>Should contain at least 6 characters</mat-hint>
+        <mat-error *ngIf="hasError('username', 'usernameExists')">Username already exists</mat-error>
     </mat-form-field></p>
 
     <p><mat-form-field>
         <mat-label>Password</mat-label>
         <input matInput formControlName="password">
-        <mat-hint>Hint</mat-hint>
+        <mat-hint>Should contain at least 8 characters</mat-hint>
+        <mat-error *ngIf="hasError('password', 'maxlength')">Password is too long</mat-error>
     </mat-form-field></p>
 
-    <button mat-raised-button color="primary" type="submit" [disabled]="!accountForm.valid">Create</button>
-    <button mat-raised-button type="button"  (click)="cancel()">Cancel</button>
+    <div class="button-bar">
+        <button mat-raised-button color="primary" type="submit" [disabled]="!accountForm.valid">Create</button>
+        <button mat-raised-button type="button" (click)="cancel()">Cancel</button>
+    </div>
 </form>

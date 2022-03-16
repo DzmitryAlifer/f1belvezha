@@ -98,6 +98,10 @@ export function getNextEvent(): Observable<DisplayEvent> {
 }
 
 export function calculateRoundPoints(roundResult: DriverRoundResult, prediction: Prediction): number[][] {
+    if (!roundResult) {
+        return [];
+    }
+    
     const qualifyngPredictionPoints = calculateEventPoints(roundResult.qualifying, prediction.qualification);
     const racePredictionPoints = calculateEventPoints(roundResult.race, prediction.race);
 
