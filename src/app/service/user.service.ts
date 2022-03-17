@@ -2,6 +2,7 @@ import {Injectable} from '@angular/core';
 import {Observable, of} from 'rxjs';
 import {CURRENT_USER_KEY} from 'src/constants';
 import {Params, User} from '../types';
+import {EncryptionService} from './encryption.service';
 import {HttpService} from './http.service';
 import {LocalStorageService} from './local-storage.service';
 
@@ -10,6 +11,7 @@ import {LocalStorageService} from './local-storage.service';
 export class UserService {
 
   constructor(
+    private readonly encryptionService: EncryptionService,
     private readonly httpService: HttpService,
     private readonly localStorageService: LocalStorageService,
   ) {}
@@ -27,10 +29,12 @@ export class UserService {
   }
 
   createUser(user: User): Observable<User> {
-    return this.httpService.post<User>('/users', user);
+    const encryptedPassword = this.encryptionService.encrypt(user.password!);
+    return this.httpService.post<User>('/users', {...user, password: encryptedPassword});
   }
 
   login(params: Params): Observable<User|null> {
-    return this.httpService.login<User>('/login', params);
+    const encryptedPassword = this.encryptionService.encrypt(String(params['password']));
+    return this.httpService.login<User>('/login', {...params, password: encryptedPassword});
   }
 }

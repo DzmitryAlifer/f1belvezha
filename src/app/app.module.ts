@@ -21,6 +21,7 @@ import {NextEventModule} from './toolbar/next-event/next-event.module';
 import {UsersStandingModule} from './users-standing/users-standing.module';
 import {PointsModule} from './points/points.module';
 import {PredictionDialogModule} from './prediction-dialog/prediction-dialog.module';
+import {EncryptionService} from './service/encryption.service';
 
 
 @NgModule({
@@ -47,6 +48,7 @@ import {PredictionDialogModule} from './prediction-dialog/prediction-dialog.modu
     StoreModule.forRoot({}),
     EffectsModule.forRoot([]),
   ],
+  providers: [EncryptionService],
   bootstrap: [AppComponent],
   declarations: [AppComponent],
 })
