@@ -2,7 +2,7 @@ import * as moment from 'moment';
 import {interval, Observable} from 'rxjs';
 import {map, shareReplay, startWith} from 'rxjs/operators';
 import {DisplayEvent, EventSchedule, EventType} from './toolbar/next-event/next-event.component';
-import {DriverRoundResult, Prediction} from './types';
+import {DriverRoundResult, Prediction, User} from './types';
 
 
 export const DRIVER_IN_LIST_PTS = 1;
@@ -119,4 +119,8 @@ function calculateEventPoints(actualDrivers: string[], predictedDrivers: string[
         acc + (actualDriver === predictedDrivers[index] ? 1 : 0), 0);
 
     return [driversInListPoints, driversPlacePoints];
+}
+
+export function getFullUserName(user: User|null): string {
+    return user ? user.firstname + (user.lastname ? ' ' + user.lastname : '') : '';
 }
