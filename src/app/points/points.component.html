@@ -2,7 +2,7 @@
     isDarkMode: isDarkMode | async,
     totalPoints: getTotalPoints()
 } as data">
-    <div *ngIf="data.totalPoints" [class.current-user]="isCurrentUser" [class.dark]="data.isDarkMode">
+    <div [class.current-user]="isCurrentUser" [class.dark]="data.isDarkMode">
         <table>
             <tr *ngIf="points[0]">
                 <td><coin [value]="DRIVER_IN_LIST_PTS" [amount]="points[0][0]" color="#cfd8dc"></coin></td>

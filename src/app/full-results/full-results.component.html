@@ -44,7 +44,7 @@
                     {{user.firstname}} {{user.lastname ?? ''}}
                 </th>
                 <td class="points" mat-cell *matCellDef="let race">
-                    <ng-container *ngIf="!!data.points && (race.round < data.nextRaceRound! || race.round === data.nextEvent?.round && data.nextEvent?.eventType === EventType.Qualification)">
+                    <ng-container *ngIf="!!data.points && (race.round < data.nextRaceRound! || race.round === data.nextEvent?.round && data.nextEvent?.eventType === EventType.Race)">
                         <points [points]="getPoints(data.points, user, race)" [isCurrentUser]="userData.isCurrentUser"></points>
                     </ng-container>
                     
