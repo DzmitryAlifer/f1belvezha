@@ -78,8 +78,7 @@ export class ChartsComponent {
       const fullRoundsCount = nextEvent.eventType === EventType.Race ? (nextEvent.round + 1) : nextEvent.round;
       const eventsCount = PREDICTION_PLACES_NUMBER * 2 * fullRoundsCount;
       const value = result.correctPosition * eventsCount / result.predictionsNumber;
-      return ({ name, value });
-      // return ({ name, value: value.correctPosition * PREDICTION_PLACES_NUMBER * 2 / value.predictionsNumber });
+      return ({name, value});
     })),
     map(list => list.filter(item => !!item.value).sort((left, right) => right.value - left.value)),
   );
