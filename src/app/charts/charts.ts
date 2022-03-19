@@ -4,7 +4,9 @@ import {EChartsOption} from 'echarts';
 import {combineLatest} from 'rxjs';
 import {debounceTime, map, shareReplay} from 'rxjs/operators';
 import {PREDICTION_PLACES_NUMBER, TEAM_DRIVER_COLORS} from 'src/constants';
+import {getNextEvent} from '../common';
 import * as fullResultsSelectors from '../full-results/store/full-results.selectors'; 
+import { EventType } from '../toolbar/next-event/next-event.component';
 import * as toolbarSelectors from '../toolbar/store/toolbar.selectors';
 import {PlayerRoundResult} from '../types';
 
@@ -28,7 +30,8 @@ export class ChartsComponent {
   private readonly users = this.store.select(fullResultsSelectors.selectUsers);
   private readonly playersYearResults = this.store.select(toolbarSelectors.selectPlayersResults);
   private readonly allPredictions = this.store.select(fullResultsSelectors.selectAllPredictions);
-  
+  private readonly nextEvent = getNextEvent();
+
   private readonly driversCount = this.allPredictions.pipe(
     map(predictions => predictions.map(prediction => [...prediction.qualification, ...prediction.race]).flat()),
     map(repeatedDrivers => repeatedDrivers.reduce((driversMap, driverName) => {
@@ -58,9 +61,14 @@ export class ChartsComponent {
     shareReplay(1),
   );
 
-  private readonly playersCorrectInListRate = this.playersSuccessRates.pipe(
-    map(playersMap => Array.from(playersMap, ([name, value]) => 
-        ({name, value: value.correctInList * PREDICTION_PLACES_NUMBER * 2 / value.predictionsNumber}))),
+  private readonly playersCorrectInListRate = combineLatest([this.playersSuccessRates, this.nextEvent]).pipe(
+    debounceTime(0),
+    map(([playersMap, nextEvent]) => Array.from(playersMap, ([name, result]) => {
+      const fullRoundsCount = nextEvent.eventType === EventType.Race ? (nextEvent.round + 1) : nextEvent.round;
+      const eventsCount = PREDICTION_PLACES_NUMBER * 2 * fullRoundsCount;
+      const value = result.correctInList * eventsCount / result.predictionsNumber;
+      return ({name, value});
+    })),
     map(list => list.filter(item => !!item.value).sort((left, right) => right.value - left.value)),
   );
 
@@ -74,10 +82,10 @@ export class ChartsComponent {
     map(([driversCount, isDarkMode]) => getPieChartOptions(driversCount, isDarkMode, TEAM_DRIVER_COLORS)));
 
   readonly chartOptions2 = combineLatest([this.playersCorrectInListRate, this.isDarkMode]).pipe(
-    map(([playersCorrectInListRate, isDarkMode]) => getBarChartOptions(playersCorrectInListRate)));  
+    map(([playersCorrectInListRate, isDarkMode]) => getBarChartOptions(playersCorrectInListRate, isDarkMode)));  
 
   readonly chartOptions3 = combineLatest([this.playersCorrectPositionRate, this.isDarkMode]).pipe(
-      map(([playersCorrectInListRate, isDarkMode]) => getBarChartOptions(playersCorrectInListRate)));  
+    map(([playersCorrectInListRate, isDarkMode]) => getBarChartOptions(playersCorrectInListRate, isDarkMode)));  
 
   constructor(private readonly store: Store) {}
 }
@@ -116,14 +124,21 @@ function getPieChartOptions(data: Array<{name: string, value: number}>, isDarkMo
   };
 }
 
-function getBarChartOptions(data: Array<{name: string, value: number}>): EChartsOption {
+function getBarChartOptions(data: Array<{name: string, value: number}>, isDarkMode: boolean): EChartsOption {
   return {
     xAxis: {
       type: 'category',
       data: data.map(({name}) => name),
-      axisLabel: { interval: 0, rotate: 30 },
+      axisLabel: {interval: 0, rotate: 40},
     },
-    yAxis: {type: 'value'},
+    yAxis: {
+      type: 'value',
+      splitLine: {
+        lineStyle: {
+          color: isDarkMode ? '#525252' : '#e7e7e7',
+        }
+      }
+    },
     series: {
       type: 'bar',
       data: data.map(({value}) => value),
