@@ -16,6 +16,7 @@ import {Page} from './enums';
 export class AppComponent {
   readonly Page = Page;
   
+  readonly currentUser = this.store.select(toolbarSelectors.selectCurrentUser);
   readonly isLockedLayout = this.store.select(toolbarSelectors.selectIsLockedLayout);
   readonly page = this.store.select(toolbarSelectors.selectPage);
 
