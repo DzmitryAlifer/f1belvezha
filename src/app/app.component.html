@@ -1,10 +1,11 @@
 <toolbar></toolbar>
 
 <div *ngIf="{
+  currentUser: currentUser | async,
   isLockedLayout: isLockedLayout | async,
   page: page | async
 } as data" class="page-container">
-  <full-results [class.disabled]="data.page !== Page.FullResults"></full-results>
+  <full-results [class.disabled]="data.page !== Page.FullResults || !data.currentUser"></full-results>
     
   <drivers-standing 
       cdkDrag
