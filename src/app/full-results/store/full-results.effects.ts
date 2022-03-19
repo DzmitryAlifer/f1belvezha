@@ -36,10 +36,10 @@ export class FullResultsEffects {
                     const userRoundPoints = calculateRoundPoints(roundResult, prediction);
                     acc.set(round, userRoundPoints);
                     return acc;
-                }, new Map<number, number[][]>());
+                }, new Map<number, Array<number[]|null>>());
                 userResults.set(user.id!, singleUserResults);
                 return userResults;
-            }, new Map<number, Map<number, number[][]>>())),
+            }, new Map<number, Map<number, Array<number[]|null>>>())),
     );
 
     constructor(

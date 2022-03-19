@@ -97,7 +97,7 @@ export function getNextEvent(): Observable<DisplayEvent> {
     );
 }
 
-export function calculateRoundPoints(roundResult: DriverRoundResult, prediction: Prediction): number[][] {
+export function calculateRoundPoints(roundResult: DriverRoundResult, prediction: Prediction): Array<number[]|null> {
     if (!roundResult) {
         return [];
     }
@@ -108,7 +108,11 @@ export function calculateRoundPoints(roundResult: DriverRoundResult, prediction:
     return [qualifyngPredictionPoints, racePredictionPoints];
 }
 
-function calculateEventPoints(actualDrivers: string[], predictedDrivers: string[]): number[] {
+function calculateEventPoints(actualDrivers: string[], predictedDrivers: string[]): number[]|null {
+    if (!actualDrivers) {
+        return null;
+    }
+
     const driversInListPoints = actualDrivers.reduce((acc, actualDriver) => 
             acc + (predictedDrivers.includes(actualDriver) ? 1 : 0), 0);
     const driversPlacePoints = actualDrivers.reduce((acc, actualDriver, index) =>

@@ -92,8 +92,8 @@ function getPlayerResult(prediction: Prediction, { year, round, qualifying, race
         round,
         qual_guessed_on_list: intersection(prediction.qualification, qualifying),
         qual_guessed_position: getSamePlaces(prediction.qualification, qualifying),
-        race_guessed_on_list: intersection(prediction.race, race),
-        race_guessed_position: getSamePlaces(prediction.race, race),
+        race_guessed_on_list: intersection(prediction.race, race ?? []),
+        race_guessed_position: getSamePlaces(prediction.race, race ?? []),
     };
 }
 

@@ -4,14 +4,14 @@
 } as data">
     <div *ngIf="data.totalPoints" [class.current-user]="isCurrentUser" [class.dark]="data.isDarkMode">
         <table>
-            <tr>
+            <tr *ngIf="points[0]">
                 <td><coin [value]="DRIVER_IN_LIST_PTS" [amount]="points[0][0]" color="#cfd8dc"></coin></td>
-                <td *ngIf="points[0][1] || points[1][1]"><coin [value]="DRIVER_PLACE_PTS" [amount]="points[0][1]" color="#ffc107"></coin></td>
+                <td *ngIf="points[0][1]"><coin [value]="DRIVER_PLACE_PTS" [amount]="points[0][1]" color="#ffc107"></coin></td>
             </tr>
             
-            <tr>
+            <tr *ngIf="points[1]">
                 <td><coin [value]="DRIVER_IN_LIST_PTS" [amount]="points[1][0]" color="#cfd8dc"></coin></td>
-                <td *ngIf="points[0][1] || points[1][1]"><coin [value]="DRIVER_PLACE_PTS" [amount]="points[1][1]" color="#ffc107"></coin></td>
+                <td *ngIf="points[1][1]"><coin [value]="DRIVER_PLACE_PTS" [amount]="points[1][1]" color="#ffc107"></coin></td>
             </tr>
         </table>
 

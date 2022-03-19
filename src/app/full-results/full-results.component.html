@@ -4,6 +4,7 @@
     currentUserHasPrediction: currentUserHasPrediction | async,
     isDarkMode: isDarkMode | async,
     isLoaded: isLoaded | async,
+    nextEvent: nextEvent | async,
     nextRacePredictions: nextRacePredictions | async,
     nextRaceRound: nextRaceRound | async,
     points: points | async,
@@ -43,7 +44,7 @@
                     {{user.firstname}} {{user.lastname ?? ''}}
                 </th>
                 <td class="points" mat-cell *matCellDef="let race">
-                    <ng-container *ngIf="!!data.points && !!data.nextRaceRound && race.round < data.nextRaceRound!">
+                    <ng-container *ngIf="!!data.points && (race.round < data.nextRaceRound! || race.round === data.nextEvent?.round && data.nextEvent?.eventType === EventType.Qualification)">
                         <points [points]="getPoints(data.points, user, race)" [isCurrentUser]="userData.isCurrentUser"></points>
                     </ng-container>
                     

@@ -8,8 +8,9 @@ import {Prediction, Race, User} from '../types';
 import * as moment from 'moment';
 import * as fullResultsSelectors from './store/full-results.selectors';
 import {FullResultsActionType} from './store/full-results.actions';
+import {EventType} from '../toolbar/next-event/next-event.component';
 import * as toolbarSelectors from '../toolbar/store/toolbar.selectors';
-import {getFlagLink} from '../common';
+import {getFlagLink, getNextEvent} from '../common';
 
 
 const NOW = moment();
@@ -24,6 +25,8 @@ const ROUND_TO_INDEX_OFFSET = 2;
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class FullResultsComponent implements OnInit {
+  readonly EventType = EventType;
+
   readonly isDarkMode = this.store.select(toolbarSelectors.selectIsDarkMode);
   readonly users = this.store.select(fullResultsSelectors.selectUsers);
   readonly currentUser = this.store.select(toolbarSelectors.selectCurrentUser);
@@ -33,6 +36,7 @@ export class FullResultsComponent implements OnInit {
 
   readonly races = this.store.select(fullResultsSelectors.selectRaces).pipe(shareReplay(1));
   readonly nextRaceRound = this.races.pipe(map(races => races.findIndex(nextRacePredicate) + ROUND_TO_INDEX_OFFSET));
+  readonly nextEvent = getNextEvent();
   readonly isLoaded = combineLatest([this.users, this.races]).pipe(map(([users, races]) => !!races && !!users));
 
   readonly nextRacePredictions = combineLatest([this.allPredictions, this.nextRaceRound]).pipe(

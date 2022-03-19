@@ -22,9 +22,11 @@ export class PointsComponent {
   constructor(private readonly store: Store) {}
 
   getTotalPoints(): number {
-    return DRIVER_IN_LIST_PTS * this.points[0][0] +
-      DRIVER_PLACE_PTS * this.points[0][1] +
-      DRIVER_IN_LIST_PTS * this.points[1][0] +
-      DRIVER_PLACE_PTS * this.points[1][1];
+    const qualifyingPredictionPoints = 
+        this.points[0] ? DRIVER_IN_LIST_PTS * this.points[0][0] + DRIVER_PLACE_PTS * this.points[0][1] : 0;
+    const racePredictionPoints = 
+      this.points[1] ? DRIVER_IN_LIST_PTS * this.points[1][0] + DRIVER_PLACE_PTS * this.points[1][1] : 0;
+
+    return qualifyingPredictionPoints + racePredictionPoints;
   }
 }
