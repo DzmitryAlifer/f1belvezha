@@ -6,7 +6,7 @@ import {debounceTime, map, shareReplay} from 'rxjs/operators';
 import {PREDICTION_PLACES_NUMBER, TEAM_DRIVER_COLORS} from 'src/constants';
 import {getFullUserName, getNextEvent} from '../common';
 import * as fullResultsSelectors from '../full-results/store/full-results.selectors'; 
-import {EventType} from '../toolbar/next-event/next-event.component';
+import {DisplayEvent, EventType} from '../toolbar/next-event/next-event.component';
 import * as toolbarSelectors from '../toolbar/store/toolbar.selectors';
 import {PlayerRoundResult} from '../types';
 
@@ -72,9 +72,7 @@ export class ChartsComponent {
   private readonly playersCorrectInListRate = combineLatest([this.playersSuccessRates, this.nextEvent]).pipe(
     debounceTime(0),
     map(([playersMap, nextEvent]) => Array.from(playersMap, ([name, result]) => {
-      const fullRoundsCount = nextEvent.eventType === EventType.Race ? (nextEvent.round + 1) : nextEvent.round;
-      const eventsCount = PREDICTION_PLACES_NUMBER * 2 * fullRoundsCount;
-      const value = result.correctInList * eventsCount / result.predictionsNumber;
+      const value = getGuessesRatio(nextEvent, result.correctInList, result.predictionsNumber);
       return ({name, value});
     })),
     map(list => list.filter(item => !!item.value).sort((left, right) => right.value - left.value)),
@@ -83,9 +81,7 @@ export class ChartsComponent {
   private readonly playersCorrectPositionRate = combineLatest([this.playersSuccessRates, this.nextEvent]).pipe(
     debounceTime(0),
     map(([playersMap, nextEvent]) => Array.from(playersMap, ([name, result]) => {
-      const fullRoundsCount = nextEvent.eventType === EventType.Race ? (nextEvent.round + 1) : nextEvent.round;
-      const eventsCount = PREDICTION_PLACES_NUMBER * 2 * fullRoundsCount;
-      const value = result.correctPosition * eventsCount / result.predictionsNumber;
+      const value = getGuessesRatio(nextEvent, result.correctPosition, result.predictionsNumber);
       return ({name, value});
     })),
     map(list => list.filter(item => !!item.value).sort((left, right) => right.value - left.value)),
@@ -111,6 +107,11 @@ function countGettingsInList(singlePlayerResults: PlayerRoundResult[]): number {
 function countCorrectPositions(singlePlayerResults: PlayerRoundResult[]): number {
   return singlePlayerResults.reduce((sum, result) =>
       sum + result.qual_guessed_position.length + result.race_guessed_position.length, 0);
+}
+
+function getGuessesRatio(nextEvent: DisplayEvent, correctGuessesNumber: number, predictionsNumber: number): number {
+  const fullRoundsCount = nextEvent.eventType === EventType.Race ? (nextEvent.round + 1) : nextEvent.round;
+  return correctGuessesNumber * PREDICTION_PLACES_NUMBER * fullRoundsCount / predictionsNumber;
 }
 
 function getPieChartOptions(data: Array<{name: string, value: number}>, isDarkMode: boolean, customColors?: any): EChartsOption { 
