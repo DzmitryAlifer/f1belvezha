@@ -23,15 +23,6 @@ export class UsersStandingComponent implements AfterViewInit {
   readonly isLockedLayout = this.store.select(toolbarSelectors.selectIsLockedLayout);
   readonly users = this.store.select(fullResultsSelectors.selectUsers);
   readonly currentUser = this.store.select(toolbarSelectors.selectCurrentUser);
-  private readonly isLoaded = this.store.select(toolbarSelectors.selectIsLoaded);
-  private readonly playersYearResults = this.store.select(toolbarSelectors.selectPlayersResults);
-  
-  readonly sortedPlayersYearPoints = this.isLoaded.pipe(
-    filter(isLoaded => !!isLoaded),
-    switchMap(() => this.playersYearResults),
-    withLatestFrom(this.users),
-    map(([results, users]) => toPoints(results, users)),
-  );
 
   constructor(private readonly store: Store) {}
 
