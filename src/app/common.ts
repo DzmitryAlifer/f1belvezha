@@ -2,7 +2,7 @@ import * as moment from 'moment';
 import {interval, Observable} from 'rxjs';
 import {map, shareReplay, startWith} from 'rxjs/operators';
 import {DisplayEvent, EventSchedule, EventType} from './toolbar/next-event/next-event.component';
-import {DriverRoundResult, Prediction, User} from './types';
+import {DriverRoundResult, PlayerRoundResult, Prediction, User, UserPoints} from './types';
 
 
 export const DRIVER_IN_LIST_PTS = 1;
@@ -95,6 +95,21 @@ export function getNextEvent(): Observable<DisplayEvent> {
         startWith(findNextEvent()),
         shareReplay(1),
     );
+}
+
+export function toPoints(results: PlayerRoundResult[], users: User[]): UserPoints[] {
+    return users.reduce((acc, user) => {
+        const points = results.reduce((sum, result) => {
+            if (result.userid === user.id) {
+                const increment = DRIVER_IN_LIST_PTS * (result.qual_guessed_on_list.length + result.race_guessed_on_list.length) +
+                    DRIVER_PLACE_PTS * (result.qual_guessed_position.length + result.race_guessed_position.length);
+                sum += increment;
+            }
+            return sum;
+        }, 0);
+        acc.push({ user, points });
+        return acc;
+    }, [] as UserPoints[]).sort((left, right) => right.points - left.points);
 }
 
 export function calculateRoundPoints(roundResult: DriverRoundResult, prediction: Prediction): Array<number[]|null> {

@@ -9,6 +9,7 @@ import * as toolbarSelectors from './toolbar.selectors';
 import * as fullResultsSelectors from '../../full-results/store/full-results.selectors';
 import {PredictionService} from '../../service/prediction.service';
 import {ResultService} from '../../service/result.service';
+import {UserService} from '../../service/user.service';
 import {DriverRoundResult, PlayerRoundResult, Prediction} from 'src/app/types';
 
 
@@ -20,6 +21,7 @@ export class ToolbarEffects {
     private readonly language = this.store.select(toolbarSelectors.selectLanguage);
     private readonly isDarkMode = this.store.select(toolbarSelectors.selectIsDarkMode);
     private readonly isLockedLayout = this.store.select(toolbarSelectors.selectIsLockedLayout);
+    private readonly users = this.store.select(fullResultsSelectors.selectUsers);
     private readonly driverResults = this.store.select(fullResultsSelectors.selectCurrentYearResults);
     private readonly playersResults = this.resultService.getPlayersYearResults(CURRENT_YEAR);
     private readonly allPredictions = this.predictionService.getAllPredictions();
@@ -42,6 +44,7 @@ export class ToolbarEffects {
         private readonly predictionService: PredictionService,
         private readonly resultService: ResultService,
         private themeService: ThemeService,
+        private readonly userService: UserService,
     ) {}
 
     setLanguage = createEffect(() => this.actions.pipe(
@@ -76,8 +79,11 @@ export class ToolbarEffects {
 
     getPlayersYearResults = createEffect(() => this.actions.pipe(
         ofType(ToolbarActionType.LOAD_PLAYERS_RESULTS),
-        switchMap(() => this.newPlayersResults.pipe(
-            switchMap(playersResults => this.resultService.addPlayersResults(playersResults).pipe(
+        switchMap(() => combineLatest([this.newPlayersResults, this.users]).pipe(
+            switchMap(([playersResults, users]) => this.resultService.addPlayersResults(playersResults).pipe(
+                tap(playersResults => {
+                    this.userService.updateUserPoints(playersResults, users)/*.subscribe()*/;
+                }),
                 switchMap(() => this.resultService.getPlayersYearResults(CURRENT_YEAR)),
                 map(playersResults => ({type: ToolbarActionType.LOAD_PLAYERS_RESULTS_SUCCESS, payload: {playersResults}})),
             )),
