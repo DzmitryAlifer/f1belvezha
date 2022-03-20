@@ -15,7 +15,7 @@ import {getFlagLink, getNextEvent} from '../common';
 
 const NOW = moment();
 // const NOW = moment('2022-03-20T10:00:00Z');
-const ROUND_TO_INDEX_OFFSET = 2;
+const ROUND_TO_INDEX_OFFSET = 1;
 
     
 @Component({
