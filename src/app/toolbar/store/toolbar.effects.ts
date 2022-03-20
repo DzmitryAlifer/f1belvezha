@@ -81,10 +81,10 @@ export class ToolbarEffects {
         ofType(ToolbarActionType.LOAD_PLAYERS_RESULTS),
         switchMap(() => combineLatest([this.newPlayersResults, this.users]).pipe(
             switchMap(([playersResults, users]) => this.resultService.addPlayersResults(playersResults).pipe(
-                tap(playersResults => {
-                    this.userService.updateUserPoints(playersResults, users)/*.subscribe()*/;
-                }),
                 switchMap(() => this.resultService.getPlayersYearResults(CURRENT_YEAR)),
+                tap(playersResults => {
+                    this.userService.updateUserPoints(playersResults, users).subscribe();
+                }),
                 map(playersResults => ({type: ToolbarActionType.LOAD_PLAYERS_RESULTS_SUCCESS, payload: {playersResults}})),
             )),
         )),
