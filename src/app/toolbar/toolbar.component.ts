@@ -67,7 +67,7 @@ export class ToolbarComponent {
   }
 
   showHelp(): void {
-    this.helpDialog.open(HelpDialog, {width: '50%'});
+    this.helpDialog.open(HelpDialog, {width: '60%'});
   }
 
   toggleLayoutLock(wasLayoutLocked: boolean): void {
