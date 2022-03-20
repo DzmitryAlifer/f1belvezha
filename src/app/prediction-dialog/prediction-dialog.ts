@@ -53,16 +53,16 @@ export class PredictionDialog {
     .pipe(map(([drivers, prediction]) => !!drivers && !!prediction));
   
   readonly predictionForm = new FormGroup({
-    q1: defineRequiredField(),
-    q2: defineRequiredField(),
-    q3: defineRequiredField(),
-    q4: defineRequiredField(),
-    q5: defineRequiredField(),
-    r1: defineRequiredField(),
-    r2: defineRequiredField(),
-    r3: defineRequiredField(),
-    r4: defineRequiredField(),
-    r5: defineRequiredField(),
+    q1: defineField(this.data.isQualificationLocked),
+    q2: defineField(this.data.isQualificationLocked),
+    q3: defineField(this.data.isQualificationLocked),
+    q4: defineField(this.data.isQualificationLocked),
+    q5: defineField(this.data.isQualificationLocked),
+    r1: defineField(this.data.isRaceLocked),
+    r2: defineField(this.data.isRaceLocked),
+    r3: defineField(this.data.isRaceLocked),
+    r4: defineField(this.data.isRaceLocked),
+    r5: defineField(this.data.isRaceLocked),
   }, {validators: validateForm});
 
   private readonly nextEvent = getNextEvent().pipe(
@@ -130,8 +130,8 @@ export class PredictionDialog {
   }
 }
 
-function defineRequiredField(): FormControl {
-  return new FormControl('', Validators.required);
+function defineField(isEventLocked: boolean): FormControl {
+  return isEventLocked ? new FormControl('') : new FormControl('', Validators.required);
 }
 
 function validateForm(control: AbstractControl): ValidationErrors | null {

@@ -30,6 +30,7 @@
     .mat-cell {
         border: none;
         padding: 8px;
+        vertical-align: bottom;
 
         .circuit {
             height: 40px;
@@ -46,6 +47,11 @@
 
             &.not-current {
                 color: $grey-500;
+                padding: 8px;
+            }
+
+            &.hidden {
+                color: transparent;
                 padding: 8px;
             }
         }

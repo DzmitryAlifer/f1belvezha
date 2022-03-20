@@ -1,5 +1,16 @@
+$icon-size: 17px;
+
+
 h2 {
+    padding-top: 12px;
     text-align: center;
+}
+
+.mat-icon {
+    font-size: $icon-size;
+    height: $icon-size;
+    vertical-align: middle;
+    width: $icon-size;
 }
 
 .button-bar {

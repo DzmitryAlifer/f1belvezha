@@ -88,8 +88,8 @@ export class FullResultsComponent implements OnInit {
     return `/assets/images/circuits/${countryName}.png`;
   }
 
-  getPoints(points: Map<number, Map<number, number[][]>>, user: User, race: Race): number[][] {
-    return points.get(user.id!)?.get(race.round) ?? [[0, 0], [0, 0]];
+  getPoints(points: Map<number, Map<number, number[][]>>, user: User, race: Race): Array<number[]|null> {
+    return points.get(user.id!)?.get(race.round) ?? [null, null];
   }
 
   openPredictionDialog(userId: number, round: number, hasPrediction: boolean, isQualificationLocked: boolean, isRaceLocked: boolean): void {

@@ -11,7 +11,7 @@ import * as toolbarSelectors from '../toolbar/store/toolbar.selectors';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PointsComponent {
-  @Input() points = [[0, 0], [0, 0]];
+  @Input() points: Array<number[]|null> = [null, null];
   @Input() isCurrentUser = false;
 
   readonly DRIVER_IN_LIST_PTS = DRIVER_IN_LIST_PTS;

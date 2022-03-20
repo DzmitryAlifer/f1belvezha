@@ -16,6 +16,7 @@ $circle-size: 12px;
         line-height: $circle-size;
         margin: 0 auto;
         position: relative;
+        text-align: center;
         width: $circle-size;
 
         &:nth-child(2) {

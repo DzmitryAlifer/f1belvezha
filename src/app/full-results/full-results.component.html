@@ -52,16 +52,21 @@
                         <button *ngIf="userData.isCurrentUser"
                             mat-icon-button
                             onclick="this.blur()"
-                            (click)="openPredictionDialog(user.id!, race.round, !!data.currentUserHasPrediction, false, false)">
+                            (click)="openPredictionDialog(user.id!, race.round, !!data.currentUserHasPrediction, data.nextEvent?.eventType === EventType.Race, false)">
                             <mat-icon class="user-prediction current">
                                 {{data.currentUserHasPrediction ? 'lightbulb_outline' : 'lightbulb'}}
                             </mat-icon>
                         </button>
+
                         <mat-icon 
-                            *ngIf="!userData.isCurrentUser && hasPrediction(user, data.nextRacePredictions)"
+                            *ngIf="!userData.isCurrentUser && hasPrediction(user, data.nextRacePredictions); else emptyPlaceholder"
                             class="user-prediction not-current">
                             lightbulb_outline
                         </mat-icon>
+                        
+                        <ng-template #emptyPlaceholder>
+                            <mat-icon *ngIf="!userData.isCurrentUser" class="user-prediction hidden">lightbulb_outline</mat-icon>
+                        </ng-template>
                     </ng-container>
                 </td>
             </ng-container>
