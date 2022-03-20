@@ -1,5 +1,6 @@
 @import '../../styles.scss';
 
+
 .mat-table {   
     margin-top: 12px;
 
@@ -7,6 +8,15 @@
         border: none;
         padding: 4px;
         text-align: center;
+
+        &.user {
+            vertical-align: top;
+
+            .place {
+                font-size: 16px;
+                padding-top: 8px;
+            }
+        }
 
         &.user, &.stats {
             width: 80px;
