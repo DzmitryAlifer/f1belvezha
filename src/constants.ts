@@ -16,6 +16,7 @@ export const DRIVER_TEAM_MAPPING = new Map<string, string>()
     .set('Tsunoda', 'alphatauri')
     .set('Stroll', 'aston_martin')
     .set('Vettel', 'aston_martin')
+    .set('Hülkenberg', 'aston_martin')
     .set('Albon', 'williams')
     .set('Latifi', 'williams')
     .set('Bottas', 'alfa')
@@ -40,6 +41,7 @@ export const TEAM_DRIVER_COLORS: any = {
     Tsunoda: '#4e7c9b',
     Stroll: '#00594f',
     Vettel: '#00594f',
+    Hülkenberg: '#00594f',
     Albon: '#37bedd',
     Latifi: '#37bedd',
     Magnussen: '#b6babd',
