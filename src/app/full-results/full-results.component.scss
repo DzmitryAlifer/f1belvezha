@@ -23,8 +23,26 @@
         }
     }
 
-    th.event, th.circuit {
-        width: 70px;
+    th.event {
+        width: 225px;
+
+        ::ng-deep {
+            .mat-paginator-range-actions {
+                display: block;
+            }
+
+            .mat-paginator-container {
+                padding: 0;
+
+                .mat-paginator-page-size {
+                    display: none;
+                }
+            }
+
+            .mat-paginator-range-label {
+                margin: 0;
+            }
+        }
     }
 
     .flag {
@@ -46,6 +64,19 @@
             height: 40px;
             vertical-align: middle;
             width: 55px;
+        }
+
+        &.event {
+            display: flex;
+            vertical-align: bottom;
+
+            .country {
+                padding: 0 14px;
+            }
+        }
+
+        &.points {
+            width: 80px;
         }
 
         .user-prediction {

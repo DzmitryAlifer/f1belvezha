@@ -1,7 +1,7 @@
-import {ChangeDetectionStrategy, Component, OnInit} from '@angular/core';
+import {ChangeDetectionStrategy, Component, EventEmitter, OnInit} from '@angular/core';
 import {MatDialog} from '@angular/material/dialog';
 import {Store} from '@ngrx/store';
-import {combineLatest} from 'rxjs';
+import {BehaviorSubject, combineLatest, ReplaySubject} from 'rxjs';
 import {debounceTime, map, shareReplay} from 'rxjs/operators';
 import {PredictionDialog} from '../prediction-dialog/prediction-dialog';
 import {Prediction, Race, User} from '../types';
@@ -11,11 +11,12 @@ import {FullResultsActionType} from './store/full-results.actions';
 import {EventType} from '../toolbar/next-event/next-event.component';
 import * as toolbarSelectors from '../toolbar/store/toolbar.selectors';
 import {getFlagLink, getNextEvent} from '../common';
+import { PageEvent } from '@angular/material/paginator';
 
 
 const NOW = moment();
-// const NOW = moment('2022-03-20T10:00:00Z');
 const ROUND_TO_INDEX_OFFSET = 2;
+const PAGE_SIZE = 5;
 
     
 @Component({
@@ -25,7 +26,10 @@ const ROUND_TO_INDEX_OFFSET = 2;
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class FullResultsComponent implements OnInit {
+  readonly PAGE_SIZE = PAGE_SIZE;
   readonly EventType = EventType;
+
+  private readonly pageEventSubject = new BehaviorSubject<PageEvent|null>(null);
 
   readonly isDarkMode = this.store.select(toolbarSelectors.selectIsDarkMode);
   readonly users = this.store.select(fullResultsSelectors.selectUsers);
@@ -51,9 +55,14 @@ export class FullResultsComponent implements OnInit {
       )),
   );
 
-  readonly displayedColumns = this.users.pipe(
-    map(users => users.map(user => 'user' + user.id)),
-    map(userColumns => ['event', 'circuit', ...userColumns, 'empty', 'stats']),
+  readonly displayedColumns = combineLatest([this.users, this.currentUser, this.pageEventSubject]).pipe(
+    debounceTime(0),
+    map(([users, currentUser, pageEvent]) => {
+      const currentUserIndex = users.findIndex(user => user.id == currentUser?.id);
+      const startIndex = pageEvent ? pageEvent.pageIndex * pageEvent.pageSize : 0;
+      return users.slice(startIndex, startIndex + PAGE_SIZE).map(user => 'user' + user.id);
+    }),
+    map(userColumns => ['event', ...userColumns, 'empty', 'stats']),
   );
 
   readonly points = this.store.select(fullResultsSelectors.selectCurrentYearPoints);
@@ -70,6 +79,10 @@ export class FullResultsComponent implements OnInit {
     this.store.dispatch({type: FullResultsActionType.LOAD_ALL_PREDICTIONS});
     this.store.dispatch({type: FullResultsActionType.LOAD_CURRENT_YEAR_RESULTS});
     this.store.dispatch({type: FullResultsActionType.CALCULATE_CURRENT_YEAR_POINTS});
+  }
+
+  onPageChange(pageEvent: PageEvent): void {
+    this.pageEventSubject.next(pageEvent);
   }
 
   formatDate(dateStr: string): string {
