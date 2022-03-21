@@ -1,8 +1,8 @@
-import {ChangeDetectionStrategy, Component, EventEmitter, OnInit} from '@angular/core';
+import {ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, OnInit} from '@angular/core';
 import {MatDialog} from '@angular/material/dialog';
 import {Store} from '@ngrx/store';
-import {BehaviorSubject, combineLatest, ReplaySubject} from 'rxjs';
-import {debounceTime, map, shareReplay} from 'rxjs/operators';
+import {BehaviorSubject, combineLatest, merge, ReplaySubject} from 'rxjs';
+import {filter, debounceTime, map, shareReplay, startWith, tap} from 'rxjs/operators';
 import {PredictionDialog} from '../prediction-dialog/prediction-dialog';
 import {Prediction, Race, User} from '../types';
 import * as moment from 'moment';
@@ -29,7 +29,7 @@ export class FullResultsComponent implements OnInit {
   readonly PAGE_SIZE = PAGE_SIZE;
   readonly EventType = EventType;
 
-  private readonly pageEventSubject = new BehaviorSubject<PageEvent|null>(null);
+  private readonly pageEventSubject = new ReplaySubject<PageEvent>(1);
 
   readonly isDarkMode = this.store.select(toolbarSelectors.selectIsDarkMode);
   readonly users = this.store.select(fullResultsSelectors.selectUsers);
@@ -55,10 +55,18 @@ export class FullResultsComponent implements OnInit {
       )),
   );
 
-  readonly displayedColumns = combineLatest([this.users, this.currentUser, this.pageEventSubject]).pipe(
+  private readonly initialPageEvent = combineLatest([this.users, this.currentUser]).pipe(
     debounceTime(0),
-    map(([users, currentUser, pageEvent]) => {
-      const currentUserIndex = users.findIndex(user => user.id == currentUser?.id);
+    filter(([users]) => !!users.length),
+    map(([users, currentUser]) => Math.floor(users.findIndex(user => user.id == currentUser?.id) / PAGE_SIZE)),
+    map(currentUserPageIndex => ({pageIndex: currentUserPageIndex, pageSize: PAGE_SIZE}) as PageEvent),
+  );
+
+  readonly pageEvent = merge(this.initialPageEvent, this.pageEventSubject);
+
+  readonly displayedColumns = combineLatest([this.users, this.pageEvent]).pipe(
+    debounceTime(0),
+    map(([users, pageEvent]) => {
       const startIndex = pageEvent ? pageEvent.pageIndex * pageEvent.pageSize : 0;
       return users.slice(startIndex, startIndex + PAGE_SIZE).map(user => 'user' + user.id);
     }),
@@ -68,6 +76,7 @@ export class FullResultsComponent implements OnInit {
   readonly points = this.store.select(fullResultsSelectors.selectCurrentYearPoints);
 
   constructor(
+    private ref: ChangeDetectorRef,
     private readonly predictionDialog: MatDialog,
     private readonly store: Store,
   ) {}

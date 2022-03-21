@@ -8,6 +8,7 @@
     nextRacePredictions: nextRacePredictions | async,
     nextRaceRound: nextRaceRound | async,
     points: points | async,
+    pageEvent: pageEvent | async,
     users: users | async
  } as data">
     <table *ngIf="data.isLoaded; else spinner"
@@ -19,6 +20,7 @@
             <th class="event" mat-header-cell *matHeaderCellDef>
                 <mat-paginator 
                     [length]="data.users?.length ?? 0"
+                    [pageIndex]="data.pageEvent?.pageIndex"
                     [pageSize]="PAGE_SIZE"
                     [showFirstLastButtons]="true"
                     (page)="onPageChange($event)">
