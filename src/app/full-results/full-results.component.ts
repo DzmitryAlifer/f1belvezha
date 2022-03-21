@@ -1,5 +1,6 @@
 import {ChangeDetectionStrategy, Component, OnInit} from '@angular/core';
 import {MatDialog} from '@angular/material/dialog';
+import {PageEvent} from '@angular/material/paginator';
 import {Store} from '@ngrx/store';
 import {combineLatest, merge, ReplaySubject} from 'rxjs';
 import {filter, debounceTime, map, shareReplay} from 'rxjs/operators';
@@ -10,8 +11,7 @@ import * as fullResultsSelectors from './store/full-results.selectors';
 import {FullResultsActionType} from './store/full-results.actions';
 import {EventType} from '../toolbar/next-event/next-event.component';
 import * as toolbarSelectors from '../toolbar/store/toolbar.selectors';
-import {getFlagLink, getNextEvent} from '../common';
-import { PageEvent } from '@angular/material/paginator';
+import {getFlagLink, getIndexes, getNextEvent} from '../common';
 
 
 const NOW = moment();
@@ -68,7 +68,14 @@ export class FullResultsComponent implements OnInit {
     debounceTime(0),
     map(([users, pageEvent]) => {
       const startIndex = pageEvent ? pageEvent.pageIndex * pageEvent.pageSize : 0;
-      return users.slice(startIndex, startIndex + PAGE_SIZE).map(user => 'user' + user.id);
+      const columns = users.slice(startIndex, startIndex + PAGE_SIZE).map(user => 'user' + user.id);
+      const trailingColumnsCount = PAGE_SIZE - columns.length;
+
+      for (let i = 0; i < trailingColumnsCount; i++) {
+        columns.push('empty' + i);
+      }
+
+      return columns;
     }),
     map(userColumns => ['event', ...userColumns, 'empty', 'stats']),
   );
@@ -122,6 +129,16 @@ export class FullResultsComponent implements OnInit {
 
   hasPrediction(user: User, nextRacePredictions: Prediction[] | null): boolean {
     return (nextRacePredictions ?? []).some(prediction => prediction.userid == user.id);
+  }
+
+  getTrailingIndexes(users: User[]|null): number[] {
+    if (!users?.length) {
+      return [];
+    }
+
+    const trailingColumnsCount = PAGE_SIZE - users.length % PAGE_SIZE;
+
+    return getIndexes(trailingColumnsCount);
   }
 }
 

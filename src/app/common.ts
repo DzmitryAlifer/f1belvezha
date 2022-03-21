@@ -139,3 +139,7 @@ function calculateEventPoints(actualDrivers: string[], predictedDrivers: string[
 export function getFullUserName(user: User|null): string {
     return user ? user.firstname + (user.lastname ? ' ' + user.lastname : '') : '';
 }
+
+export function getIndexes(max: number): number[] {
+    return Array(max).fill(0).map((x, i) => i);
+}

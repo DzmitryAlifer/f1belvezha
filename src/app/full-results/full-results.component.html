@@ -72,6 +72,11 @@
                 </td>
             </ng-container>
         </ng-container>
+
+        <ng-container *ngFor="let index of getTrailingIndexes(data.users)" [matColumnDef]="'empty' + index">
+            <th class="user" mat-header-cell *matHeaderCellDef></th>
+            <td class="points" mat-cell *matCellDef="let user"></td>
+        </ng-container>
   
         <ng-container matColumnDef="empty">
             <th class="empty" mat-header-cell *matHeaderCellDef></th>
