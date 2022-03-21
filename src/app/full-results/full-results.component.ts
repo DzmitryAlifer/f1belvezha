@@ -1,8 +1,8 @@
-import {ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, OnInit} from '@angular/core';
+import {ChangeDetectionStrategy, Component, OnInit} from '@angular/core';
 import {MatDialog} from '@angular/material/dialog';
 import {Store} from '@ngrx/store';
-import {BehaviorSubject, combineLatest, merge, ReplaySubject} from 'rxjs';
-import {filter, debounceTime, map, shareReplay, startWith, tap} from 'rxjs/operators';
+import {combineLatest, merge, ReplaySubject} from 'rxjs';
+import {filter, debounceTime, map, shareReplay} from 'rxjs/operators';
 import {PredictionDialog} from '../prediction-dialog/prediction-dialog';
 import {Prediction, Race, User} from '../types';
 import * as moment from 'moment';
@@ -76,7 +76,6 @@ export class FullResultsComponent implements OnInit {
   readonly points = this.store.select(fullResultsSelectors.selectCurrentYearPoints);
 
   constructor(
-    private ref: ChangeDetectorRef,
     private readonly predictionDialog: MatDialog,
     private readonly store: Store,
   ) {}
