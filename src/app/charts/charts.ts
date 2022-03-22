@@ -34,6 +34,7 @@ const BLUE_800 = '#1565c0';
 })
 export class ChartsComponent {
   private readonly isDarkMode = this.store.select(toolbarSelectors.selectIsDarkMode);
+  private readonly lastRound = this.store.select(toolbarSelectors.selectLastRound);
   private readonly users = this.store.select(fullResultsSelectors.selectUsers);
   private readonly currentUserFullName = this.store.select(toolbarSelectors.selectCurrentUser).pipe(map(user => getFullUserName(user)));
   private readonly playersYearResults = this.store.select(toolbarSelectors.selectPlayersResults);
@@ -50,12 +51,12 @@ export class ChartsComponent {
     map(driversMap => Array.from(driversMap, ([name, value]) => ({name, value}))),
   );
 
-  private readonly playersSuccessRates = combineLatest([this.users, this.allPredictions, this.playersYearResults]).pipe(
+  private readonly playersSuccessRates = combineLatest([this.users, this.allPredictions, this.playersYearResults, this.lastRound]).pipe(
     debounceTime(0),
-    map(([users, allPredictions, results]) => users.reduce((map, user) => {
+    map(([users, allPredictions, results, lastRound]) => users.reduce((map, user) => {
       const userId = user.id!;
       const playerFullName = getFullUserName(user);
-      const predictionsNumber = allPredictions.filter(prediction => prediction.userid == userId).length;
+      const predictionsNumber = allPredictions.filter(prediction => prediction.userid == userId && prediction.round! <= lastRound).length;
       const singlePlayerResults = results.filter(result => result.userid === userId);
       const singlePlayerSuccessPct = map.get(playerFullName) ?? 
           {userId, correctInList: 0, correctPosition: 0, predictionsNumber: 0};
