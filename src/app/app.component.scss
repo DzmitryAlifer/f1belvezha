@@ -1,10 +1,17 @@
 @import '../styles.scss';
 
+
+side-menu {
+    top: $toolbar-height;
+}
+
 toolbar {
     box-shadow: 2px 2px 5px $grey-500;
+    // left: $side-menu-width;
     position: fixed;
     top: 0px;
     width: 100%;
+    // width: calc(100% - $side-menu-width);
     z-index: 3;
 }
 

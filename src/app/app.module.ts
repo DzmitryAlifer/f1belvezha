@@ -22,6 +22,7 @@ import {UsersStandingModule} from './users-standing/users-standing.module';
 import {PointsModule} from './points/points.module';
 import {PredictionDialogModule} from './prediction-dialog/prediction-dialog.module';
 import {EncryptionService} from './service/encryption.service';
+import {SideMenuModule} from './side-menu/side-menu.module';
 
 
 @NgModule({
@@ -43,6 +44,7 @@ import {EncryptionService} from './service/encryption.service';
     NextEventModule,
     PointsModule,
     PredictionDialogModule,
+    SideMenuModule,
     ToolbarModule,
     UsersStandingModule,
     StoreModule.forRoot({}),
