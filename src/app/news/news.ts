@@ -1,4 +1,5 @@
 import {ChangeDetectionStrategy, Component} from '@angular/core';
+import {NewsService} from '../service/news.service';
 
 
 @Component({
@@ -8,6 +9,8 @@ import {ChangeDetectionStrategy, Component} from '@angular/core';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class NewsComponent {
+  readonly news = this.newsService.getNews();
 
-  constructor() {}
+
+  constructor(private readonly newsService: NewsService) {}
 }
