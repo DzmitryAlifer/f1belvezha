@@ -5,6 +5,7 @@ export interface User {
     lastname?: string;
     password?: string;
     seasonpoints: number;
+    season_events_total: number;
 }
 
 export interface RacesResponse {

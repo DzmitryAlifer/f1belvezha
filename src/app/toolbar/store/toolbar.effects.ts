@@ -26,6 +26,13 @@ export class ToolbarEffects {
     private readonly playersResults = this.resultService.getPlayersYearResults(CURRENT_YEAR);
     private readonly allPredictions = this.predictionService.getAllPredictions();
 
+    private readonly lastRound = this.driverResults.pipe(
+        map(driverResults => {
+            const currentYearSortedResults = driverResults.filter(driverResult => driverResult.year === CURRENT_YEAR)
+                    .sort((left, right) => right.round - left.round);
+            return currentYearSortedResults.length ? currentYearSortedResults[0].round : 0;
+        }));
+
     private readonly unprocessedDriversResults = combineLatest([this.driverResults, this.playersResults]).pipe(
         debounceTime(0),
         map(([driverResults, playersResults]) =>
@@ -35,7 +42,7 @@ export class ToolbarEffects {
     private readonly newPlayersResults = combineLatest([this.unprocessedDriversResults, this.allPredictions]).pipe(
         map(([driverResults, predictions]) =>
             driverResults.map(driverResult =>
-                predictions.filter(({ round }) => round === driverResult.round).map(prediction =>
+                predictions.filter(({round}) => round === driverResult.round).map(prediction =>
                     getPlayerResult(prediction, driverResult))).flat()));
 
     constructor(
@@ -79,11 +86,12 @@ export class ToolbarEffects {
 
     getPlayersYearResults = createEffect(() => this.actions.pipe(
         ofType(ToolbarActionType.LOAD_PLAYERS_RESULTS),
-        switchMap(() => combineLatest([this.newPlayersResults, this.users]).pipe(
-            switchMap(([playersResults, users]) => this.resultService.addPlayersResults(playersResults).pipe(
+        switchMap(() => combineLatest([this.newPlayersResults, this.allPredictions, this.lastRound, this.users]).pipe(
+            debounceTime(0),
+            switchMap(([playersResults, predictions, lastRound, users]) => this.resultService.addPlayersResults(playersResults).pipe(
                 switchMap(() => this.resultService.getPlayersYearResults(CURRENT_YEAR)),
                 tap(playersResults => {
-                    this.userService.updateUserPoints(playersResults, users).subscribe();
+                    this.userService.updateUserPoints(playersResults, predictions, lastRound, users).subscribe();
                 }),
                 map(playersResults => ({type: ToolbarActionType.LOAD_PLAYERS_RESULTS_SUCCESS, payload: {playersResults}})),
             )),

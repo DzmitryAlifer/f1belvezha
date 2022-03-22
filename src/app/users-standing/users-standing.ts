@@ -1,7 +1,5 @@
 import {AfterViewInit, ChangeDetectionStrategy, Component} from '@angular/core';
 import {Store} from '@ngrx/store';
-import {filter, map, switchMap, withLatestFrom} from 'rxjs/operators'; 
-import {toPoints} from '../common';
 import {Language} from '../enums';
 import * as fullResultsSelectors from '../full-results/store/full-results.selectors';
 import {ToolbarActionType} from '../toolbar/store/toolbar.actions';

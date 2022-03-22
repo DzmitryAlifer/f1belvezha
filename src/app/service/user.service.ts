@@ -2,7 +2,7 @@ import {Injectable} from '@angular/core';
 import {Observable, of} from 'rxjs';
 import {CURRENT_USER_KEY} from 'src/constants';
 import {toPoints} from '../common';
-import {Params, PlayerRoundResult, User, UserPoints} from '../types';
+import {Params, PlayerRoundResult, Prediction, User, UserPoints} from '../types';
 import {EncryptionService} from './encryption.service';
 import {HttpService} from './http.service';
 import {LocalStorageService} from './local-storage.service';
@@ -39,10 +39,16 @@ export class UserService {
     return this.httpService.login<User>('/login', {...params, password: encryptedPassword});
   }
   
-  updateUserPoints(playersResults: PlayerRoundResult[], users: User[]): Observable<User[]> {
+  updateUserPoints(playersResults: PlayerRoundResult[], allPredictions: Prediction[], lastRound: number, users: User[]): Observable<User[]> {
     const userPointsList: UserPoints[] = toPoints(playersResults, users);
-    const updatedUsers: User[] = users.map(user => ({...user, seasonpoints: findUserPoints(userPointsList, user)}));
-    return this.httpService.put<User[]>('/users', updatedUsers);
+    const updatedUsers: User[] = users.map(user => ({
+      ...user,
+      seasonpoints: findUserPoints(userPointsList, user),
+      season_events_total: 
+          allPredictions.filter(prediction => prediction.userid == user.id && prediction.round! <= lastRound).length,
+    }));
+    
+      return this.httpService.put<User[]>('/users', updatedUsers);
   }
 }
 
