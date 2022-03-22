@@ -143,3 +143,7 @@ export function getFullUserName(user: User|null): string {
 export function getIndexes(max: number): number[] {
     return Array(max).fill(0).map((x, i) => i);
 }
+
+export function getSeasonPointsPerRound(user: User): number {
+    return user.seasonpoints / user.season_events_total || 0;
+}

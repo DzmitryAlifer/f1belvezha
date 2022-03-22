@@ -2,12 +2,13 @@
     currentUser: currentUser | async,
     isDarkMode: isDarkMode | async,
     isLockedLayout: isLockedLayout | async,
-    language: language | async
+    language: language | async,
+    users: users | async
 } as data" class="standing mat-elevation-z8" [class.dark]="data.isDarkMode">
     <mat-icon *ngIf="!data.isLockedLayout" class="drag-icon">drag_indicator</mat-icon>
     <h1 class="title">{{data.language === Language.English ? 'Players' : 'Игроки'}}</h1>
 
-    <table mat-table [dataSource]="users">
+    <table mat-table matSort [dataSource]="users" (matSortChange)="sortPlayers($event, data.users)">
         <ng-container matColumnDef="place">
             <th mat-header-cell *matHeaderCellDef>Plc</th>
             <td mat-cell 
@@ -24,10 +25,17 @@
             </td>
         </ng-container>
 
-        <ng-container matColumnDef="points">
-            <th mat-header-cell *matHeaderCellDef>Pts</th>
+        <ng-container matColumnDef="seasonPoints">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header="seasonPoints" matTooltip="Total points">Pts</th>
             <td mat-cell *matCellDef="let user" [class.current-user]="user.id == data.currentUser?.id">
                 {{user.seasonpoints}}
+            </td>
+        </ng-container>
+
+        <ng-container matColumnDef="seasonEventsTotal">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header="seasonEventsTotal" matTooltip="Average points per round">PPR</th>
+            <td mat-cell *matCellDef="let user" [class.current-user]="user.id == data.currentUser?.id">
+                {{getSeasonPointsPerRound(user) | number : '1.2-2'}}
             </td>
         </ng-container>
 
