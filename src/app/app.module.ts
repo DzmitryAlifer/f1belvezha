@@ -13,6 +13,7 @@ import {ChartsModule} from './charts/charts.module';
 import {CoinModule} from './coin/coin.module';
 import {DriversStandingModule} from './drivers-standing/drivers-standing.module';
 import {FullResultsModule} from './full-results/full-results.module';
+import {NewsModule} from './news/news.module';
 import {ToolbarModule} from './toolbar/toolbar.module';
 import {CreateAccountDialogModule} from './toolbar/create-account-dialog/create-account-dialog.module';
 import {HelpDialogModule} from './toolbar/help-dialog/help-dialog.module';
@@ -41,6 +42,7 @@ import {SideMenuModule} from './side-menu/side-menu.module';
     LoginDialogModule,
     MatSidenavModule,
     MatSlideToggleModule,
+    NewsModule,
     NextEventModule,
     PointsModule,
     PredictionDialogModule,

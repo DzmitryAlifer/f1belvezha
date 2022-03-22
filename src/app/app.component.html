@@ -6,8 +6,10 @@
   isLockedLayout: isLockedLayout | async,
   page: page | async
 } as data" class="page-container">
+  <news [class.disabled]="data.page !== Page.News"></news>
+
   <full-results [class.disabled]="data.page !== Page.FullResults"></full-results>
-    
+
   <drivers-standing 
       cdkDrag
       [class.disabled]="data.page !== Page.FullResults"
