@@ -1,4 +1,4 @@
-<!-- <side-menu></side-menu> -->
+<side-menu></side-menu>
 <toolbar></toolbar>
 
 <div *ngIf="{
@@ -6,7 +6,7 @@
   isLockedLayout: isLockedLayout | async,
   page: page | async
 } as data" class="page-container">
-  <full-results [class.disabled]="data.page !== Page.FullResults || !data.currentUser"></full-results>
+  <full-results [class.disabled]="data.page !== Page.FullResults"></full-results>
     
   <drivers-standing 
       cdkDrag

@@ -1,2 +1,30 @@
+<ng-container *ngIf="{
+    isDarkMode: isDarkMode | async,
+    page: page | async
+} as data">
+    <div class="menu" [class.dark]="isDarkMode | async">
+        <button 
+            mat-icon-button
+            matTooltip="News"
+            [class.current]="data.page === Page.News"
+            (click)="showPage(Page.News)">
+            <mat-icon>newspaper</mat-icon>
+        </button>
 
-  
+        <button
+            mat-icon-button
+            matTooltip="Predictions"
+            [class.current]="data.page === Page.FullResults"
+            (click)="showPage(Page.FullResults)">
+            <mat-icon>lightbulb_outline</mat-icon>
+        </button>
+
+        <button
+            mat-icon-button
+            matTooltip="Charts"
+            [class.current]="data.page === Page.Charts"
+            (click)="showPage(Page.Charts)">
+            <mat-icon>query_stats</mat-icon>
+        </button>
+    </div>
+</ng-container>

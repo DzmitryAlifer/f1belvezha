@@ -4,6 +4,7 @@ export enum Language {
 }
 
 export enum Page {
+    News,
     FullResults,
     Charts,
 }

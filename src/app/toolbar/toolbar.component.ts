@@ -21,7 +21,6 @@ import * as toolbarSelectors from './store/toolbar.selectors';
 })
 export class ToolbarComponent {
   readonly Language = Language;
-  readonly Page = Page;
 
   readonly isDarkMode = this.store.select(toolbarSelectors.selectIsDarkMode);
   readonly isLockedLayout = this.store.select(toolbarSelectors.selectIsLockedLayout).pipe(delay(200));
@@ -59,12 +58,6 @@ export class ToolbarComponent {
 
   toggleMode(isPrevousModeDark: boolean) {
     this.store.dispatch({type: ToolbarActionType.SET_DARK_MODE, payload: {isDarkMode: !isPrevousModeDark}});
-  }
-
-  showPage(page: Page): void {
-    setTimeout(() => {
-      this.store.dispatch({type: ToolbarActionType.SHOW_PAGE, payload: {page}});
-    }, 100);
   }
 
   showHelp(): void {

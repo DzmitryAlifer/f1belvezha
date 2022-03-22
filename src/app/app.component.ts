@@ -24,7 +24,7 @@ export class AppComponent {
       this.localStorageService.getItem<DropPoint>('dropPointUserStanding') ?? {x: 0, y: 0};
 
   readonly savedDriverStandingPosition =
-    this.localStorageService.getItem<DropPoint>('dropPointDriverStanding') ?? { x: 0, y: 0 };
+    this.localStorageService.getItem<DropPoint>('dropPointDriverStanding') ?? {x: 0, y: 0};
 
   constructor(
     private readonly localStorageService: LocalStorageService,

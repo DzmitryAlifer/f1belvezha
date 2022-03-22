@@ -7,18 +7,17 @@ side-menu {
 
 toolbar {
     box-shadow: 2px 2px 5px $grey-500;
-    // left: $side-menu-width;
+    left: 0;
     position: fixed;
     top: 0px;
     width: 100%;
-    // width: calc(100% - $side-menu-width);
     z-index: 3;
 }
 
 .page-container {
     bottom: 0;
     display: flex;
-    left: 0;
+    left: $side-menu-width;
     padding: 20px 32px;
     position: absolute;
     right: 0;

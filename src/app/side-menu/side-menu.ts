@@ -1,4 +1,8 @@
 import {ChangeDetectionStrategy, Component} from '@angular/core';
+import {Store} from '@ngrx/store';
+import {Page} from '../enums';
+import {ToolbarActionType} from '../toolbar/store/toolbar.actions';
+import * as toolbarSelectors from '../toolbar/store/toolbar.selectors';
 
 
 @Component({
@@ -8,6 +12,16 @@ import {ChangeDetectionStrategy, Component} from '@angular/core';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SideMenuComponent {
+  readonly Page = Page;
 
-  constructor() {}
+  readonly isDarkMode = this.store.select(toolbarSelectors.selectIsDarkMode);
+  readonly page = this.store.select(toolbarSelectors.selectPage);
+
+  constructor(private readonly store: Store) {}
+
+  showPage(page: Page): void {
+    setTimeout(() => {
+      this.store.dispatch({type: ToolbarActionType.SHOW_PAGE, payload: {page}});
+    }, 100);
+  }
 }

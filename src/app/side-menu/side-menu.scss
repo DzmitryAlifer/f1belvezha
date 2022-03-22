@@ -1,26 +1,28 @@
-:host ::ng-deep {
-    .mat-tab-group {
-        flex-direction: row;
+@import '../../styles.scss';
+
+
+.menu {
+    background-color: $grey-100;
+    height: 100%;
+    padding-top: calc($toolbar-height + 12px);
+    position: fixed;
+    text-align: center;
+    top: 0;
+    width: $side-menu-width;
+
+    &.dark {
+       background-color: $grey-900; 
+
+       button.current {
+           color: $blue-200;
+       }
     }
 
-    .mat-tab-header {
-        border-bottom: none;
-    }
+    button {
+        margin-top: 16px;
 
-    .mat-tab-header-pagination {
-        display: none !important;
-    }
-
-    .mat-tab-labels {
-        flex-direction: column;
-    }
-    
-    .mat-ink-bar {
-        height: 100%;
-        left: 98% !important;
-    }
-
-    .mat-tab-body-wrapper {
-        flex: 1 1 auto;
+        &.current {
+            color: $blue-800;
+        }
     }
 }

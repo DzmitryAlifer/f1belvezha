@@ -1,7 +1,6 @@
 <mat-toolbar *ngIf="{
     isDarkMode: isDarkMode | async,
     isLockedLayout: isLockedLayout | async,
-    page: page | async,
     user: user | async
 } as data">
     <mat-toolbar-row>
@@ -17,22 +16,6 @@
 
         <button class="help" mat-icon-button (click)="showHelp()">
             <mat-icon>question_mark</mat-icon>
-        </button>
-
-        <button
-            *ngIf="data.page === Page.Charts" 
-            class="full-results" 
-            mat-icon-button 
-            (click)="showPage(Page.FullResults)">
-            <mat-icon>dashboard</mat-icon>
-        </button>
-
-        <button
-            *ngIf="data.page === Page.FullResults"
-            class="charts"
-            mat-icon-button
-            (click)="showPage(Page.Charts)">
-            <mat-icon>query_stats</mat-icon>
         </button>
 
         <button class="settings" mat-icon-button [matMenuTriggerFor]="settingsMenu">
