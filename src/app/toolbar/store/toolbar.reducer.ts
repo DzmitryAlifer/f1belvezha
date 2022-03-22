@@ -12,6 +12,7 @@ export const initialState: ToolbarState = {
     isLoaded: false,
     isLockedLayout: localStorage.getItem('layout') !== 'unlocked',
     language: (localStorage.getItem('language') ?? 'English') as Language,
+    lastRound: 0,
     page: Page.FullResults,
     playersResults: [],
 };
@@ -33,6 +34,9 @@ export function toolbarReducer(state: ToolbarState = initialState, action: Toolb
 
         case ToolbarActionType.SET_LOCKED_LAYOUT:
             return {...state, isLockedLayout: action.payload.isLockedLayout};
+
+        case ToolbarActionType.SET_LAST_ROUND_SUCCESS:
+            return {...state, lastRound: action.payload.lastRound};
         
         case ToolbarActionType.SHOW_PAGE:
             return {...state, page: action.payload.page};

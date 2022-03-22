@@ -8,6 +8,7 @@ export interface ToolbarState {
     isLoaded: boolean;
     isLockedLayout: boolean;
     language: Language;
+    lastRound: number;
     page: Page;
     playersResults: PlayerRoundResult[];
 }

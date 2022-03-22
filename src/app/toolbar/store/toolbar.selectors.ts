@@ -11,4 +11,5 @@ export const selectPage = createSelector(selectToolbar, (state: ToolbarState) =>
 export const selectIsDarkMode = createSelector(selectToolbar, (state: ToolbarState) => state.isDarkMode);
 export const selectIsLockedLayout = createSelector(selectToolbar, (state: ToolbarState) => state.isLockedLayout);
 export const selectIsLoaded = createSelector(selectToolbar, (state: ToolbarState) => state?.isLoaded);
+export const selectLastRound = createSelector(selectToolbar, (state: ToolbarState) => state?.lastRound);
 export const selectPlayersResults = createSelector(selectToolbar, (state: ToolbarState) => state?.playersResults);

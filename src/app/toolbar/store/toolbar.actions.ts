@@ -11,6 +11,8 @@ export enum ToolbarActionType {
     SET_DARK_MODE_SUCCESS = '[Toolbar] Set dark mode - success',
     SET_LOCKED_LAYOUT = '[Toolbar] Set locked layout',
     SET_LOCKED_LAYOUT_SUCCESS = '[Toolbar] Set locked layout - success',
+    SET_LAST_ROUND = '[Toolbar] Set last round',
+    SET_LAST_ROUND_SUCCESS = '[Toolbar] Set last round - success',
     SHOW_PAGE = '[Toolbar] Show page',
     LOAD_PLAYERS_RESULTS = '[Toolbar] Load players results',
     LOAD_PLAYERS_RESULTS_SUCCESS = '[Toolbar] Load players results - success',
@@ -36,6 +38,16 @@ export class SetLockedLayout implements Action {
     constructor(readonly payload: {isLockedLayout: boolean}) {}
 }
 
+export class SetLastRound implements Action {
+    readonly type = ToolbarActionType.SET_LAST_ROUND;
+    constructor(readonly payload: {}) {}
+}
+
+export class SetLastRoundSuccess implements Action {
+    readonly type = ToolbarActionType.SET_LAST_ROUND_SUCCESS;
+    constructor(readonly payload: {lastRound: number}) {}
+}
+
 export class ShowPage implements Action {
     readonly type = ToolbarActionType.SHOW_PAGE;
     constructor(readonly payload: {page: Page}) {}
@@ -58,4 +70,6 @@ export type ToolbarAction =
     | SetLockedLayout
     | LoadPlayersResults
     | LoadPlayersResultsSuccess
+    | SetLastRound
+    | SetLastRoundSuccess
     | ShowPage;

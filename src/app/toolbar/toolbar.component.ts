@@ -39,6 +39,7 @@ export class ToolbarComponent {
     this.themeService.initTheme();
     localStorage.setItem('layout', 'locked');
     this.store.dispatch({type: ToolbarActionType.LOAD_PLAYERS_RESULTS}); 
+    this.store.dispatch({type: ToolbarActionType.SET_LAST_ROUND}); 
   }
 
   createAccount(): void {

@@ -21,12 +21,13 @@ export class ToolbarEffects {
     private readonly language = this.store.select(toolbarSelectors.selectLanguage);
     private readonly isDarkMode = this.store.select(toolbarSelectors.selectIsDarkMode);
     private readonly isLockedLayout = this.store.select(toolbarSelectors.selectIsLockedLayout);
+    private readonly lastRound = this.store.select(toolbarSelectors.selectLastRound);
     private readonly users = this.store.select(fullResultsSelectors.selectUsers);
     private readonly driverResults = this.store.select(fullResultsSelectors.selectCurrentYearResults);
     private readonly playersResults = this.resultService.getPlayersYearResults(CURRENT_YEAR);
     private readonly allPredictions = this.predictionService.getAllPredictions();
 
-    private readonly lastRound = this.driverResults.pipe(
+    private readonly lastRoundCalculated = this.driverResults.pipe(
         map(driverResults => {
             const currentYearSortedResults = driverResults.filter(driverResult => driverResult.year === CURRENT_YEAR)
                     .sort((left, right) => right.round - left.round);
@@ -81,6 +82,13 @@ export class ToolbarEffects {
                 localStorage.setItem('layout', isLockedLayout ? 'locked' : 'unlocked');
             }),
             map(() => ({type: ToolbarActionType.SET_LOCKED_LAYOUT_SUCCESS})),
+        )),
+    ));
+
+    setLastRound = createEffect(() => this.actions.pipe(
+        ofType(ToolbarActionType.SET_LAST_ROUND),
+        switchMap(() => this.lastRoundCalculated.pipe(
+            map(lastRound => ({type: ToolbarActionType.SET_LAST_ROUND_SUCCESS, payload: {lastRound}})),
         )),
     ));
 
