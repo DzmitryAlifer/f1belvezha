@@ -12,6 +12,6 @@ export class NewsService {
   constructor(private readonly httpClient: HttpClient) {}
 
   getNews(): Observable<Object> {
-    return this.httpClient.get(AUTOSPORT_COM_RSS_URL);
+    return this.httpClient.get('/news');
   }
 }
