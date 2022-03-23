@@ -3,7 +3,7 @@
         <h3>News from <b>autosport.com</b></h3>
 
         <div class="news-feed">
-            <mat-card *ngFor="let news of newsList | async">
+            <mat-card *ngFor="let news of newsLeftList | async">
                 <img [src]="news.enclosure">
                 <div class="text">
                     <div class="title">{{news.title}}</div>
@@ -18,7 +18,7 @@
         <h3>News from <b>f1news.ru</b></h3>
     
         <div class="news-feed">
-            <mat-card *ngFor="let news of newsList | async">
+            <mat-card *ngFor="let news of newsRightList | async">
                 <img [src]="news.enclosure">
                 <div class="text">
                     <div class="title">{{news.title}}</div>

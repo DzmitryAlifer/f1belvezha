@@ -11,7 +11,8 @@ import {NewsService} from '../service/news.service';
 export class NewsComponent {
   readonly Date = Date;
 
-  readonly newsList = this.newsService.getNews();
+  readonly newsLeftList = this.newsService.getNewsEn();
+  readonly newsRightList = this.newsService.getNewsRu();
 
   constructor(private readonly newsService: NewsService) {}
 }
