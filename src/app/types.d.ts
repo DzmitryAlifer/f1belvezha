@@ -141,3 +141,27 @@ export interface UserPoints {
     user: User;
     points: number;
 }
+
+export interface NewsResponse {
+    rss: {
+        channel: [{item: RssNews[]}];
+    }
+}
+
+export interface RssNews {
+    guid: {_: string}[];
+    title: string[];
+    link: string[];
+    description: string[];
+    pubDate: string[];
+    enclosure: {$: {url: string}}[];
+}
+
+export interface News {
+    guid: string;
+    title: string;
+    link: string;
+    description: string;
+    pubDate: string;
+    enclosure: string;
+}

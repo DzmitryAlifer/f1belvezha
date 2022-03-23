@@ -1,3 +1,29 @@
 @import '../../styles.scss';
 
 
+.mat-card {
+    margin-bottom: 16px;
+    max-width: 60%;
+
+    .title {
+        font-size: 14px;
+        font-weight: 500;
+        padding-bottom: 6px;
+    }
+
+    .description {
+        font-size: 12px;
+        text-align: justify;
+
+        ::ng-deep .more {
+            color: inherit;
+            font-style: italic;
+            text-decoration: none;
+        }
+    }
+
+    .date {
+        font-size: 12px;
+        text-align: right;
+    }
+}

@@ -1,1 +1,7 @@
-<p>{{news | async}}</p>
+<div>
+    <mat-card *ngFor="let news of newsList | async">
+        <div class="title">{{news.title}}</div>
+        <div class="description" [innerHTML]="news.description"></div>
+        <div class="date"><i>{{news.pubDate.replace(' +0000', '')}}</i></div>
+    </mat-card>
+</div>
