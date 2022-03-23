@@ -45,12 +45,13 @@
         .description {
             font-size: 12px;
             text-align: justify;
+        }
 
-            ::ng-deep .more {
-                color: inherit;
-                font-style: italic;
-                text-decoration: none;
-            }
+        ::ng-deep .more {
+            color: inherit;
+            font-size: 12px;
+            font-style: italic;
+            text-decoration: none;
         }
 
         .date {
@@ -61,8 +62,6 @@
         }
     }
 }
-
-
 
 .news-feed {
     overflow-y: scroll;

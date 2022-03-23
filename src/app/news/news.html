@@ -1,6 +1,6 @@
 <div class="container">
     <div class="news-left">
-        <h3>News from <b>autosport.com</b></h3>
+        <h3>News from <b><i>autosport.com</i></b></h3>
 
         <div class="news-feed">
             <mat-card *ngFor="let news of newsLeftList | async">
@@ -15,14 +15,17 @@
     </div>
 
     <div class="news-right">
-        <h3>News from <b>f1news.ru</b></h3>
+        <h3>News from <b><i>f1news.ru</i></b></h3>
     
         <div class="news-feed">
             <mat-card *ngFor="let news of newsRightList | async">
                 <img [src]="news.enclosure">
                 <div class="text">
                     <div class="title">{{news.title}}</div>
-                    <div class="description" [innerHTML]="news.description"></div>
+                    <div class="description" >
+                        <span [innerHTML]="news.description"></span>
+                        <a class="more" target="_blank" [href]="news.link">Читать далее</a>
+                    </div>
                     <div class="date"><i>{{news.pubDate.toLocaleString()}}</i></div>
                 </div>
             </mat-card>

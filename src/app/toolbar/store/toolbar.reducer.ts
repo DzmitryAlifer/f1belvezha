@@ -13,7 +13,7 @@ export const initialState: ToolbarState = {
     isLockedLayout: localStorage.getItem('layout') !== 'unlocked',
     language: (localStorage.getItem('language') ?? 'English') as Language,
     lastRound: 0,
-    page: Page.FullResults,
+    page: Page.News,
     playersResults: [],
 };
 
