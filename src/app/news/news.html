@@ -1,7 +1,31 @@
-<div>
-    <mat-card *ngFor="let news of newsList | async">
-        <div class="title">{{news.title}}</div>
-        <div class="description" [innerHTML]="news.description"></div>
-        <div class="date"><i>{{news.pubDate.replace(' +0000', '')}}</i></div>
-    </mat-card>
+<div class="container">
+    <div class="news-left">
+        <h3>News from <b>autosport.com</b></h3>
+
+        <div class="news-feed">
+            <mat-card *ngFor="let news of newsList | async">
+                <img [src]="news.enclosure">
+                <div class="text">
+                    <div class="title">{{news.title}}</div>
+                    <div class="description" [innerHTML]="news.description"></div>
+                    <div class="date"><i>{{news.pubDate.toLocaleString()}}</i></div>
+                </div>
+            </mat-card>
+        </div>
+    </div>
+
+    <div class="news-right">
+        <h3>News from <b>f1news.ru</b></h3>
+    
+        <div class="news-feed">
+            <mat-card *ngFor="let news of newsList | async">
+                <img [src]="news.enclosure">
+                <div class="text">
+                    <div class="title">{{news.title}}</div>
+                    <div class="description" [innerHTML]="news.description"></div>
+                    <div class="date"><i>{{news.pubDate.toLocaleString()}}</i></div>
+                </div>
+            </mat-card>
+        </div>
+    </div>
 </div>

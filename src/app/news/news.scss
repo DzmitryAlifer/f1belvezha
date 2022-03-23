@@ -1,29 +1,70 @@
 @import '../../styles.scss';
 
 
-.mat-card {
-    margin-bottom: 16px;
-    max-width: 60%;
+.container {
+    display: flex;
 
-    .title {
-        font-size: 14px;
-        font-weight: 500;
-        padding-bottom: 6px;
+    .news-left,
+    .news-right {
+        bottom: 48px;
+        position: fixed;
+        top: calc($toolbar-height + 12px);
+        width: 45%;
     }
 
-    .description {
-        font-size: 12px;
-        text-align: justify;
+    .news-left {
+        left: calc($side-menu-width + 32px);
+    }
 
-        ::ng-deep .more {
-            color: inherit;
-            font-style: italic;
-            text-decoration: none;
+    .news-right {
+        left: calc(51% + 32px);
+    }
+
+    .mat-card {
+        display: flex;
+        margin-bottom: 16px;
+        margin-right: 12px;
+
+        img {
+            align-self: center;
+            height: 180px;
+            margin-right: 12px;
+            width: 260px;
+        }
+
+        .text {
+            float: none;
+        }
+
+        .title {
+            font-size: 14px;
+            font-weight: 500;
+            padding-bottom: 6px;
+        }
+
+        .description {
+            font-size: 12px;
+            text-align: justify;
+
+            ::ng-deep .more {
+                color: inherit;
+                font-style: italic;
+                text-decoration: none;
+            }
+        }
+
+        .date {
+            bottom: 8px;
+            font-size: 12px;
+            position: absolute;
+            right: 12px;
         }
     }
+}
 
-    .date {
-        font-size: 12px;
-        text-align: right;
-    }
+
+
+.news-feed {
+    overflow-y: scroll;
+    height: 100%;
 }

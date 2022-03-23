@@ -158,10 +158,10 @@ export interface RssNews {
 }
 
 export interface News {
-    guid: string;
+    guid: number;
     title: string;
     link: string;
     description: string;
-    pubDate: string;
+    pubDate: Date;
     enclosure: string;
 }

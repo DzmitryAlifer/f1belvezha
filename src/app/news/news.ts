@@ -9,6 +9,8 @@ import {NewsService} from '../service/news.service';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class NewsComponent {
+  readonly Date = Date;
+
   readonly newsList = this.newsService.getNews();
 
   constructor(private readonly newsService: NewsService) {}
