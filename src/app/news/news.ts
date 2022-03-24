@@ -15,4 +15,8 @@ export class NewsComponent {
   readonly newsRightList = this.newsService.getNewsRu();
 
   constructor(private readonly newsService: NewsService) {}
+
+  addTargetBlankAttribute(newsText: string): string {
+    return newsText.replace('class=\'more\'', 'class=\'more\' target=\'_blank\'');
+  }
 }

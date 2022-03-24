@@ -7,7 +7,7 @@
                 <img [src]="news.enclosure">
                 <div class="text">
                     <div class="title">{{news.title}}</div>
-                    <div class="description" [innerHTML]="news.description"></div>
+                    <div class="description" [innerHTML]="addTargetBlankAttribute(news.description)"></div>
                     <div class="date"><i>{{news.pubDate.toLocaleString()}}</i></div>
                 </div>
             </mat-card>
