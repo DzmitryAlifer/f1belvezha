@@ -5,6 +5,7 @@
     <mat-icon *ngIf="!data.isLockedLayout" class="drag-icon">drag_indicator</mat-icon>
     <h1 class="title">Drivers</h1>
 
+    <div class="container">
     <table mat-table [dataSource]="driverStandings">
         <ng-container matColumnDef="place">
             <th mat-header-cell *matHeaderCellDef>Plc</th>
@@ -28,7 +29,8 @@
             </td>
         </ng-container>
 
-        <tr mat-header-row *matHeaderRowDef="columns"></tr>
+        <tr mat-header-row *matHeaderRowDef="columns; sticky: true"></tr>
         <tr mat-row *matRowDef="let row; columns: columns;"></tr>
     </table>
+    </div>
 </mat-card>

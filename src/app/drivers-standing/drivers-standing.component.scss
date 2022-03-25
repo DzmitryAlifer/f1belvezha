@@ -1,8 +1,12 @@
 @import '../../styles.scss';
 
+
 .standing {
-    position: fixed;
     margin: 0 0 0 30px;
+    height: calc(100% - 24px);
+    overflow: hidden;
+    padding-right: 6px;
+    position: fixed;
     top: 12px;
     width: 270px;
 
@@ -12,6 +16,12 @@
         position: absolute;
         right: 6px;
         top: 6px;
+    }
+
+    .container {
+        height: calc(100% - 31px);
+        overflow: auto;
+        padding-right: 10px;
     }
 
     .mat-table {
