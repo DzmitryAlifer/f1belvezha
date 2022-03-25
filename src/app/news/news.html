@@ -2,10 +2,11 @@
     <button class="refresh" mat-icon-button matTooltip="Refresh news" (click)="refreshNews()">
         <mat-icon>refresh</mat-icon>
     </button>
-    <mat-slide-toggle 
+    <mat-slide-toggle
         class="auto-refresh" 
         color="primary"
-        name="autoRefresh" 
+        name="autoRefresh"
+        [checked]="savedAutoRefreshStatus" 
         (change)="toggleAutoRefresh($event)">
         Auto-refresh
     </mat-slide-toggle>

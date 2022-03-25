@@ -17,8 +17,9 @@ const NEWS_AUTO_REFRESH_INTERVAL = 5 * 60 * 1000;
 export class NewsComponent {
   readonly Date = Date;
 
+  readonly savedAutoRefreshStatus = localStorage.getItem('auto-refresh') === 'true';
   private readonly refreshNewsSubject = new ReplaySubject<void>(1);
-  private readonly toggleAutoRefreshSubject = new BehaviorSubject<boolean>(false);
+  private readonly toggleAutoRefreshSubject = new BehaviorSubject<boolean>(this.savedAutoRefreshStatus);
   private readonly autoRefreshNews = 
       combineLatest([this.toggleAutoRefreshSubject, interval(NEWS_AUTO_REFRESH_INTERVAL)])
           .pipe(filter(([checked]) => !!checked));
@@ -40,6 +41,7 @@ export class NewsComponent {
 
   toggleAutoRefresh({checked}: MatSlideToggleChange): void {
     this.toggleAutoRefreshSubject.next(checked);
+    localStorage.setItem('auto-refresh', checked.toString());
   }
 
   addTargetBlankAttribute(newsText: string): string {
