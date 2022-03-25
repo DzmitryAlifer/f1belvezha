@@ -1,6 +1,12 @@
 @import '../../styles.scss';
 
 
+.refresh {
+    left: 50%;
+    position: fixed;
+    top: calc($toolbar-height + 8px);
+}
+
 .container {
     display: flex;
 
