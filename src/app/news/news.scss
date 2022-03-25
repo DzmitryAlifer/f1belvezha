@@ -1,10 +1,16 @@
 @import '../../styles.scss';
 
 
-.refresh {
-    left: 50%;
+.button-bar {
+    left: calc(50% - 30px);
     position: fixed;
     top: calc($toolbar-height + 8px);
+    z-index: 3;
+
+    .auto-refresh {
+        padding-left: 12px;
+        vertical-align: middle;
+    }
 }
 
 .container {
