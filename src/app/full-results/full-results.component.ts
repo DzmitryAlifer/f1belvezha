@@ -67,7 +67,7 @@ export class FullResultsComponent implements OnInit {
   readonly displayedColumns = combineLatest([this.users, this.pageEvent]).pipe(
     debounceTime(0),
     map(([users, pageEvent]) => {
-      const startIndex = pageEvent ? pageEvent.pageIndex * pageEvent.pageSize : 0;
+      const startIndex = pageEvent.pageIndex !== -1 ? pageEvent.pageIndex * pageEvent.pageSize : 0;
       const columns = users.slice(startIndex, startIndex + PAGE_SIZE).map(user => 'user' + user.id);
       const trailingColumnsCount = PAGE_SIZE - columns.length;
 
