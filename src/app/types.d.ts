@@ -69,7 +69,7 @@ export interface Team {
 export interface TeamVsTeamProposal {
     year: number;
     round: number;
-    proposedTeams: TeamName[];
+    teams: TeamName[];
 }
 
 export interface Driver {

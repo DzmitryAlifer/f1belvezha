@@ -1,8 +1,7 @@
 import {Injectable} from '@angular/core';
-import {Store} from '@ngrx/store';
 import {Observable} from 'rxjs';
 import {map, switchMap} from 'rxjs/operators';
-import * as toolbarSelectors from '../toolbar/store/toolbar.selectors';
+import {getNextEvent} from '../common';
 import {Params, TeamVsTeamProposal} from '../types';
 import {HttpService} from './http.service';
 
@@ -13,12 +12,9 @@ const CURRENT_YEAR = new Date().getFullYear();
 @Injectable({providedIn: 'root'})
 export class TeamProposalService {
 
-  private readonly nextRound = this.store.select(toolbarSelectors.selectLastRound).pipe(map(round => round + 1));
+  private readonly nextRound = getNextEvent().pipe(map(({round}) => round));
 
-  constructor(
-    private readonly httpService: HttpService,
-    private readonly store: Store,
-  ) {}
+  constructor(private readonly httpService: HttpService) {}
 
   getNextRaceTeamVsTeamProposals(): Observable<TeamVsTeamProposal[]> {
     return this.nextRound.pipe(

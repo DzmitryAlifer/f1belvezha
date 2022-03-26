@@ -65,6 +65,7 @@ export class PredictionDialog {
     r3: defineField(this.data.isRaceLocked),
     r4: defineField(this.data.isRaceLocked),
     r5: defineField(this.data.isRaceLocked),
+    teamVsTeam0: new FormControl(''),
   }, {validators: validateForm});
 
   private readonly nextEvent = getNextEvent().pipe(
@@ -84,7 +85,7 @@ export class PredictionDialog {
     private readonly f1PublicApiService: F1PublicApiService,
     private readonly predictionService: PredictionService,
     private readonly store: Store,
-  ) {}
+  ) {this.teamVsTeamProposals.subscribe(r=> console.log(r))}
 
   ngOnInit(): void {
     this.store.dispatch({type: FullResultsActionType.LOAD_CURRENT_USER_PREDICTIONS});
