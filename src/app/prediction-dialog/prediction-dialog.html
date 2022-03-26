@@ -79,9 +79,15 @@
 
         <ng-container *ngFor="let proposal of data.teamVsTeamProposals; let index = index">
             <mat-radio-group color="primary" [formControlName]="'teamVsTeam' + index">
-                <mat-radio-button [value]="proposal.teams[0]">{{proposal.teams[0]}}</mat-radio-button>
-                <mat-radio-button [value]="null">Not selected</mat-radio-button>
-                <mat-radio-button [value]="proposal.teams[1]">{{proposal.teams[1]}}</mat-radio-button>
+                <mat-radio-button [value]="proposal.teams[0]">
+                    <div>{{proposal.teams[0]}}</div>
+                    <img class="bolid" [src]="'/assets/images/bolids/' + proposal.teams[0] + '.png'" />
+                </mat-radio-button>
+                <mat-radio-button [value]="null">skip</mat-radio-button>
+                <mat-radio-button [value]="proposal.teams[1]">
+                    <div>{{proposal.teams[1]}}</div>
+                    <img class="bolid" [src]="'/assets/images/bolids/' + proposal.teams[1] + '.png'" />
+                </mat-radio-button>
             </mat-radio-group>
         </ng-container>
     </fieldset>

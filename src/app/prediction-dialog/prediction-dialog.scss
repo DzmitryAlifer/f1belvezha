@@ -27,8 +27,14 @@ h2, h3, .button-bar {
     width: 80px;
 }
 
-::ng-deep .mat-select-value {
-    height: 23px;
+::ng-deep {
+    .mat-select-value {
+        height: 23px;
+    }
+
+    .mat-radio-container {
+        display: none !important;
+    }
 }
 
 
