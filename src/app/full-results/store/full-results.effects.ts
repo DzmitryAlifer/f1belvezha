@@ -74,8 +74,10 @@ export class FullResultsEffects {
     loadNextRoundTeamVsTeamProposals = createEffect(() => this.actions.pipe(
         ofType(FullResultsActionType.LOAD_NEXT_RACE_TEAM_VS_TEAM_PROPOSALS),
         switchMap(() => this.nextRaceTeamVsTeamProposals.pipe(
-            map(nextRaceTeamVsTeamProposals => 
-                ({ type: FullResultsActionType.LOAD_NEXT_RACE_TEAM_VS_TEAM_PROPOSALS_SUCCESS, payload: {nextRaceTeamVsTeamProposals}})),
+            map(nextRaceTeamVsTeamProposals => ({
+                type: FullResultsActionType.LOAD_NEXT_RACE_TEAM_VS_TEAM_PROPOSALS_SUCCESS,
+                payload: {nextRaceTeamVsTeamProposals},
+            })),
         ))
     ));
 
