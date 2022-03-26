@@ -11,7 +11,7 @@ import * as fullResultsSelectors from '../full-results/store/full-results.select
 import {FullResultsActionType} from '../full-results/store/full-results.actions';
 import {DRIVER_TEAM_MAPPING, PREDICTION_PLACES_NUMBER} from 'src/constants';
 import {getNextEvent} from '../common';
-import { EventType } from '../toolbar/next-event/next-event.component';
+import {EventType} from '../toolbar/next-event/next-event.component';
 
 
 export interface PredictionDialogData {
@@ -36,6 +36,7 @@ export class PredictionDialog {
   readonly PLACE_INDEXES = PLACE_INDEXES;
   readonly raceSelectedName = new ReplaySubject<string>();
   readonly drivers = this.f1PublicApiService.getDriverStandings();
+  readonly teamVsTeamProposals = this.store.select(fullResultsSelectors.selectNextRaceTeamVsTeamProposals);
 
   readonly prediction = this.store.select(fullResultsSelectors.selectCurrentUserPredictions).pipe(
     map(predictions => 
