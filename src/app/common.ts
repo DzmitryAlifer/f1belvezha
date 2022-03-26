@@ -14,7 +14,7 @@ export const SCHEDULE: EventSchedule[] = [{
     race: {start: moment('2022-03-20T18:00:00+03:00'), end: moment('2022-03-20T20:00:00+03:00')},
 }, {
     location: 'Saudi Arabia',
-    qualification: {start: moment('2022-03-26T18:00:00+03:00'), end: moment('2022-03-26T19:00:00+03:00')},
+    qualification: {start: moment('2022-03-26T20:00:00+03:00'), end: moment('2022-03-26T21:00:00+03:00')},
     race: {start: moment('2022-03-27T19:00:00+03:00'), end: moment('2022-03-27T21:00:00+03:00')},
 }];
 
