@@ -1,5 +1,5 @@
 import {Action} from '@ngrx/store';
-import {DriverRoundResult, Prediction, Race, User} from 'src/app/types';
+import {DriverRoundResult, Prediction, Race, TeamVsTeamProposal, User} from 'src/app/types';
 
 
 export enum FullResultsActionType {
@@ -52,7 +52,7 @@ export class LoadNextRaceTeamVsTeamProposals implements Action {
 
 export class LoadNextRaceTeamVsTeamProposalsSuccess implements Action {
     readonly type = FullResultsActionType.LOAD_NEXT_RACE_TEAM_VS_TEAM_PROPOSALS_SUCCESS;
-    constructor(readonly payload: {users: User[]}) {}
+    constructor(readonly payload: {nextRaceTeamVsTeamProposals: TeamVsTeamProposal[]}) {}
 }
 
 export class LoadCurrentYearResults implements Action {

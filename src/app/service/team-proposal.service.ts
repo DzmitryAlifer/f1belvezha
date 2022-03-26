@@ -20,7 +20,7 @@ export class TeamProposalService {
     private readonly store: Store,
   ) {}
 
-  getNextRoundTeamVsTeamProposals(): Observable<TeamVsTeamProposal[]> {
+  getNextRaceTeamVsTeamProposals(): Observable<TeamVsTeamProposal[]> {
     return this.nextRound.pipe(
       switchMap((nextRound: number) => {
         const queryParams: Params = {year: CURRENT_YEAR, round: nextRound};

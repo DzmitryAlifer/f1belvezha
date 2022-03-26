@@ -1,4 +1,4 @@
-import {DriverRoundResult, Prediction, Race, User} from 'src/app/types';
+import {DriverRoundResult, Prediction, Race, TeamVsTeamProposal, User} from 'src/app/types';
 
 
 export interface FullResultsState {
@@ -9,6 +9,7 @@ export interface FullResultsState {
     currentYearResults: DriverRoundResult[];
     isAuthenticated: boolean;
     isLoaded: boolean;
+    nextRaceTeamVsTeamProposals: TeamVsTeamProposal[];
     nextRound: number;
     nextRoundPredictions: Prediction[];
     predictions: Prediction[];

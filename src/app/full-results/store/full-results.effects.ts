@@ -23,6 +23,7 @@ export class FullResultsEffects {
     private readonly currentYearResults = this.resultService.getDriverYearResults(CURRENT_YEAR);
     private readonly allPredictions = this.predictionService.getAllPredictions();
     private readonly races = this.f1PublicApiService.getCurrentYearSchedule();
+    private readonly nextRaceTeamVsTeamProposals = this.teamProposalService.getNextRaceTeamVsTeamProposals();
 
     private readonly currentUserPredictions = combineLatest([this.currentUser, this.allPredictions]).pipe(
         filter(([currentUser, ]) => !!currentUser?.id),
@@ -67,6 +68,14 @@ export class FullResultsEffects {
         ofType(FullResultsActionType.LOAD_USERS),
         switchMap(() => this.users.pipe(
             map(users => ({type: FullResultsActionType.LOAD_USERS_SUCCESS, payload: {users}})),
+        ))
+    ));
+
+    loadNextRoundTeamVsTeamProposals = createEffect(() => this.actions.pipe(
+        ofType(FullResultsActionType.LOAD_NEXT_RACE_TEAM_VS_TEAM_PROPOSALS),
+        switchMap(() => this.nextRaceTeamVsTeamProposals.pipe(
+            map(nextRaceTeamVsTeamProposals => 
+                ({ type: FullResultsActionType.LOAD_NEXT_RACE_TEAM_VS_TEAM_PROPOSALS_SUCCESS, payload: {nextRaceTeamVsTeamProposals}})),
         ))
     ));
 
