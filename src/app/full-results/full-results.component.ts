@@ -91,6 +91,7 @@ export class FullResultsComponent implements OnInit {
     this.currentUserHasPrediction.subscribe();
     this.store.dispatch({type: FullResultsActionType.LOAD_RACES});
     this.store.dispatch({type: FullResultsActionType.LOAD_USERS});
+    this.store.dispatch({type: FullResultsActionType.LOAD_NEXT_RACE_TEAM_VS_TEAM_PROPOSALS});
     this.store.dispatch({type: FullResultsActionType.LOAD_ALL_PREDICTIONS});
     this.store.dispatch({type: FullResultsActionType.LOAD_CURRENT_YEAR_RESULTS});
     this.store.dispatch({type: FullResultsActionType.CALCULATE_CURRENT_YEAR_POINTS});

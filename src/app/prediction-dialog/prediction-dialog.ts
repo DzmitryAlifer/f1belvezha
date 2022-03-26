@@ -24,7 +24,7 @@ export interface PredictionDialogData {
 
 
 const PLACE_INDEXES = Array.from({length: PREDICTION_PLACES_NUMBER}, (v, i) => i);
-const EMPTY_PREDICTION: Prediction = {qualification: ['', '', '', '', ''], race: ['', '', '', '', '']};
+const EMPTY_PREDICTION: Prediction = {qualification: ['', '', '', '', ''], race: ['', '', '', '', ''], teamVsTeam: []};
 
 
 @Component({
@@ -45,6 +45,7 @@ export class PredictionDialog {
       ...prediction,
       qualification: [...prediction.qualification],
       race: [...prediction.race],
+      teamVsTeam: [...(prediction.teamVsTeam ?? [])],
     })),
     shareReplay(1),
   );
@@ -115,6 +116,7 @@ export class PredictionDialog {
       round: this.data.round,
       qualification: [q1, q2, q3, q4, q5],
       race: [r1, r2, r3, r4, r5],
+      teamVsTeam: [],
     };
     const predictionResponse = this.data.hasPrediction ? 
         this.predictionService.updatePrediction(prediction) :

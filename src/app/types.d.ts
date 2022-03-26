@@ -1,3 +1,6 @@
+import {Team as TeamName} from './enums';
+
+
 export interface User {
     username: string;
     firstname: string;
@@ -63,6 +66,12 @@ export interface Team {
     nationality: string;
 }
 
+export interface TeamVsTeamProposal {
+    year: number;
+    round: number;
+    proposedTeams: TeamName[];
+}
+
 export interface Driver {
     driverId: string;
     permanentNumber: number;
@@ -97,6 +106,7 @@ export interface Prediction {
     round?: number;
     qualification: string[];
     race: string[];
+    teamVsTeam: Team[];
 }
 
 export interface CountDownDigits {

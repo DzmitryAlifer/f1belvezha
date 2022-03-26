@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import { Observable, of} from 'rxjs';
+import {Observable, of} from 'rxjs';
 import {DriverRoundResult, Params, PlayerRoundResult} from '../types';
 import {HttpService} from './http.service';
 

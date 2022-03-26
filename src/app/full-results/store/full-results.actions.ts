@@ -8,6 +8,8 @@ export enum FullResultsActionType {
     LOAD_RACES_SUCCESS = '[Full Results] Load races - success',
     LOAD_USERS = '[Full Results] Load users',
     LOAD_USERS_SUCCESS = '[Full Results] Load users - success',
+    LOAD_NEXT_RACE_TEAM_VS_TEAM_PROPOSALS = '[Full Results] Load team vsteam proposals for next race',
+    LOAD_NEXT_RACE_TEAM_VS_TEAM_PROPOSALS_SUCCESS = '[Full Results] Load team vsteam proposals for next race - success',
     LOAD_CURRENT_YEAR_RESULTS = '[Full Results] Load current year results',
     LOAD_CURRENT_YEAR_RESULTS_SUCCESS = '[Full Results] Load current year results - success',
     LOAD_ALL_PREDICTIONS = '[Full Results] Load all predictions',
@@ -40,6 +42,16 @@ export class LoadUsers implements Action {
 
 export class LoadUsersSuccess implements Action {
     readonly type = FullResultsActionType.LOAD_USERS_SUCCESS;
+    constructor(readonly payload: {users: User[]}) {}
+}
+
+export class LoadNextRaceTeamVsTeamProposals implements Action {
+    readonly type = FullResultsActionType.LOAD_NEXT_RACE_TEAM_VS_TEAM_PROPOSALS;
+    constructor(readonly payload: {}) {}
+}
+
+export class LoadNextRaceTeamVsTeamProposalsSuccess implements Action {
+    readonly type = FullResultsActionType.LOAD_NEXT_RACE_TEAM_VS_TEAM_PROPOSALS_SUCCESS;
     constructor(readonly payload: {users: User[]}) {}
 }
 
@@ -89,6 +101,8 @@ export type FullResultsAction =
     | LoadRacesSuccess
     | LoadUsers
     | LoadUsersSuccess
+    | LoadNextRaceTeamVsTeamProposals
+    | LoadNextRaceTeamVsTeamProposalsSuccess
     | LoadCurrentYearResults
     | LoadCurrentYearResultsSuccess
     | LoadAllPredictions

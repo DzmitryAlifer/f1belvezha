@@ -10,13 +10,17 @@ import * as toolbarSelectors from '../../toolbar/store/toolbar.selectors';
 import {F1PublicApiService} from 'src/app/service/f1-public-api.service';
 import {ResultService} from 'src/app/service/result.service';
 import {calculateRoundPoints} from 'src/app/common';
+import {TeamProposalService} from 'src/app/service/team-proposal.service';
+
+
+const CURRENT_YEAR = new Date().getFullYear();
 
 
 @Injectable()
 export class FullResultsEffects {
     private readonly users = this.userService.getAllUsers();
     private readonly currentUser = this.store.select(toolbarSelectors.selectCurrentUser);
-    private readonly currentYearResults = this.resultService.getDriverYearResults(new Date().getFullYear());
+    private readonly currentYearResults = this.resultService.getDriverYearResults(CURRENT_YEAR);
     private readonly allPredictions = this.predictionService.getAllPredictions();
     private readonly races = this.f1PublicApiService.getCurrentYearSchedule();
 
@@ -48,6 +52,7 @@ export class FullResultsEffects {
         private readonly predictionService: PredictionService,
         private readonly resultService: ResultService,
         private readonly store: Store,
+        private readonly teamProposalService: TeamProposalService,
         private readonly userService: UserService,
     ) {}
 
