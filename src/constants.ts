@@ -1,4 +1,4 @@
-import {TeamName} from "./app/enums";
+import {TeamName} from './app/enums';
 
 
 export const PREDICTION_PLACES_NUMBER = 5;
@@ -26,6 +26,18 @@ export const DRIVER_TEAM_MAPPING = new Map<string, string>()
     .set('Zhou', TeamName.AlfaRomeo)
     .set('Schumacher', TeamName.Haas)
     .set('Magnussen', TeamName.Haas);
+
+export const TEAM_NAMES = new Map<TeamName, string>()
+    .set(TeamName.Mercedes, 'Mercedes')
+    .set(TeamName.RedBull, 'Red Bull')
+    .set(TeamName.Ferrari, 'Ferrari')
+    .set(TeamName.McLaren, 'McLaren')
+    .set(TeamName.Alpine, 'Alpine')
+    .set(TeamName.AlphaTauri, 'Alpha Tauri')
+    .set(TeamName.AstonMartin, 'Aston Martin')
+    .set(TeamName.Williams, 'Williams')
+    .set(TeamName.AlfaRomeo, 'Alfa Romeo')
+    .set(TeamName.Haas, 'Haas');
 
 export const TEAM_DRIVER_COLORS: any = {
     Hamilton: '#6cd3bf',

@@ -1,3 +1,6 @@
+@import '../../styles.scss';
+
+
 h2, h3, .button-bar {
     text-align: center;
 }
@@ -20,10 +23,20 @@ h2, h3, .button-bar {
             width: 240px;
         }
 
-        .selected {
-            color: yellow;
+        mat-radio-button {
+            &.mat-radio-checked {
+                color: $blue-800;
+            }
+
+            &:not(.mat-radio-checked) {
+                opacity: .4;
+            }
         }
     }
+}
+
+.dark .event mat-radio-button.mat-radio-checked {
+    color: $blue-200;
 }
 
 .bolid {

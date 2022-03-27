@@ -10,10 +10,11 @@ import {PredictionService} from '../service/prediction.service';
 import {Prediction} from '../types';
 import * as fullResultsSelectors from '../full-results/store/full-results.selectors';
 import {FullResultsActionType} from '../full-results/store/full-results.actions';
-import {DRIVER_TEAM_MAPPING, PREDICTION_PLACES_NUMBER} from 'src/constants';
+import {DRIVER_TEAM_MAPPING, PREDICTION_PLACES_NUMBER, TEAM_NAMES} from 'src/constants';
 import {getNextEvent} from '../common';
 import {TeamName} from '../enums';
 import {EventType} from '../toolbar/next-event/next-event.component';
+import * as toolbarSelectors from '../toolbar/store/toolbar.selectors';
 
 
 export interface PredictionDialogData {
@@ -26,7 +27,7 @@ export interface PredictionDialogData {
 
 
 const PLACE_INDEXES = Array.from({length: PREDICTION_PLACES_NUMBER}, (v, i) => i);
-const EMPTY_PREDICTION: Prediction = { qualification: ['', '', '', '', ''], race: ['', '', '', '', ''], team_vs_team: []};
+const EMPTY_PREDICTION: Prediction = {qualification: ['', '', '', '', ''], race: ['', '', '', '', ''], team_vs_team: []};
 
 
 @Component({
@@ -36,9 +37,11 @@ const EMPTY_PREDICTION: Prediction = { qualification: ['', '', '', '', ''], race
 })
 export class PredictionDialog {
   readonly PLACE_INDEXES = PLACE_INDEXES;
+  readonly TEAM_NAMES = TEAM_NAMES;
   readonly TeamName = TeamName;
 
   private readonly selectedTeam0Subject = new BehaviorSubject<TeamName>(TeamName.None);
+  readonly isDarkMode = this.store.select(toolbarSelectors.selectIsDarkMode);
   readonly drivers = this.f1PublicApiService.getDriverStandings();
   readonly teamVsTeamProposals = this.store.select(fullResultsSelectors.selectNextRaceTeamVsTeamProposals);
 
@@ -97,6 +100,7 @@ export class PredictionDialog {
   ) {}
 
   ngOnInit(): void {
+    this.teamVsTeamProposals.subscribe(r=>console.log(r))
     this.store.dispatch({type: FullResultsActionType.LOAD_CURRENT_USER_PREDICTIONS});
 
     combineLatest([this.prediction, this.selectedTeam0Subject]).subscribe(([prediction, selectedTeam0]) => {
@@ -125,6 +129,10 @@ export class PredictionDialog {
     if (index === 0) {
       this.selectedTeam0Subject.next(value);
     }
+  }
+
+  asTeamName(teamName: any): string {
+    return (teamName as TeamName).toString();
   }
 
   submit(): void {
