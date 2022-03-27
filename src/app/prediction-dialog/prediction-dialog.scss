@@ -31,6 +31,10 @@ h2, h3, .button-bar {
             &:not(.mat-radio-checked) {
                 opacity: .4;
             }
+
+            &.none {
+                padding: 12px;
+            }
         }
     }
 }

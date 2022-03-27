@@ -89,7 +89,7 @@
                     <div>{{TEAM_NAMES.get(proposal.teams[0])}}</div>
                     <img class="bolid" [src]="'/assets/images/bolids/' + proposal.teams[0] + '.png'" />
                 </mat-radio-button>
-                <mat-radio-button [value]="TeamName.None">
+                <mat-radio-button class="none" [value]="TeamName.None">
                     <div>skip</div>
                 </mat-radio-button>
                 <mat-radio-button [value]="proposal.teams[1]">
