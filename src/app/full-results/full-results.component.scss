@@ -56,6 +56,8 @@
         }
     }
 
+    .test {}
+
     .flag {
         border: 1px solid grey;
         border-radius: 2px;
@@ -78,11 +80,14 @@
         }
 
         &.event {
-            display: flex;
-            vertical-align: bottom;
+            vertical-align: middle;
 
-            .country {
-                padding: 0 14px;
+            .country-container {
+                display: flex;
+
+                .country {
+                    padding: 0 14px;
+                }
             }
         }
 

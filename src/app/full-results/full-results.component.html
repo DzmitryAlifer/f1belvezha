@@ -27,12 +27,14 @@
             </th>
 
             <td class="event" mat-cell *matCellDef="let race">
-                <div class="country">
-                    <span><img alt="race.Circuit.Location.country" class="flag" [src]="getFlagLink(race.Circuit.Location.country)"/></span>
-                    <div>{{formatDate(race.date)}}</div>
-                </div>
-                <div>
-                    <span><img alt="race.Circuit.Location.country" class="circuit" [src]="getCircuitPath(race.Circuit.Location.country)"/></span>
+                <div class="country-container">
+                    <div class="country">
+                        <span><img alt="race.Circuit.Location.country" class="flag" [src]="getFlagLink(race.Circuit.Location.country)"/></span>
+                        <div>{{formatDate(race.date)}}</div>
+                    </div>
+                    <div>
+                        <span><img alt="race.Circuit.Location.country" class="circuit" [src]="getCircuitPath(race.Circuit.Location.country)"/></span>
+                    </div>
                 </div>
             </td>
         </ng-container>
