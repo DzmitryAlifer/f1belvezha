@@ -22,4 +22,8 @@ export class ResultService {
   addPlayersResults(results: PlayerRoundResult[]): Observable<PlayerRoundResult[]> {
     return results.length ? this.httpService.post<PlayerRoundResult[]>('/playerResult', results) : of([]);
   }
+
+  updatePlayersResults(results: PlayerRoundResult[]): Observable<PlayerRoundResult[]> {
+    return results.length ? this.httpService.put<PlayerRoundResult[]>('/playerResult', results) : of([]);
+  }
 }

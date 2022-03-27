@@ -107,13 +107,10 @@ export function getNextEvent(): Observable<DisplayEvent> {
 
 export function toPoints(results: PlayerRoundResult[], users: User[]): UserPoints[] {
     return users.reduce((acc, user) => {
-        const points = results.reduce((sum, result) => {
-            if (result.userid === user.id) {
-                const increment = DRIVER_IN_LIST_PTS * (result.qual_guessed_on_list.length + result.race_guessed_on_list.length) +
-                    DRIVER_PLACE_PTS * (result.qual_guessed_position.length + result.race_guessed_position.length);
-                sum += increment;
-            }
-            return sum;
+        const points = results.filter(result => result.userid === user.id).reduce((sum, result) => {
+            const increment = DRIVER_IN_LIST_PTS * (result.qual_guessed_on_list.length + result.race_guessed_on_list.length) +
+                DRIVER_PLACE_PTS * (result.qual_guessed_position.length + result.race_guessed_position.length);
+            return sum + increment;
         }, 0);
         acc.push({ user, points });
         return acc;
