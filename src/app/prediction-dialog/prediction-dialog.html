@@ -2,6 +2,7 @@
 
 <form *ngIf="{
     drivers: drivers | async,
+    isDarkMode: isDarkMode | async,
     isLoaded: isLoaded | async,
     isQualificationEditable: isQualificationEditable | async,
     isRaceEditable: isRaceEditable | async,
@@ -9,7 +10,7 @@
     selectedTeam0: selectedTeam0 | async,
     teamVsTeamProposals: teamVsTeamProposals | async
 } as data" [formGroup]="predictionForm" (ngSubmit)="submit()">
-<div class="places">    
+<div class="places" [class.dark]="data.isDarkMode">    
     <fieldset *ngIf="data.isLoaded" class="event">
         <h3>
             Qualifying - drivers
@@ -85,14 +86,14 @@
                     [(ngModel)]="data.selectedTeam0"
                     (change)="selectTeam($event, index)">
                 <mat-radio-button [value]="proposal.teams[0]">
-                    <div [class.selected]="data.selectedTeam0 === proposal.teams[0]">{{proposal.teams[0]}}</div>
+                    <div>{{TEAM_NAMES.get(proposal.teams[0])}}</div>
                     <img class="bolid" [src]="'/assets/images/bolids/' + proposal.teams[0] + '.png'" />
                 </mat-radio-button>
                 <mat-radio-button [value]="TeamName.None">
-                    <div [class.selected]="data.selectedTeam0 === TeamName.None">skip</div>
+                    <div>skip</div>
                 </mat-radio-button>
                 <mat-radio-button [value]="proposal.teams[1]">
-                    <div [class.selected]="data.selectedTeam0 === proposal.teams[1]">{{proposal.teams[1]}}</div>
+                    <div>{{TEAM_NAMES.get(proposal.teams[1])}}</div>
                     <img class="bolid" [src]="'/assets/images/bolids/' + proposal.teams[1] + '.png'" />
                 </mat-radio-button>
             </mat-radio-group>
