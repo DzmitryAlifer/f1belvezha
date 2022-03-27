@@ -9,7 +9,7 @@ export enum Page {
     Charts,
 }
 
-export enum Team {
+export enum TeamName {
     Mercedes = 'mercedes',
     RedBull = 'red_bull',
     Ferrari = 'ferrari',
@@ -20,4 +20,5 @@ export enum Team {
     Williams = 'williams',
     AlfaRomeo = 'alfa',
     Haas = 'haas',
+    None = 'none',
 }

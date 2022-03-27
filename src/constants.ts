@@ -1,31 +1,31 @@
-import {Team} from "./app/enums";
+import {TeamName} from "./app/enums";
 
 
 export const PREDICTION_PLACES_NUMBER = 5;
 export const CURRENT_USER_KEY = 'currentUser';
 
 export const DRIVER_TEAM_MAPPING = new Map<string, string>()
-    .set('Hamilton', Team.Mercedes)
-    .set('Russell', Team.Mercedes)
-    .set('Verstappen', Team.RedBull)
-    .set('Pérez', Team.RedBull)
-    .set('Sainz', Team.Ferrari)
-    .set('Leclerc', Team.Ferrari)
-    .set('Norris', Team.McLaren)
-    .set('Ricciardo', Team.McLaren)
-    .set('Ocon', Team.Alpine)
-    .set('Alonso', Team.Alpine)
-    .set('Gasly', Team.AlphaTauri)
-    .set('Tsunoda', Team.AlphaTauri)
-    .set('Stroll', Team.AstonMartin)
-    .set('Vettel', Team.AstonMartin)
-    .set('Hülkenberg', Team.AstonMartin)
-    .set('Albon', Team.Williams)
-    .set('Latifi', Team.Williams)
-    .set('Bottas', Team.AlfaRomeo)
-    .set('Zhou', Team.AlfaRomeo)
-    .set('Schumacher', Team.Haas)
-    .set('Magnussen', Team.Haas);
+    .set('Hamilton', TeamName.Mercedes)
+    .set('Russell', TeamName.Mercedes)
+    .set('Verstappen', TeamName.RedBull)
+    .set('Pérez', TeamName.RedBull)
+    .set('Sainz', TeamName.Ferrari)
+    .set('Leclerc', TeamName.Ferrari)
+    .set('Norris', TeamName.McLaren)
+    .set('Ricciardo', TeamName.McLaren)
+    .set('Ocon', TeamName.Alpine)
+    .set('Alonso', TeamName.Alpine)
+    .set('Gasly', TeamName.AlphaTauri)
+    .set('Tsunoda', TeamName.AlphaTauri)
+    .set('Stroll', TeamName.AstonMartin)
+    .set('Vettel', TeamName.AstonMartin)
+    .set('Hülkenberg', TeamName.AstonMartin)
+    .set('Albon', TeamName.Williams)
+    .set('Latifi', TeamName.Williams)
+    .set('Bottas', TeamName.AlfaRomeo)
+    .set('Zhou', TeamName.AlfaRomeo)
+    .set('Schumacher', TeamName.Haas)
+    .set('Magnussen', TeamName.Haas);
 
 export const TEAM_DRIVER_COLORS: any = {
     Hamilton: '#6cd3bf',

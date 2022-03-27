@@ -1,4 +1,4 @@
-import {Team as TeamName} from './enums';
+import {TeamName} from './enums';
 
 
 export interface User {
@@ -106,7 +106,7 @@ export interface Prediction {
     round?: number;
     qualification: string[];
     race: string[];
-    teamVsTeam: Team[];
+    team_vs_team: TeamName[];
 }
 
 export interface CountDownDigits {

@@ -50,8 +50,7 @@ export class FullResultsComponent implements OnInit {
   readonly currentUserHasPrediction = combineLatest([this.currentUserPredictions, this.nextRaceRound]).pipe(
     map(([currentUserPredictions, round]) => (currentUserPredictions ?? []).some((prediction: Prediction) =>
         prediction.round === round &&
-        prediction.qualification.filter(name => !!name).length &&
-        prediction.race.filter(name => !!name).length,
+        (prediction.qualification.filter(name => !!name).length || prediction.race.filter(name => !!name).length),
       )),
   );
 

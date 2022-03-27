@@ -1,8 +1,9 @@
 import {Component, Inject} from '@angular/core';
 import {AbstractControl, FormControl, FormGroup, ValidationErrors, Validators} from '@angular/forms';
 import {MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
+import {MatRadioChange} from '@angular/material/radio';
 import {Store} from '@ngrx/store';
-import {combineLatest, ReplaySubject} from 'rxjs';
+import {BehaviorSubject, combineLatest, merge} from 'rxjs';
 import {filter, map, shareReplay} from 'rxjs/operators';
 import {F1PublicApiService} from '../service/f1-public-api.service';
 import {PredictionService} from '../service/prediction.service';
@@ -11,6 +12,7 @@ import * as fullResultsSelectors from '../full-results/store/full-results.select
 import {FullResultsActionType} from '../full-results/store/full-results.actions';
 import {DRIVER_TEAM_MAPPING, PREDICTION_PLACES_NUMBER} from 'src/constants';
 import {getNextEvent} from '../common';
+import {TeamName} from '../enums';
 import {EventType} from '../toolbar/next-event/next-event.component';
 
 
@@ -24,7 +26,7 @@ export interface PredictionDialogData {
 
 
 const PLACE_INDEXES = Array.from({length: PREDICTION_PLACES_NUMBER}, (v, i) => i);
-const EMPTY_PREDICTION: Prediction = {qualification: ['', '', '', '', ''], race: ['', '', '', '', ''], teamVsTeam: []};
+const EMPTY_PREDICTION: Prediction = { qualification: ['', '', '', '', ''], race: ['', '', '', '', ''], team_vs_team: []};
 
 
 @Component({
@@ -34,7 +36,9 @@ const EMPTY_PREDICTION: Prediction = {qualification: ['', '', '', '', ''], race:
 })
 export class PredictionDialog {
   readonly PLACE_INDEXES = PLACE_INDEXES;
-  readonly raceSelectedName = new ReplaySubject<string>();
+  readonly TeamName = TeamName;
+
+  private readonly selectedTeam0Subject = new BehaviorSubject<TeamName>(TeamName.None);
   readonly drivers = this.f1PublicApiService.getDriverStandings();
   readonly teamVsTeamProposals = this.store.select(fullResultsSelectors.selectNextRaceTeamVsTeamProposals);
 
@@ -46,9 +50,14 @@ export class PredictionDialog {
       ...prediction,
       qualification: [...prediction.qualification],
       race: [...prediction.race],
-      teamVsTeam: [...(prediction.teamVsTeam ?? [])],
+      teamVsTeam: [...(prediction.team_vs_team ?? [])],
     })),
     shareReplay(1),
+  );
+
+  readonly selectedTeam0 = merge(
+    this.prediction.pipe(map(({teamVsTeam}) => teamVsTeam[0])),
+    this.selectedTeam0Subject,
   );
   
   readonly isLoaded = combineLatest([this.drivers, this.prediction])
@@ -65,7 +74,7 @@ export class PredictionDialog {
     r3: defineField(this.data.isRaceLocked),
     r4: defineField(this.data.isRaceLocked),
     r5: defineField(this.data.isRaceLocked),
-    teamVsTeam0: new FormControl(''),
+    teamVsTeam0: new FormControl(TeamName.None),
   }, {validators: validateForm});
 
   private readonly nextEvent = getNextEvent().pipe(
@@ -85,12 +94,12 @@ export class PredictionDialog {
     private readonly f1PublicApiService: F1PublicApiService,
     private readonly predictionService: PredictionService,
     private readonly store: Store,
-  ) {this.teamVsTeamProposals.subscribe(r=> console.log(r))}
+  ) {}
 
   ngOnInit(): void {
     this.store.dispatch({type: FullResultsActionType.LOAD_CURRENT_USER_PREDICTIONS});
 
-    this.prediction.subscribe(prediction => {
+    combineLatest([this.prediction, this.selectedTeam0Subject]).subscribe(([prediction, selectedTeam0]) => {
       this.predictionForm.patchValue({
         q1: prediction.qualification[0],
         q2: prediction.qualification[1],
@@ -102,6 +111,7 @@ export class PredictionDialog {
         r3: prediction.race[2],
         r4: prediction.race[3],
         r5: prediction.race[4],
+        teamVsTeam0: selectedTeam0,
       });
     });
   }
@@ -111,14 +121,20 @@ export class PredictionDialog {
     return `/assets/images/bolids/${teamId}.png`;
   }
 
+  selectTeam({value}: MatRadioChange, index: number): void {
+    if (index === 0) {
+      this.selectedTeam0Subject.next(value);
+    }
+  }
+
   submit(): void {
-    const {q1, q2, q3, q4, q5, r1, r2, r3, r4, r5} = this.predictionForm.value;
+    const {q1, q2, q3, q4, q5, r1, r2, r3, r4, r5, teamVsTeam0} = this.predictionForm.value;
     const prediction: Prediction = {
       userid: this.data.userId,
       round: this.data.round,
       qualification: [q1, q2, q3, q4, q5],
       race: [r1, r2, r3, r4, r5],
-      teamVsTeam: [],
+      team_vs_team: [teamVsTeam0],
     };
     const predictionResponse = this.data.hasPrediction ? 
         this.predictionService.updatePrediction(prediction) :

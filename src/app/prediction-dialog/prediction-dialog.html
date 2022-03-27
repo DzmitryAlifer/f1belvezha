@@ -6,6 +6,7 @@
     isQualificationEditable: isQualificationEditable | async,
     isRaceEditable: isRaceEditable | async,
     prediction: prediction | async,
+    selectedTeam0: selectedTeam0 | async,
     teamVsTeamProposals: teamVsTeamProposals | async
 } as data" [formGroup]="predictionForm" (ngSubmit)="submit()">
 <div class="places">    
@@ -78,14 +79,20 @@
         </h3>
 
         <ng-container *ngFor="let proposal of data.teamVsTeamProposals; let index = index">
-            <mat-radio-group color="primary" [formControlName]="'teamVsTeam' + index">
+            <mat-radio-group 
+                    *ngIf="data.prediction"
+                    [formControlName]="'teamVsTeam' + index"
+                    [(ngModel)]="data.selectedTeam0"
+                    (change)="selectTeam($event, index)">
                 <mat-radio-button [value]="proposal.teams[0]">
-                    <div>{{proposal.teams[0]}}</div>
+                    <div [class.selected]="data.selectedTeam0 === proposal.teams[0]">{{proposal.teams[0]}}</div>
                     <img class="bolid" [src]="'/assets/images/bolids/' + proposal.teams[0] + '.png'" />
                 </mat-radio-button>
-                <mat-radio-button [value]="null">skip</mat-radio-button>
+                <mat-radio-button [value]="TeamName.None">
+                    <div [class.selected]="data.selectedTeam0 === TeamName.None">skip</div>
+                </mat-radio-button>
                 <mat-radio-button [value]="proposal.teams[1]">
-                    <div>{{proposal.teams[1]}}</div>
+                    <div [class.selected]="data.selectedTeam0 === proposal.teams[1]">{{proposal.teams[1]}}</div>
                     <img class="bolid" [src]="'/assets/images/bolids/' + proposal.teams[1] + '.png'" />
                 </mat-radio-button>
             </mat-radio-group>
