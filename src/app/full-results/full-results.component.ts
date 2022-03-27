@@ -39,8 +39,8 @@ export class FullResultsComponent implements OnInit {
     map(([currentUser, allPredictions]) => allPredictions.filter(prediction => prediction.userid == currentUser?.id)));
 
   readonly races = this.store.select(fullResultsSelectors.selectRaces).pipe(shareReplay(1));
-  readonly nextRaceRound = this.races.pipe(map(races => races.findIndex(nextRacePredicate) + ROUND_TO_INDEX_OFFSET));
   readonly nextEvent = getNextEvent();
+  readonly nextRaceRound = this.nextEvent.pipe(map(nextEvent => nextEvent.round));
   readonly isLoaded = combineLatest([this.users, this.races]).pipe(map(([users, races]) => !!races && !!users));
 
   readonly nextRacePredictions = combineLatest([this.allPredictions, this.nextRaceRound]).pipe(
@@ -88,6 +88,9 @@ export class FullResultsComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    this.nextEvent.subscribe(r=>console.log(r));
+    this.currentUserHasPrediction.subscribe(r => console.log(r));
+
     this.currentUserHasPrediction.subscribe();
     this.store.dispatch({type: FullResultsActionType.LOAD_RACES});
     this.store.dispatch({type: FullResultsActionType.LOAD_USERS});
