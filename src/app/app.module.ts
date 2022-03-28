@@ -9,6 +9,7 @@ import {EffectsModule} from '@ngrx/effects';
 import {StoreModule} from '@ngrx/store';
 import {AppRoutingModule} from './app-routing.module';
 import {AppComponent} from './app.component';
+import {CalendarModule} from './calendar/calendar.module';
 import {ChartsModule} from './charts/charts.module';
 import {CoinModule} from './coin/coin.module';
 import {DriversStandingModule} from './drivers-standing/drivers-standing.module';
@@ -31,6 +32,7 @@ import {SideMenuModule} from './side-menu/side-menu.module';
     AppRoutingModule,
     BrowserAnimationsModule,
     BrowserModule,
+    CalendarModule,
     ChartsModule,
     CoinModule,
     CreateAccountDialogModule,

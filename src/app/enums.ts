@@ -7,6 +7,7 @@ export enum Page {
     News,
     FullResults,
     Charts,
+    Calendar,
 }
 
 export enum TeamName {

@@ -26,5 +26,12 @@
             (click)="showPage(Page.Charts)">
             <mat-icon>query_stats</mat-icon>
         </button>
+
+        <button mat-icon-button
+                matTooltip="Calendar"
+                [class.current]="data.page === Page.Calendar"
+                (click)="showPage(Page.Calendar)">
+            <mat-icon>event</mat-icon>
+        </button>
     </div>
 </ng-container>
