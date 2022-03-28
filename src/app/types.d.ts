@@ -55,6 +55,7 @@ export interface DateTimeApi {
 export interface Race {
     season: number;
     round: number;
+    raceName: string;
     Circuit: {
         Location: {
             country: string;
@@ -64,6 +65,7 @@ export interface Race {
     SecondPractice: DateTimeApi;
     ThirdPractice: DateTimeApi;
     Qualifying: DateTimeApi;
+    Sprint: DateTimeApi;
     date: string;
     time: string;
     QualifyingResults?: Result[];

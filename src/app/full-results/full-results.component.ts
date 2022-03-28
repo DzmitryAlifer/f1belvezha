@@ -6,16 +6,13 @@ import {combineLatest, merge, ReplaySubject} from 'rxjs';
 import {filter, debounceTime, map, shareReplay} from 'rxjs/operators';
 import {PredictionDialog} from '../prediction-dialog/prediction-dialog';
 import {Prediction, Race, User} from '../types';
-import * as moment from 'moment';
 import * as fullResultsSelectors from './store/full-results.selectors';
 import {FullResultsActionType} from './store/full-results.actions';
 import {EventType} from '../toolbar/next-event/next-event.component';
 import * as toolbarSelectors from '../toolbar/store/toolbar.selectors';
-import {getFlagLink, getIndexes, getNextEvent} from '../common';
+import {formatDate, getCircuitPath, getFlagLink, getIndexes, getNextEvent} from '../common';
 
 
-const NOW = moment();
-const ROUND_TO_INDEX_OFFSET = 2;
 const PAGE_SIZE = 5;
 
     
@@ -87,9 +84,6 @@ export class FullResultsComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.nextEvent.subscribe(r=>console.log(r));
-    this.currentUserHasPrediction.subscribe(r => console.log(r));
-
     this.currentUserHasPrediction.subscribe();
     this.store.dispatch({type: FullResultsActionType.LOAD_RACES});
     this.store.dispatch({type: FullResultsActionType.LOAD_USERS});
@@ -104,11 +98,7 @@ export class FullResultsComponent implements OnInit {
   }
 
   formatDate(dateStr: string): string {
-    const date = new Date(dateStr);
-    const month = new Intl.DateTimeFormat('en', {month: 'short'}).format(date);
-    const day = new Intl.DateTimeFormat('en', {day: '2-digit'}).format(date);
-
-    return `${month} ${day}`;
+    return formatDate(dateStr);
   }
 
   getFlagLink(countryName: string): string {
@@ -116,7 +106,7 @@ export class FullResultsComponent implements OnInit {
   }
 
   getCircuitPath(countryName: string): string {
-    return `/assets/images/circuits/${countryName}.png`;
+    return getCircuitPath(countryName);
   }
 
   getPoints(points: Map<number, Map<number, number[][]>>, user: User, race: Race): Array<number[]|null> {
@@ -143,8 +133,4 @@ export class FullResultsComponent implements OnInit {
 
     return getIndexes(trailingColumnsCount);
   }
-}
-
-function nextRacePredicate(race: Race, index: number, races: Race[]): boolean {
-  return NOW.isAfter(race.date) && NOW.isBefore(races[index + 1].date);
 }

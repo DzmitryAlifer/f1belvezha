@@ -1,3 +1,31 @@
 @import '../../styles.scss';
 
 
+.container {
+    height: 100%;
+    overflow: auto;
+
+    .mat-header-cell {
+        text-align: center;
+    }
+
+    .mat-cell {
+        padding: 0 16px;
+    }
+
+    .flag {
+        height: 24px;
+    }
+
+    .circuit {
+        height: 40px;
+    }
+
+    .current {
+        color: $blue-800;
+    }
+
+    .dark .current {
+        color: $blue-200;
+    }
+}

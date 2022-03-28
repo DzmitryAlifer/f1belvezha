@@ -2,7 +2,7 @@ import * as moment from 'moment';
 import {interval, Observable} from 'rxjs';
 import {map, shareReplay, startWith} from 'rxjs/operators';
 import {DisplayEvent, EventSchedule, EventType} from './toolbar/next-event/next-event.component';
-import {DriverRoundResult, PlayerRoundResult, Prediction, User, UserPoints} from './types';
+import {DateTimeApi, DriverRoundResult, PlayerRoundResult, Prediction, User, UserPoints} from './types';
 
 
 export const DRIVER_IN_LIST_PTS = 1;
@@ -53,8 +53,33 @@ const COUNTRY_MAP = new Map<string, string>()
     .set('UAE', 'AE');
 
 
+export function formatDate(dateStr: string): string {
+    const date = new Date(dateStr);
+    const month = new Intl.DateTimeFormat('en', {month: 'short'}).format(date);
+    const day = new Intl.DateTimeFormat('en', {day: '2-digit'}).format(date);
+
+    return `${month} ${day}`;
+}
+
+export function formatDateTime(dateTime: DateTimeApi): string {
+    if (!dateTime) {
+        return '-';
+    }
+
+    const date = new Date(`${dateTime.date}T${dateTime.time}`);
+    const month = new Intl.DateTimeFormat('en', {month: 'short'}).format(date);
+    const day = new Intl.DateTimeFormat('en', {day: '2-digit'}).format(date);
+    const time = new Intl.DateTimeFormat('en', {hour: '2-digit', minute: '2-digit', hour12: false}).format(date);
+
+    return `${month} ${day}, ${time}`;
+}
+
 export function getFlagLink(countryName: string): string {
     return `http://purecatamphetamine.github.io/country-flag-icons/3x2/${COUNTRY_MAP.get(countryName)}.svg`;
+}
+
+export function getCircuitPath(countryName: string): string {
+    return `/assets/images/circuits/${countryName}.png`;
 }
 
 function findNextEvent(): DisplayEvent {

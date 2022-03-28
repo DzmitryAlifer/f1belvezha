@@ -16,7 +16,7 @@ export class F1PublicApiService {
   constructor(private readonly httpClient: HttpClient) {}
 
   getCurrentCalendar(): Observable<Race[]> {
-    return this.httpClient.get<RacesResponse>(`${F1_PUBLIC_API}/current.json`).pipe(
+    return this.httpClient.get<RacesResponse>(`${F1_PUBLIC_API}current.json`).pipe(
       map(response => response.MRData.RaceTable.Races.map(race => ({
         ...race,
         season: Number(race.season),
