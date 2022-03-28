@@ -7,6 +7,7 @@ import {ToolbarState} from './toolbar.model';
 
 
 export const initialState: ToolbarState = {
+    calendar: [],
     currentUser: getStoredUser(),
     isDarkMode: localStorage.getItem('user-theme') === Theme.Dark,
     isLoaded: false,
@@ -23,6 +24,7 @@ export function toolbarReducer(state: ToolbarState = initialState, action: Toolb
         case ToolbarActionType.SET_LANGUAGE:
             return {...state, language: action.payload.language};
 
+        case ToolbarActionType.LOAD_CALENDAR:
         case ToolbarActionType.LOAD_PLAYERS_RESULTS:
             return {...state, isLoaded: false};
 
@@ -40,6 +42,9 @@ export function toolbarReducer(state: ToolbarState = initialState, action: Toolb
         
         case ToolbarActionType.SHOW_PAGE:
             return {...state, page: action.payload.page};
+
+        case ToolbarActionType.LOAD_CALENDAR_SUCCESS:
+            return {...state, calendar: action.payload.calendar, isLoaded: true};
 
         case ToolbarActionType.LOAD_PLAYERS_RESULTS_SUCCESS:
             return {...state, playersResults: action.payload.playersResults, isLoaded: true};

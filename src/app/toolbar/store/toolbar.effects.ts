@@ -11,6 +11,7 @@ import {PredictionService} from '../../service/prediction.service';
 import {ResultService} from '../../service/result.service';
 import {UserService} from '../../service/user.service';
 import {DriverRoundResult, PlayerRoundResult, Prediction} from 'src/app/types';
+import {F1PublicApiService} from '../../service/f1-public-api.service';
 
 
 const CURRENT_YEAR = new Date().getFullYear();
@@ -26,6 +27,7 @@ export class ToolbarEffects {
     private readonly driverResults = this.store.select(fullResultsSelectors.selectCurrentYearResults);
     private readonly playersResults = this.resultService.getPlayersYearResults(CURRENT_YEAR);
     private readonly allPredictions = this.predictionService.getAllPredictions();
+    private readonly calendar = this.f1PublicApiService.getCurrentCalendar();
 
     private readonly lastRoundCalculated = this.driverResults.pipe(
         map(driverResults => {
@@ -48,6 +50,7 @@ export class ToolbarEffects {
 
     constructor(
         private actions: Actions<ToolbarAction>,
+        private readonly f1PublicApiService: F1PublicApiService,
         private readonly store: Store,
         private readonly predictionService: PredictionService,
         private readonly resultService: ResultService,
@@ -82,6 +85,13 @@ export class ToolbarEffects {
                 localStorage.setItem('layout', isLockedLayout ? 'locked' : 'unlocked');
             }),
             map(() => ({type: ToolbarActionType.SET_LOCKED_LAYOUT_SUCCESS})),
+        )),
+    ));
+
+    setCalendar = createEffect(() => this.actions.pipe(
+        ofType(ToolbarActionType.LOAD_CALENDAR),
+        switchMap(() => this.calendar.pipe(
+            map(calendar => ({type: ToolbarActionType.LOAD_CALENDAR_SUCCESS, payload: {calendar}})),
         )),
     ));
 

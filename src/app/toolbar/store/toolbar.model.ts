@@ -1,8 +1,9 @@
 import {Language, Page} from 'src/app/enums';
-import {PlayerRoundResult, User} from 'src/app/types';
+import {PlayerRoundResult, Race, User} from 'src/app/types';
 
 
 export interface ToolbarState {
+    calendar: Race[];
     currentUser: User | null;
     isDarkMode: boolean;
     isLoaded: boolean;

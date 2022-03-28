@@ -1,6 +1,6 @@
 import {Action} from '@ngrx/store';
 import {Language, Page} from 'src/app/enums';
-import {PlayerRoundResult, User} from 'src/app/types';
+import {PlayerRoundResult, Race, User} from 'src/app/types';
 
 
 export enum ToolbarActionType {
@@ -11,6 +11,8 @@ export enum ToolbarActionType {
     SET_DARK_MODE_SUCCESS = '[Toolbar] Set dark mode - success',
     SET_LOCKED_LAYOUT = '[Toolbar] Set locked layout',
     SET_LOCKED_LAYOUT_SUCCESS = '[Toolbar] Set locked layout - success',
+    LOAD_CALENDAR = '[Toolbar] Load calendar',
+    LOAD_CALENDAR_SUCCESS = '[Toolbar] Load calendar - success',
     SET_LAST_ROUND = '[Toolbar] Set last round',
     SET_LAST_ROUND_SUCCESS = '[Toolbar] Set last round - success',
     SHOW_PAGE = '[Toolbar] Show page',
@@ -37,6 +39,17 @@ export class SetLockedLayout implements Action {
     readonly type = ToolbarActionType.SET_LOCKED_LAYOUT;
     constructor(readonly payload: {isLockedLayout: boolean}) {}
 }
+
+export class LoadCalendar implements Action {
+    readonly type = ToolbarActionType.LOAD_CALENDAR;
+    constructor(readonly payload: {}) {}
+}
+
+export class LoadCalendarSuccess implements Action {
+    readonly type = ToolbarActionType.LOAD_CALENDAR_SUCCESS;
+    constructor(readonly payload: {calendar: Race[]}) {}
+}
+
 
 export class SetLastRound implements Action {
     readonly type = ToolbarActionType.SET_LAST_ROUND;
@@ -70,6 +83,8 @@ export type ToolbarAction =
     | SetLockedLayout
     | LoadPlayersResults
     | LoadPlayersResultsSuccess
+    | LoadCalendar
+    | LoadCalendarSuccess
     | SetLastRound
     | SetLastRoundSuccess
     | ShowPage;

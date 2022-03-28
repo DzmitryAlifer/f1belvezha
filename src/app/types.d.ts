@@ -47,14 +47,25 @@ export interface Standings {
     DriverStandings: DriverStanding[];
 }
 
+export interface DateTimeApi {
+    date: string;
+    time: string;
+}
+
 export interface Race {
+    season: number;
     round: number;
     Circuit: {
         Location: {
             country: string;
         };
     };
+    FirstPractice: DateTimeApi;
+    SecondPractice: DateTimeApi;
+    ThirdPractice: DateTimeApi;
+    Qualifying: DateTimeApi;
     date: string;
+    time: string;
     QualifyingResults?: Result[];
     Results?: Result[];
 }
