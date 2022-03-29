@@ -111,7 +111,7 @@ function countCorrectPositions(singlePlayerResults: PlayerRoundResult[]): number
 }
 
 function getGuessesRatio(nextEvent: DisplayEvent, correctGuessesNumber: number, predictionsNumber: number): number {
-  const fullRoundsCount = nextEvent.eventType === EventType.Race ? (nextEvent.round + 1) : nextEvent.round;
+  const fullRoundsCount = nextEvent.eventType === EventType.Race ? nextEvent.round : nextEvent.round - 1;
   return correctGuessesNumber * PREDICTION_PLACES_NUMBER * fullRoundsCount / predictionsNumber;
 }
 
@@ -143,12 +143,16 @@ function getBarChartOptions(data: Array<{name: string, value: number}>, currentU
   const currentUserColor = isDarkMode ? BLUE_200 : BLUE_800;
   const labelColor = isDarkMode ? GREY_400 : GREY_750;
   const gridColor = isDarkMode ? GREY_750 : GREY_250;
+  const names = data.map(({name}) => name);
+  const values = data.map(({value}) => value);
+  const min = Math.min(...values);
+  const max = Math.max(...values);
 
   return {
     grid: {bottom: 90, left: 80},
     xAxis: {
       type: 'category',
-      data: data.map(({name}) => name),
+      data: names,
       axisLabel: {
         interval: 0, 
         rotate: 40,
@@ -157,13 +161,15 @@ function getBarChartOptions(data: Array<{name: string, value: number}>, currentU
     },
     yAxis: {
       type: 'value',
+      min,
+      max,
       splitLine: {
         lineStyle: {color: gridColor},
       },
     },
     series: {
       type: 'bar',
-      data: data.map(({value}) => value),
+      data: values,
     },  
   };
 } 
