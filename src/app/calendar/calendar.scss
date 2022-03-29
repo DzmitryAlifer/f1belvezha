@@ -16,6 +16,11 @@
     .mat-cell {
         padding: 0 16px;
 
+        .flag {
+            border: 1px solid grey;
+            border-radius: 4px;
+        }
+
         .flag, .circuit {
             vertical-align: middle;
         }
