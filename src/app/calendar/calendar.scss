@@ -5,12 +5,20 @@
     height: 100%;
     overflow: auto;
 
+    .mat-row {
+        height: 44px;
+    }
+
     .mat-header-cell {
         text-align: center;
     }
 
     .mat-cell {
         padding: 0 16px;
+
+        .flag, .circuit {
+            vertical-align: middle;
+        }
     }
 
     .flag {
