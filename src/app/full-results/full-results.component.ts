@@ -1,6 +1,6 @@
-import {AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit, ViewChild} from '@angular/core';
+import {AfterViewInit, ChangeDetectionStrategy, Component, OnInit} from '@angular/core';
 import {MatDialog} from '@angular/material/dialog';
-import {MatPaginator, MatPaginatorIntl, PageEvent} from '@angular/material/paginator';
+import {MatPaginatorIntl, PageEvent} from '@angular/material/paginator';
 import {Store} from '@ngrx/store';
 import {combineLatest, merge, ReplaySubject} from 'rxjs';
 import {filter, debounceTime, map, shareReplay} from 'rxjs/operators';
@@ -88,7 +88,6 @@ export class FullResultsComponent implements OnInit, AfterViewInit {
 
   constructor(
     private readonly matPaginatorIntl: MatPaginatorIntl,
-    private readonly changeDetector: ChangeDetectorRef,
     private readonly localStorageService: LocalStorageService,
     private readonly predictionDialog: MatDialog,
     private readonly store: Store,
@@ -112,9 +111,14 @@ export class FullResultsComponent implements OnInit, AfterViewInit {
   }
 
   onPageChange(pageEvent: PageEvent): void {
-    this.localStorageService.setItem('pageSize', pageEvent.pageSize);
-    this.pageSize.next(pageEvent.pageSize);
-    this.pageEventSubject.next(pageEvent);
+    const previousPageSize = this.localStorageService.getItem<number>('pageSize');
+
+    if (pageEvent.pageSize !== previousPageSize) {
+      this.localStorageService.setItem('pageSize', pageEvent.pageSize);
+      this.pageSize.next(pageEvent.pageSize);
+    } else {    
+      this.pageEventSubject.next(pageEvent);
+    }
   }
 
   formatDate(dateStr: string): string {
