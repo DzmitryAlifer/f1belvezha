@@ -146,6 +146,7 @@ function getBarChartOptions(data: Array<{name: string, value: number}>, currentU
   const names = data.map(({name}) => name);
   const values = data.map(({value}) => value);
   const min = Math.min(...values);
+  const yAxisMin = Math.max(0, min % 10 ? Math.floor(min / 10) * 10 : (min / 10 - 1));
   const max = Math.max(...values);
 
   return {
@@ -161,7 +162,7 @@ function getBarChartOptions(data: Array<{name: string, value: number}>, currentU
     },
     yAxis: {
       type: 'value',
-      min,
+      min: yAxisMin,
       max,
       splitLine: {
         lineStyle: {color: gridColor},
