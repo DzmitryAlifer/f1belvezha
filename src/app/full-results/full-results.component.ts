@@ -1,6 +1,6 @@
-import {ChangeDetectionStrategy, Component, OnInit} from '@angular/core';
+import {AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit, ViewChild} from '@angular/core';
 import {MatDialog} from '@angular/material/dialog';
-import {PageEvent} from '@angular/material/paginator';
+import {MatPaginator, MatPaginatorIntl, PageEvent} from '@angular/material/paginator';
 import {Store} from '@ngrx/store';
 import {combineLatest, merge, ReplaySubject} from 'rxjs';
 import {filter, debounceTime, map, shareReplay} from 'rxjs/operators';
@@ -11,9 +11,11 @@ import {FullResultsActionType} from './store/full-results.actions';
 import {EventType} from '../toolbar/next-event/next-event.component';
 import * as toolbarSelectors from '../toolbar/store/toolbar.selectors';
 import {formatDate, getCircuitPath, getFlagLink, getIndexes, getNextEvent} from '../common';
+import {LocalStorageService} from '../service/local-storage.service';
 
 
 const PAGE_SIZE = 5;
+const PAGE_SIZES = [5, 7, 10];
 
     
 @Component({
@@ -22,10 +24,12 @@ const PAGE_SIZE = 5;
   styleUrls: ['./full-results.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class FullResultsComponent implements OnInit {
+export class FullResultsComponent implements OnInit, AfterViewInit {
   readonly PAGE_SIZE = PAGE_SIZE;
+  readonly PAGE_SIZES = PAGE_SIZES;
   readonly EventType = EventType;
 
+  readonly pageSize = new ReplaySubject<number>(1);
   private readonly pageEventSubject = new ReplaySubject<PageEvent>(1);
 
   readonly isDarkMode = this.store.select(toolbarSelectors.selectIsDarkMode);
@@ -51,11 +55,15 @@ export class FullResultsComponent implements OnInit {
       )),
   );
 
-  private readonly initialPageEvent = combineLatest([this.users, this.currentUser]).pipe(
+  private readonly initialPageEvent = combineLatest([this.users, this.currentUser, this.pageSize]).pipe(
     debounceTime(0),
     filter(([users]) => !!users.length),
-    map(([users, currentUser]) => Math.floor(users.findIndex(user => user.id == currentUser?.id) / PAGE_SIZE)),
-    map(currentUserPageIndex => ({pageIndex: currentUserPageIndex, pageSize: PAGE_SIZE}) as PageEvent),
+    map(([users, currentUser, pageSize]) => {
+      return {
+        pageIndex: Math.floor(users.findIndex(user => user.id == currentUser?.id) / pageSize),
+        pageSize,
+      } as PageEvent;
+    }),
   );
 
   readonly pageEvent = merge(this.initialPageEvent, this.pageEventSubject);
@@ -64,8 +72,8 @@ export class FullResultsComponent implements OnInit {
     debounceTime(0),
     map(([users, pageEvent]) => {
       const startIndex = pageEvent.pageIndex !== -1 ? pageEvent.pageIndex * pageEvent.pageSize : 0;
-      const columns = users.slice(startIndex, startIndex + PAGE_SIZE).map(user => 'user' + user.id);
-      const trailingColumnsCount = PAGE_SIZE - columns.length;
+      const columns = users.slice(startIndex, startIndex + pageEvent.pageSize).map(user => 'user' + user.id);
+      const trailingColumnsCount = pageEvent.pageSize - columns.length;
 
       for (let i = 0; i < trailingColumnsCount; i++) {
         columns.push('empty' + i);
@@ -73,17 +81,23 @@ export class FullResultsComponent implements OnInit {
 
       return columns;
     }),
-    map(userColumns => ['event', ...userColumns, 'empty', 'stats']),
+    map(userColumns => ['event', ...userColumns]),
   );
 
   readonly points = this.store.select(fullResultsSelectors.selectCurrentYearPoints);
 
   constructor(
+    private readonly matPaginatorIntl: MatPaginatorIntl,
+    private readonly changeDetector: ChangeDetectorRef,
+    private readonly localStorageService: LocalStorageService,
     private readonly predictionDialog: MatDialog,
     private readonly store: Store,
   ) {}
 
   ngOnInit(): void {
+    const pageSize = this.localStorageService.getItem<number>('pageSize') ?? PAGE_SIZES[0];
+    this.pageSize.next(pageSize);
+
     this.currentUserHasPrediction.subscribe();
     this.store.dispatch({type: FullResultsActionType.LOAD_RACES});
     this.store.dispatch({type: FullResultsActionType.LOAD_USERS});
@@ -93,7 +107,13 @@ export class FullResultsComponent implements OnInit {
     this.store.dispatch({type: FullResultsActionType.CALCULATE_CURRENT_YEAR_POINTS});
   }
 
+  ngAfterViewInit(): void {
+    this.matPaginatorIntl.itemsPerPageLabel = 'Players per page';
+  }
+
   onPageChange(pageEvent: PageEvent): void {
+    this.localStorageService.setItem('pageSize', pageEvent.pageSize);
+    this.pageSize.next(pageEvent.pageSize);
     this.pageEventSubject.next(pageEvent);
   }
 
@@ -124,12 +144,12 @@ export class FullResultsComponent implements OnInit {
     return (nextRacePredictions ?? []).some(prediction => prediction.userid == user.id);
   }
 
-  getTrailingIndexes(users: User[]|null): number[] {
+  getTrailingIndexes(users: User[]|null, pageSize: number): number[] {
     if (!users?.length) {
       return [];
     }
 
-    const trailingColumnsCount = PAGE_SIZE - users.length % PAGE_SIZE;
+    const trailingColumnsCount = pageSize - users.length % pageSize;
 
     return getIndexes(trailingColumnsCount);
   }

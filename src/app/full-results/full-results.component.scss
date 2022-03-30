@@ -46,7 +46,19 @@
                 padding: 0;
 
                 .mat-paginator-page-size {
-                    display: none;
+                    margin: -6px 8px;
+                }
+
+                .mat-paginator-page-size-select {
+                    margin: 0 4px;
+                    text-align: center;
+                    width: 40px;
+
+                    .mat-form-field-infix {
+                        padding: 0;
+                    }
+
+                   
                 }
             }
 

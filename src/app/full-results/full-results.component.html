@@ -7,11 +7,12 @@
     nextEvent: nextEvent | async,
     nextRacePredictions: nextRacePredictions | async,
     nextRaceRound: nextRaceRound | async,
-    points: points | async,
     pageEvent: pageEvent | async,
+    pageSize: pageSize | async,
+    points: points | async,
     users: users | async
  } as data" class="container">
-    <table *ngIf="data.isLoaded; else spinner"
+    <table 
             mat-table
             [class.dark]="data.isDarkMode"
             [dataSource]="races">
@@ -20,7 +21,8 @@
                 <mat-paginator 
                     [length]="data.users?.length ?? 0"
                     [pageIndex]="data.pageEvent?.pageIndex"
-                    [pageSize]="PAGE_SIZE"
+                    [pageSize]="data.pageSize"
+                    [pageSizeOptions]="PAGE_SIZES"
                     [showFirstLastButtons]="true"
                     (page)="onPageChange($event)">
                 </mat-paginator>
@@ -74,7 +76,7 @@
             </ng-container>
         </ng-container>
 
-        <ng-container *ngFor="let index of getTrailingIndexes(data.users)" [matColumnDef]="'empty' + index">
+        <ng-container *ngFor="let index of getTrailingIndexes(data.users, data.pageSize ?? 0)" [matColumnDef]="'empty' + index">
             <th class="user" mat-header-cell *matHeaderCellDef></th>
             <td class="points" mat-cell *matCellDef="let user"></td>
         </ng-container>
