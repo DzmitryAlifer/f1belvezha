@@ -1,10 +1,11 @@
-import {ChangeDetectionStrategy, Component} from '@angular/core';
+import {ChangeDetectionStrategy, Component, OnInit} from '@angular/core';
 import {Store} from '@ngrx/store';
 import {EChartsOption} from 'echarts';
 import {combineLatest} from 'rxjs';
 import {debounceTime, map, shareReplay} from 'rxjs/operators';
 import {PREDICTION_PLACES_NUMBER, TEAM_DRIVER_COLORS} from 'src/constants';
 import {getFullUserName, getNextEvent} from '../common';
+import { FullResultsActionType } from '../full-results/store/full-results.actions';
 import * as fullResultsSelectors from '../full-results/store/full-results.selectors'; 
 import {DisplayEvent, EventType} from '../toolbar/next-event/next-event.component';
 import * as toolbarSelectors from '../toolbar/store/toolbar.selectors';
@@ -32,7 +33,7 @@ const BLUE_800 = '#1565c0';
   styleUrls: ['./charts.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ChartsComponent {
+export class ChartsComponent implements OnInit {
   private readonly isDarkMode = this.store.select(toolbarSelectors.selectIsDarkMode);
   private readonly lastRound = this.store.select(toolbarSelectors.selectLastRound);
   private readonly users = this.store.select(fullResultsSelectors.selectUsers);
@@ -98,6 +99,12 @@ export class ChartsComponent {
     map(([playersCorrectPositionRate, currentUserFullName, isDarkMode]) => getBarChartOptions(playersCorrectPositionRate, currentUserFullName, isDarkMode)));  
 
   constructor(private readonly store: Store) {}
+
+  ngOnInit(): void {
+    this.store.dispatch({type: FullResultsActionType.LOAD_USERS});
+    this.store.dispatch({type: FullResultsActionType.LOAD_ALL_PREDICTIONS});
+    this.store.dispatch({type: FullResultsActionType.LOAD_CURRENT_YEAR_RESULTS});
+  }
 }
 
 function countGettingsInList(singlePlayerResults: PlayerRoundResult[]): number {
