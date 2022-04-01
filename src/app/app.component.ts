@@ -1,9 +1,5 @@
-import {CdkDragEnd} from '@angular/cdk/drag-drop';
-import {ChangeDetectionStrategy, Component} from '@angular/core';
-import {Store} from '@ngrx/store'; 
-import {LocalStorageService} from './service/local-storage.service';
-import {DropPoint} from './types';
-import * as toolbarSelectors from './toolbar/store/toolbar.selectors';
+import {ChangeDetectionStrategy, Component, OnInit} from '@angular/core';
+import {Router} from '@angular/router';
 import {Page} from './enums';
 
 
@@ -13,31 +9,12 @@ import {Page} from './enums';
   styleUrls: ['./app.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class AppComponent {
-  readonly Page = Page;
-  
-  // readonly currentUser = this.store.select(toolbarSelectors.selectCurrentUser);
-  // readonly isLockedLayout = this.store.select(toolbarSelectors.selectIsLockedLayout);
-  // readonly page = this.store.select(toolbarSelectors.selectPage);
+export class AppComponent implements OnInit {
+  private readonly startPage = localStorage.getItem('startPage') as Page;
 
-  // readonly savedUserStandingPosition = 
-  //     this.localStorageService.getItem<DropPoint>('dropPointUserStanding') ?? {x: 0, y: 0};
+  constructor(private readonly router: Router) {}
 
-  // readonly savedDriverStandingPosition =
-  //   this.localStorageService.getItem<DropPoint>('dropPointDriverStanding') ?? {x: 0, y: 0};
-
-  // constructor(
-  //   private readonly localStorageService: LocalStorageService,
-  //   private readonly store: Store,
-  // ) {}
-
-  // saveUserStandingsPosition(event: CdkDragEnd): void {
-  //   const dragPosition: DropPoint = event.source.getFreeDragPosition();
-  //   this.localStorageService.setItem('dropPointUserStanding', dragPosition);
-  // }
-
-  // saveDriverStandingsPosition(event: CdkDragEnd): void {
-  //   const dragPosition: DropPoint = event.source.getFreeDragPosition();
-  //   this.localStorageService.setItem('dropPointDriverStanding', dragPosition);
-  // }
+  ngOnInit(): void {
+    this.router.navigateByUrl('/' + this.startPage);
+  }
 }

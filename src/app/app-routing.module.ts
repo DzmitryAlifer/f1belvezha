@@ -7,7 +7,6 @@ import {PredictionGameComponent} from './prediction-game/prediction-game';
 
 
 const routes: Routes = [
-  {path: '', redirectTo: 'news', pathMatch: 'full'},
   {path: 'news', component: NewsComponent},
   {path: 'calendar', component: CalendarComponent},
   {path: 'game', component: PredictionGameComponent},

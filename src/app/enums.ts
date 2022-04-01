@@ -4,10 +4,10 @@ export enum Language {
 }
 
 export enum Page {
-    News,
-    FullResults,
-    Charts,
-    Calendar,
+    News = 'news',
+    FullResults = 'game',
+    Charts = 'charts',
+    Calendar = 'calendar',
 }
 
 export enum TeamName {
