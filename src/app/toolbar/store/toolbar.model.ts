@@ -12,4 +12,5 @@ export interface ToolbarState {
     lastRound: number;
     page: Page;
     playersResults: PlayerRoundResult[];
+    startPage: Page;
 }

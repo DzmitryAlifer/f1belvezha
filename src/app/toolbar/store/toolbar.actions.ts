@@ -6,6 +6,8 @@ import {PlayerRoundResult, Race, User} from 'src/app/types';
 export enum ToolbarActionType {
     SET_LANGUAGE = '[Toolbar] - Set language',
     SET_LANGUAGE_SUCCESS = '[Toolbar] - Set language - success',
+    SET_START_PAGE = '[Toolbar] - Set start page',
+    SET_START_PAGE_SUCCESS = '[Toolbar] - Set start page - success',
     SET_CURRENT_USER = '[Toolbar] Set current user',
     SET_DARK_MODE = '[Toolbar] Set dark mode',
     SET_DARK_MODE_SUCCESS = '[Toolbar] Set dark mode - success',
@@ -23,6 +25,11 @@ export enum ToolbarActionType {
 export class SetLanguage implements Action {
     readonly type = ToolbarActionType.SET_LANGUAGE;
     constructor(readonly payload: {language: Language}) {}
+}
+
+export class SetStartPage implements Action {
+    readonly type = ToolbarActionType.SET_START_PAGE;
+    constructor(readonly payload: {startPage: Page}) {}
 }
 
 export class SetCurrentUser implements Action {
@@ -78,6 +85,7 @@ export class LoadPlayersResultsSuccess implements Action {
 
 export type ToolbarAction =
     | SetLanguage
+    | SetStartPage
     | SetCurrentUser
     | SetDarkMode
     | SetLockedLayout

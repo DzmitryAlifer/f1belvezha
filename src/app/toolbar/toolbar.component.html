@@ -1,6 +1,7 @@
 <mat-toolbar *ngIf="{
     isDarkMode: isDarkMode | async,
     isLockedLayout: isLockedLayout | async,
+    startPage: startPage | async,
     user: user | async
 } as data">
     <mat-toolbar-row>
@@ -34,10 +35,18 @@
                 </ng-container>
             </button>
 
-            <button *ngIf="false" disabled mat-menu-item>
-                <mat-icon>lock_open</mat-icon>
-                Unlock layout
+            <button mat-menu-item [matMenuTriggerFor]="startPageMenu">
+                <mat-icon>home</mat-icon>
+                Start page
             </button>
+
+            <mat-menu #startPageMenu="matMenu">
+                <button *ngFor="let page of [Page.News, Page.FullResults, Page.Charts, Page.Calendar]" 
+                        mat-menu-item 
+                        (click)="setStartPage(page)">
+                    <span [class.dark]="data.isDarkMode" [class.selected]="page === data.startPage">{{capitalize(page)}}</span>
+                </button>
+            </mat-menu>
 
             <button [disabled]="data.user?.id !== 44" mat-menu-item [matMenuTriggerFor]="languageMenu">
                 <mat-icon>language</mat-icon>

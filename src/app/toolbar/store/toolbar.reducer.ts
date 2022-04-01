@@ -16,6 +16,7 @@ export const initialState: ToolbarState = {
     lastRound: 0,
     page: (localStorage.getItem('startPage') ?? Page.News) as Page,
     playersResults: [],
+    startPage: (localStorage.getItem('startPage') ?? Page.News) as Page,
 };
 
 
@@ -23,6 +24,9 @@ export function toolbarReducer(state: ToolbarState = initialState, action: Toolb
     switch (action.type) {
         case ToolbarActionType.SET_LANGUAGE:
             return {...state, language: action.payload.language};
+
+        case ToolbarActionType.SET_START_PAGE:
+            return {...state, startPage: action.payload.startPage};
 
         case ToolbarActionType.LOAD_CALENDAR:
         case ToolbarActionType.LOAD_PLAYERS_RESULTS:

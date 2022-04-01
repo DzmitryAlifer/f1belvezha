@@ -3,7 +3,7 @@ import {MatDialog} from '@angular/material/dialog';
 import {Store} from '@ngrx/store';
 import {delay} from 'rxjs/operators';
 import {CURRENT_USER_KEY} from 'src/constants';
-import {Language} from '../enums';
+import {Language, Page} from '../enums';
 import {LocalStorageService} from '../service/local-storage.service';
 import {ThemeService} from '../service/theme.service';
 import {CreateAccountDialog} from './create-account-dialog/create-account-dialog';
@@ -21,11 +21,13 @@ import * as toolbarSelectors from './store/toolbar.selectors';
 })
 export class ToolbarComponent {
   readonly Language = Language;
+  readonly Page = Page;
 
   readonly isDarkMode = this.store.select(toolbarSelectors.selectIsDarkMode);
   readonly isLockedLayout = this.store.select(toolbarSelectors.selectIsLockedLayout).pipe(delay(200));
   readonly user = this.store.select(toolbarSelectors.selectCurrentUser);
   readonly page = this.store.select(toolbarSelectors.selectPage);
+  readonly startPage = this.store.select(toolbarSelectors.selectStartPage);
 
   constructor(
     private readonly createAccountDialog: MatDialog,
@@ -37,9 +39,10 @@ export class ToolbarComponent {
   ) {
     this.themeService.initTheme();
     localStorage.setItem('layout', 'locked');
+    
     this.store.dispatch({type: ToolbarActionType.LOAD_PLAYERS_RESULTS}); 
     this.store.dispatch({type: ToolbarActionType.LOAD_CALENDAR}); 
-    this.store.dispatch({type: ToolbarActionType.SET_LAST_ROUND}); 
+    this.store.dispatch({type: ToolbarActionType.SET_LAST_ROUND});
   }
 
   createAccount(): void {
@@ -69,6 +72,10 @@ export class ToolbarComponent {
     this.store.dispatch({type: ToolbarActionType.SET_LOCKED_LAYOUT, payload: {isLockedLayout: !wasLayoutLocked}});
   }
 
+  setStartPage(startPage: Page): void {
+    this.store.dispatch({type: ToolbarActionType.SET_START_PAGE, payload: {startPage}});
+  }
+
   // For testing purposes
   setLanguage(language: Language): void {
     if (language === Language.English) {
@@ -82,5 +89,9 @@ export class ToolbarComponent {
         this.store.dispatch({type: ToolbarActionType.SET_LANGUAGE, payload: {language}});
       }, 5000);
     }
+  }
+
+  capitalize(text: string): string {
+    return text.charAt(0).toUpperCase() + text.slice(1);
   }
 }

@@ -20,6 +20,7 @@ const CURRENT_YEAR = new Date().getFullYear();
 @Injectable()
 export class ToolbarEffects {
     private readonly language = this.store.select(toolbarSelectors.selectLanguage);
+    private readonly startPage = this.store.select(toolbarSelectors.selectStartPage);
     private readonly isDarkMode = this.store.select(toolbarSelectors.selectIsDarkMode);
     private readonly isLockedLayout = this.store.select(toolbarSelectors.selectIsLockedLayout);
     private readonly lastRound = this.store.select(toolbarSelectors.selectLastRound);
@@ -65,6 +66,16 @@ export class ToolbarEffects {
                 localStorage.setItem('language', language);
             }),
             map(() => ({type: ToolbarActionType.SET_LANGUAGE_SUCCESS})),
+        )),
+    ));
+
+    setStartPage = createEffect(() => this.actions.pipe(
+        ofType(ToolbarActionType.SET_START_PAGE),
+        switchMap(() => this.startPage.pipe(
+            tap(startPage => {
+                localStorage.setItem('startPage', startPage);
+            }),
+            map(() => ({type: ToolbarActionType.SET_START_PAGE_SUCCESS})),
         )),
     ));
 

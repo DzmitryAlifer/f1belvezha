@@ -23,3 +23,11 @@
         flex: 1 1 auto;
     }
 }
+
+.selected {
+    color: $blue-800;
+}
+
+.dark.selected {
+    color: $blue-200;
+}

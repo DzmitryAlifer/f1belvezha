@@ -11,6 +11,7 @@ const routes: Routes = [
   {path: 'calendar', component: CalendarComponent},
   {path: 'game', component: PredictionGameComponent},
   {path: 'charts', component: ChartsComponent},
+  {path: '**', redirectTo: 'news', pathMatch: 'full'},
 ];
 
 
