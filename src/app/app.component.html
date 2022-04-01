@@ -1,34 +1,6 @@
 <side-menu></side-menu>
 <toolbar></toolbar>
 
-<div *ngIf="{
-  currentUser: currentUser | async,
-  isLockedLayout: isLockedLayout | async,
-  page: page | async
-} as data" class="page-container">
-  <news [class.disabled]="data.page !== Page.News"></news>
-
-  <full-results [class.disabled]="data.page !== Page.FullResults"></full-results>
-
-  <drivers-standing 
-      cdkDrag
-      [class.disabled]="data.page !== Page.FullResults"
-      [cdkDragDisabled]="data.isLockedLayout"
-      [cdkDragFreeDragPosition]="savedDriverStandingPosition"
-      (cdkDragEnded)="saveDriverStandingsPosition($event)">
-  </drivers-standing>
-
-  <users-standing 
-      cdkDrag
-      [class.disabled]="data.page !== Page.FullResults"
-      [cdkDragDisabled]="data.isLockedLayout"
-      [cdkDragFreeDragPosition]="savedUserStandingPosition"
-      (cdkDragEnded)="saveUserStandingsPosition($event)">
-  </users-standing>
-
-  <charts [class.disabled]="data.page !== Page.Charts"></charts>
-
-  <calendar [class.disabled]="data.page !== Page.Calendar"></calendar>
+<div class="page-container">
+  <router-outlet></router-outlet>
 </div>
-
-<router-outlet></router-outlet>

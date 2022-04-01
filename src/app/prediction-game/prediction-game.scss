@@ -1,0 +1,9 @@
+@import '../../styles.scss';
+
+
+.page-container {
+    display: flex;
+    height: calc(100% - 24px);
+    overflow: hidden;
+    width: 100%;
+}

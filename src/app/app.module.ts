@@ -25,6 +25,7 @@ import {PointsModule} from './points/points.module';
 import {PredictionDialogModule} from './prediction-dialog/prediction-dialog.module';
 import {EncryptionService} from './service/encryption.service';
 import {SideMenuModule} from './side-menu/side-menu.module';
+import {PredictionGameModule} from './prediction-game/prediction-game.module';
 
 
 @NgModule({
@@ -48,6 +49,7 @@ import {SideMenuModule} from './side-menu/side-menu.module';
     NextEventModule,
     PointsModule,
     PredictionDialogModule,
+    PredictionGameModule,
     SideMenuModule,
     ToolbarModule,
     UsersStandingModule,

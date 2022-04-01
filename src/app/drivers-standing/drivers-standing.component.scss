@@ -2,12 +2,10 @@
 
 
 .standing {
-    margin: 0 0 0 30px;
+    margin: 0 0 0 24px;
     height: calc(100% - 24px);
     overflow: hidden;
     padding-right: 6px;
-    position: fixed;
-    top: 12px;
     width: 270px;
 
     .drag-icon {

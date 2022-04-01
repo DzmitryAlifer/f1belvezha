@@ -6,6 +6,7 @@
         <button 
             mat-icon-button
             matTooltip="News"
+            routerLink="/news"
             [class.current]="data.page === Page.News"
             (click)="showPage(Page.News)">
             <mat-icon>newspaper</mat-icon>
@@ -14,6 +15,7 @@
         <button
             mat-icon-button
             matTooltip="Predictions"
+            routerLink="/game"
             [class.current]="data.page === Page.FullResults"
             (click)="showPage(Page.FullResults)">
             <mat-icon>lightbulb_outline</mat-icon>
@@ -22,6 +24,7 @@
         <button
             mat-icon-button
             matTooltip="Charts"
+            routerLink="/charts"
             [class.current]="data.page === Page.Charts"
             (click)="showPage(Page.Charts)">
             <mat-icon>query_stats</mat-icon>
@@ -29,6 +32,7 @@
 
         <button mat-icon-button
                 matTooltip="Calendar"
+                routerLink="/calendar"
                 [class.current]="data.page === Page.Calendar"
                 (click)="showPage(Page.Calendar)">
             <mat-icon>event</mat-icon>
