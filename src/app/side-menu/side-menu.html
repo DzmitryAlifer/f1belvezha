@@ -3,6 +3,15 @@
     page: page | async
 } as data">
     <div class="menu" [class.dark]="isDarkMode | async">
+        <button *ngIf="false"
+            mat-icon-button
+            matTooltip="Dashboard"
+            routerLink="/dashboard"
+            [class.current]="data.page === Page.Dashboard"
+            (click)="showPage(Page.Dashboard)">
+            <mat-icon>grid_view</mat-icon>
+        </button>
+
         <button 
             mat-icon-button
             matTooltip="News"

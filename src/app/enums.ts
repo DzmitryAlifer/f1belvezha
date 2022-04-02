@@ -4,6 +4,7 @@ export enum Language {
 }
 
 export enum Page {
+    Dashboard = 'dashboard',
     News = 'news',
     FullResults = 'game',
     Charts = 'charts',
