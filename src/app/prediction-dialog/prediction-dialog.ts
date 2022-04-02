@@ -100,7 +100,6 @@ export class PredictionDialog {
   ) {}
 
   ngOnInit(): void {
-    this.teamVsTeamProposals.subscribe(r=>console.log(r))
     this.store.dispatch({type: FullResultsActionType.LOAD_CURRENT_USER_PREDICTIONS});
 
     combineLatest([this.prediction, this.selectedTeam0Subject]).subscribe(([prediction, selectedTeam0]) => {

@@ -35,7 +35,11 @@
                         <div>{{formatDate(race.date)}}</div>
                     </div>
                     <div>
-                        <span><img alt="race.Circuit.Location.country" class="circuit" [src]="getCircuitPath(race.Circuit.Location.country)"/></span>
+                        <span>
+                            <img class="circuit-small" 
+                                [src]="getSmallCircuitPath(race.Circuit.Location.country)"
+                                (click)="showCircuitDialog(race.Circuit.Location.country)"/>
+                        </span>
                     </div>
                 </div>
             </td>

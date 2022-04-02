@@ -4,6 +4,7 @@ import {MatPaginatorIntl, PageEvent} from '@angular/material/paginator';
 import {Store} from '@ngrx/store';
 import {combineLatest, merge, ReplaySubject} from 'rxjs';
 import {filter, debounceTime, map, shareReplay} from 'rxjs/operators';
+import {CircuitDialog} from '../circuit-dialog/circuit-dialog';
 import {PredictionDialog} from '../prediction-dialog/prediction-dialog';
 import {Prediction, Race, User} from '../types';
 import * as fullResultsSelectors from './store/full-results.selectors';
@@ -87,6 +88,7 @@ export class FullResultsComponent implements OnInit, AfterViewInit {
   readonly points = this.store.select(fullResultsSelectors.selectCurrentYearPoints);
 
   constructor(
+    private readonly circuitDialog: MatDialog,
     private readonly matPaginatorIntl: MatPaginatorIntl,
     private readonly localStorageService: LocalStorageService,
     private readonly predictionDialog: MatDialog,
@@ -129,8 +131,12 @@ export class FullResultsComponent implements OnInit, AfterViewInit {
     return getFlagLink(countryName);
   }
 
-  getCircuitPath(countryName: string): string {
+  getSmallCircuitPath(countryName: string): string {
     return getCircuitPath(countryName);
+  }
+
+  showCircuitDialog(raceName: string): void {
+    this.circuitDialog.open(CircuitDialog, {data: {raceName}});
   }
 
   getPoints(points: Map<number, Map<number, number[][]>>, user: User, race: Race): Array<number[]|null> {

@@ -78,8 +78,9 @@ export function getFlagLink(countryName: string): string {
     return `http://purecatamphetamine.github.io/country-flag-icons/3x2/${COUNTRY_MAP.get(countryName)}.svg`;
 }
 
-export function getCircuitPath(countryName: string): string {
-    return `/assets/images/circuits/${countryName}.png`;
+export function getCircuitPath(countryName: string, isLarge = false): string {
+    const smallOrLarge = isLarge ? 'large' : 'small';
+    return `/assets/images/circuits/${smallOrLarge}/${countryName}.png`;
 }
 
 function findNextEvent(): DisplayEvent {

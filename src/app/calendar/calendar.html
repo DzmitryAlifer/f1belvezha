@@ -33,7 +33,9 @@
         <ng-container matColumnDef="circuit">
             <th mat-header-cell *matHeaderCellDef>Circuit</th>
             <td mat-cell *matCellDef="let race">
-                <img alt="race.Circuit.Location.country" class="circuit" [src]="getCircuitPath(race.Circuit.Location.country)" />
+                <img class="circuit-small" 
+                    [src]="getCircuitPath(race.Circuit.Location.country)"
+                    (click)="showCircuitDialog(race.Circuit.Location.country)"/>
             </td>
         </ng-container>
 
