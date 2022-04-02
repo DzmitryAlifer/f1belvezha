@@ -1,5 +1,8 @@
 $icon-size: 17px;
 
+:host {
+    text-align: justify;
+}
 
 h2 {
     padding-top: 12px;
@@ -11,8 +14,4 @@ h2 {
     height: $icon-size;
     vertical-align: middle;
     width: $icon-size;
-}
-
-.button-bar {
-    text-align: center;
 }

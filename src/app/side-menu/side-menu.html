@@ -12,6 +12,24 @@
             <mat-icon>newspaper</mat-icon>
         </button>
 
+        <button 
+            mat-icon-button 
+            matTooltip="Calendar" 
+            routerLink="/calendar" 
+            [class.current]="data.page === Page.Calendar"
+            (click)="showPage(Page.Calendar)">
+            <mat-icon>event</mat-icon>
+        </button>
+
+        <button 
+            mat-icon-button
+            matTooltip="Game rules"
+            routerLink="/rules"
+            [class.current]="data.page === Page.GameRules"
+            (click)="showPage(Page.GameRules)">
+            <mat-icon>question_mark</mat-icon>
+        </button>
+
         <button
             mat-icon-button
             matTooltip="Prediction game"
@@ -30,12 +48,6 @@
             <mat-icon>query_stats</mat-icon>
         </button>
 
-        <button mat-icon-button
-                matTooltip="Calendar"
-                routerLink="/calendar"
-                [class.current]="data.page === Page.Calendar"
-                (click)="showPage(Page.Calendar)">
-            <mat-icon>event</mat-icon>
-        </button>
+
     </div>
 </ng-container>

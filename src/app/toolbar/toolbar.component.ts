@@ -7,7 +7,6 @@ import {Language, Page} from '../enums';
 import {LocalStorageService} from '../service/local-storage.service';
 import {ThemeService} from '../service/theme.service';
 import {CreateAccountDialog} from './create-account-dialog/create-account-dialog';
-import {HelpDialog} from './help-dialog/help-dialog';
 import {LoginDialog} from './login-dialog/login-dialog';
 import {ToolbarActionType} from './store/toolbar.actions';
 import * as toolbarSelectors from './store/toolbar.selectors';
@@ -31,7 +30,6 @@ export class ToolbarComponent {
 
   constructor(
     private readonly createAccountDialog: MatDialog,
-    private readonly helpDialog: MatDialog,
     private readonly localStorageService: LocalStorageService,
     private readonly loginDialog: MatDialog,
     private readonly store: Store,
@@ -62,10 +60,6 @@ export class ToolbarComponent {
 
   toggleMode(isPrevousModeDark: boolean) {
     this.store.dispatch({type: ToolbarActionType.SET_DARK_MODE, payload: {isDarkMode: !isPrevousModeDark}});
-  }
-
-  showHelp(): void {
-    this.helpDialog.open(HelpDialog, {width: '60%'});
   }
 
   toggleLayoutLock(wasLayoutLocked: boolean): void {
