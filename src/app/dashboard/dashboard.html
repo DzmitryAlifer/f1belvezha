@@ -2,29 +2,78 @@
 <h3>A game for Formula 1 fans</h3>
 <h4>Join anytime during the racing season<br>Predict Qualifying and Race results<br>Compete with friends and other contestants</h4>
 
-<div class="container">
-    <mat-card>
-        <mat-card-title>News</mat-card-title>
-        <mat-card-subtitle>Read latest Formula 1 news</mat-card-subtitle>
-        <div class="button-bar">
-            <button mat-button>Read news</button>
-        </div>
-    </mat-card>
+<div *ngIf="{currentUser: currentUser | async} as data" class="container">
+    <div class="row">
+        <mat-card>
+            <mat-card-title>News</mat-card-title>
+            <mat-card-subtitle>Read latest Formula 1 news</mat-card-subtitle>
+            <div class="button-bar">
+                <button mat-button routerLink="/news">
+                    <mat-icon>newspaper</mat-icon>
+                    Read news
+                </button>
+            </div>
+        </mat-card>
 
-    <mat-card>
-        <mat-card-title>Calendar</mat-card-title>
-        <mat-card-subtitle>See full 2022 calendar<br>Discover circuits' details</mat-card-subtitle>
-        <div class="button-bar">
-            <button mat-button>See calendar</button>
-        </div>
-    </mat-card>
+        <mat-card>
+            <mat-card-title>Calendar</mat-card-title>
+            <mat-card-subtitle>See full 2022 calendar<br>Discover circuits' details</mat-card-subtitle>
+            <div class="button-bar">
+                <button mat-button routerLink="/calendar">
+                    <mat-icon>event</mat-icon>
+                    See calendar
+                </button>
+            </div>
+        </mat-card>
 
-    <mat-card>
-        <mat-card-title>Sign up / Log in</mat-card-title>
-        <mat-card-subtitle>Create an account and/or log in to play</mat-card-subtitle>
-        <div class="button-bar">
-            <button mat-button>Create account</button>
-            <button mat-button>Log in</button>
-        </div>
-    </mat-card>
+        <mat-card *ngIf="!data.currentUser">
+            <mat-card-title>Account</mat-card-title>
+            <mat-card-subtitle>Create an account and/or log in to play</mat-card-subtitle>
+            <div class="button-bar">
+                <button mat-button (click)="createAccount()">
+                    <mat-icon>person_add</mat-icon>
+                    Create account
+                </button>
+                <button mat-button (click)="login()">
+                    <mat-icon>login</mat-icon>
+                    Log in
+                </button>
+            </div>
+        </mat-card>
+    </div>
+
+    <div class="row">
+        <mat-card>
+            <mat-card-title>Game rules</mat-card-title>
+            <mat-card-subtitle>Read the game rules</mat-card-subtitle>
+            <div class="button-bar">
+                <button mat-button routerLink="/rules">
+                    <mat-icon>question_mark</mat-icon>
+                    Read game rules
+                </button>
+            </div>
+        </mat-card>
+    
+        <mat-card>
+            <mat-card-title>Play game</mat-card-title>
+            <mat-card-subtitle>See full player standings<br>Predict next Quali and Race results</mat-card-subtitle>
+            <div class="button-bar">
+                <button mat-button routerLink="/game">
+                    <mat-icon>lightbulb_outline</mat-icon>
+                    Make prediction
+                </button>
+            </div>
+        </mat-card>
+    
+        <mat-card>
+            <mat-card-title>Charts</mat-card-title>
+            <mat-card-subtitle>See charts with players' statistics</mat-card-subtitle>
+            <div class="button-bar">
+                <button mat-button routerLink="/charts">
+                    <mat-icon>query_stats</mat-icon>
+                    See charts
+                </button>
+            </div>
+        </mat-card>
+    </div>
 </div>

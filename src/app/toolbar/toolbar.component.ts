@@ -2,7 +2,7 @@ import {ChangeDetectionStrategy, Component} from '@angular/core';
 import {MatDialog} from '@angular/material/dialog';
 import {Store} from '@ngrx/store';
 import {delay} from 'rxjs/operators';
-import {CURRENT_USER_KEY} from 'src/constants';
+import {CURRENT_USER_KEY, USER_DIALOG_OPTIONS} from 'src/constants';
 import {Language, Page} from '../enums';
 import {FullResultsActionType} from '../full-results/store/full-results.actions';
 import {LocalStorageService} from '../service/local-storage.service';
@@ -46,11 +46,11 @@ export class ToolbarComponent {
   }
 
   createAccount(): void {
-    this.createAccountDialog.open(CreateAccountDialog, {disableClose: true, width: '270px'});
+    this.createAccountDialog.open(CreateAccountDialog, USER_DIALOG_OPTIONS);
   }
 
   login(): void {
-    this.loginDialog.open(LoginDialog, {disableClose: true, width: '270px'});
+    this.loginDialog.open(LoginDialog, USER_DIALOG_OPTIONS);
   }
 
   logout(): void {

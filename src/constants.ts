@@ -3,6 +3,7 @@ import {TeamName} from './app/enums';
 
 export const PREDICTION_PLACES_NUMBER = 5;
 export const CURRENT_USER_KEY = 'currentUser';
+export const USER_DIALOG_OPTIONS = {disableClose: true, width: '270px'};
 
 export const DRIVER_TEAM_MAPPING = new Map<string, string>()
     .set('Hamilton', TeamName.Mercedes)

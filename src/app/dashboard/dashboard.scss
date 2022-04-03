@@ -12,27 +12,29 @@ h2 {
 }
 
 .container {
-    align-items: center;
-    display: flex;
-    justify-content: center;
     padding-top: 12px;
-    width: 100%;
-    
-    .mat-card {
-        height: 250px;
-        margin: 16px;
-        width: 250px;
 
-        .button-bar {
-            bottom: 8px;
-            display: flex;
-            left: 50%;
-            position: absolute;
-            text-align: center;
-            transform: translateX(-50%);
+    .row {
+        align-items: center;
+        display: flex;
+        justify-content: center;
+        
+        .mat-card {
+            margin: 16px;
+            min-height: 240px;
+            min-width: 240px;
 
-            .mat-button {
-                margin: 0 12px;
+            .button-bar {
+                bottom: 8px;
+                display: flex;
+                left: 50%;
+                position: absolute;
+                text-align: center;
+                transform: translateX(-50%);
+
+                .mat-icon {
+                    padding-right: 8px;
+                }
             }
         }
     }

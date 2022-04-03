@@ -1,7 +1,11 @@
 import {ChangeDetectionStrategy, Component} from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import {Store} from '@ngrx/store';
 import {map} from 'rxjs/operators';
+import {USER_DIALOG_OPTIONS} from 'src/constants';
 import {getNextEvent} from '../common';
+import {CreateAccountDialog} from '../toolbar/create-account-dialog/create-account-dialog';
+import {LoginDialog} from '../toolbar/login-dialog/login-dialog';
 import * as toolbarSelectors from '../toolbar/store/toolbar.selectors';
 
 
@@ -18,6 +22,16 @@ export class DashboardComponent {
   readonly nextRaceRound = this.nextEvent.pipe(map(nextEvent => nextEvent.round));
   
   constructor(
+    private readonly createAccountDialog: MatDialog,
+    private readonly loginDialog: MatDialog,
     private readonly store: Store,
   ) {}
+
+  createAccount(): void {
+    this.createAccountDialog.open(CreateAccountDialog, USER_DIALOG_OPTIONS);
+  }
+
+  login(): void {
+    this.loginDialog.open(LoginDialog, USER_DIALOG_OPTIONS);
+  }
 }
