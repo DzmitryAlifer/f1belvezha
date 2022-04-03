@@ -27,6 +27,7 @@ h4 {
         justify-content: center;
         
         .mat-card {
+            box-shadow: 3px 3px 5px $grey-600;
             margin: 16px;
             max-height: $tile-size;
             max-width: $tile-size;
