@@ -25,10 +25,15 @@ h2 {
 
         .button-bar {
             bottom: 8px;
+            display: flex;
             left: 50%;
             position: absolute;
             text-align: center;
             transform: translateX(-50%);
+
+            .mat-button {
+                margin: 0 12px;
+            }
         }
     }
 }

@@ -4,6 +4,7 @@ import {Store} from '@ngrx/store';
 import {delay} from 'rxjs/operators';
 import {CURRENT_USER_KEY} from 'src/constants';
 import {Language, Page} from '../enums';
+import {FullResultsActionType} from '../full-results/store/full-results.actions';
 import {LocalStorageService} from '../service/local-storage.service';
 import {ThemeService} from '../service/theme.service';
 import {CreateAccountDialog} from './create-account-dialog/create-account-dialog';
@@ -38,6 +39,7 @@ export class ToolbarComponent {
     this.themeService.initTheme();
     localStorage.setItem('layout', 'locked');
     
+    this.store.dispatch({type: FullResultsActionType.LOAD_USERS});
     this.store.dispatch({type: ToolbarActionType.LOAD_PLAYERS_RESULTS}); 
     this.store.dispatch({type: ToolbarActionType.LOAD_CALENDAR}); 
     this.store.dispatch({type: ToolbarActionType.SET_LAST_ROUND});
