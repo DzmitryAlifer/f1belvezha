@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component} from '@angular/core';
+import {ChangeDetectionStrategy, Component, OnInit} from '@angular/core';
 import {MatDialog} from '@angular/material/dialog';
 import {Store} from '@ngrx/store';
 import {combineLatest} from 'rxjs';
@@ -6,7 +6,9 @@ import {map} from 'rxjs/operators';
 import {USER_DIALOG_OPTIONS} from 'src/constants';
 import {Page} from '../enums'; 
 import {DRIVER_IN_LIST_PTS, DRIVER_PLACE_PTS, formatDate, getFlagLink, getFullUserName, getNextEvent, getSeasonPointsPerRound} from '../common';
+import {FullResultsActionType} from '../full-results/store/full-results.actions'; 
 import * as fullResultsSelectors from '../full-results/store/full-results.selectors';
+import {ChartService} from '../service/chart.service';
 import {NewsService} from '../service/news.service';
 import {CreateAccountDialog} from '../toolbar/create-account-dialog/create-account-dialog';
 import {LoginDialog} from '../toolbar/login-dialog/login-dialog';
@@ -26,7 +28,7 @@ const FUTURE_RACES_SHOWN_NUMBER = 3;
   styleUrls: ['./dashboard.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class DashboardComponent {
+export class DashboardComponent implements OnInit {
   readonly DRIVER_IN_LIST_PTS = DRIVER_IN_LIST_PTS;
   readonly DRIVER_PLACE_PTS = DRIVER_PLACE_PTS;
   readonly Page = Page;
@@ -57,12 +59,20 @@ export class DashboardComponent {
     }),
   );
   
+  readonly mostSelectableDriversChart = this.chartService.getMostSelectableDrivers();
+
   constructor(
+    private readonly chartService: ChartService,
     private readonly createAccountDialog: MatDialog,
     private readonly loginDialog: MatDialog,
     private readonly newsService: NewsService,
     private readonly store: Store,
   ) {}
+
+  ngOnInit(): void {
+    this.store.dispatch({type: FullResultsActionType.LOAD_ALL_PREDICTIONS});
+    this.store.dispatch({type: FullResultsActionType.LOAD_CURRENT_YEAR_RESULTS});
+  }
 
   showPage(page: Page): void {
     setTimeout(() => {

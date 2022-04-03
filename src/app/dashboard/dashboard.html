@@ -5,6 +5,7 @@
     currentUser: currentUser | async,
     isDarkMode: isDarkMode | async,
     lastRegisteredUserFullName: lastRegisteredUserFullName | async,
+    mostSelectableDriversChart: mostSelectableDriversChart | async,
     newsList: newsList | async,
     nextRaceRound: nextRaceRound | async,
     users: users | async,
@@ -122,7 +123,8 @@
     
         <mat-card>
             <mat-card-title>Charts</mat-card-title>
-            <mat-card-subtitle>See charts with players' statistics</mat-card-subtitle>
+            <mat-card-subtitle>See charts with statistics</mat-card-subtitle>
+            <div><div echarts [options]="data.mostSelectableDriversChart!" class="chart"></div></div>
             <div class="button-bar">
                 <button mat-button routerLink="/charts" (click)="showPage(Page.Charts)">
                     <mat-icon>query_stats</mat-icon>

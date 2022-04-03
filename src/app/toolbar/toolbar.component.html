@@ -37,7 +37,7 @@
             </button>
 
             <mat-menu #startPageMenu="matMenu">
-                <button *ngFor="let page of [Page.News, Page.FullResults, Page.Charts, Page.Calendar]" 
+                <button *ngFor="let page of [Page.Dashboard, Page.News, Page.FullResults, Page.Charts, Page.Calendar]" 
                         mat-menu-item 
                         (click)="setStartPage(page)">
                     <span [class.dark]="data.isDarkMode" [class.selected]="page === data.startPage">{{capitalize(page)}}</span>

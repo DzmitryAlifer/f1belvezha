@@ -6,6 +6,7 @@ import {MatIconModule} from '@angular/material/icon';
 import {MatSortModule} from '@angular/material/sort';
 import {MatTableModule} from '@angular/material/table';
 import {RouterModule} from '@angular/router';
+import {NgxEchartsModule} from 'ngx-echarts';
 import {CoinModule} from '../coin/coin.module';
 import {DashboardComponent} from './dashboard';
 
@@ -20,6 +21,7 @@ import {DashboardComponent} from './dashboard';
     MatSortModule,
     MatTableModule,
     RouterModule,
+    NgxEchartsModule.forRoot({echarts: () => import('echarts')}),
   ],
   declarations: [DashboardComponent],
   exports: [DashboardComponent],
