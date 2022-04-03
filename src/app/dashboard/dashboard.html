@@ -8,7 +8,7 @@
             <mat-card-title>News</mat-card-title>
             <mat-card-subtitle>Read latest Formula 1 news</mat-card-subtitle>
             <div class="button-bar">
-                <button mat-button routerLink="/news">
+                <button mat-button routerLink="/news" (click)="showPage(Page.News)">
                     <mat-icon>newspaper</mat-icon>
                     Read news
                 </button>
@@ -19,7 +19,7 @@
             <mat-card-title>Calendar</mat-card-title>
             <mat-card-subtitle>See full 2022 calendar<br>Discover circuits' details</mat-card-subtitle>
             <div class="button-bar">
-                <button mat-button routerLink="/calendar">
+                <button mat-button routerLink="/calendar" (click)="showPage(Page.Calendar)">
                     <mat-icon>event</mat-icon>
                     See calendar
                 </button>
@@ -47,7 +47,7 @@
             <mat-card-title>Game rules</mat-card-title>
             <mat-card-subtitle>Read the game rules</mat-card-subtitle>
             <div class="button-bar">
-                <button mat-button routerLink="/rules">
+                <button mat-button routerLink="/rules" (click)="showPage(Page.GameRules)">
                     <mat-icon>question_mark</mat-icon>
                     Read game rules
                 </button>
@@ -58,7 +58,7 @@
             <mat-card-title>Play game</mat-card-title>
             <mat-card-subtitle>See full player standings<br>Predict next Quali and Race results</mat-card-subtitle>
             <div class="button-bar">
-                <button mat-button routerLink="/game">
+                <button mat-button routerLink="/game" (click)="showPage(Page.FullResults)">
                     <mat-icon>lightbulb_outline</mat-icon>
                     Make prediction
                 </button>
@@ -69,7 +69,7 @@
             <mat-card-title>Charts</mat-card-title>
             <mat-card-subtitle>See charts with players' statistics</mat-card-subtitle>
             <div class="button-bar">
-                <button mat-button routerLink="/charts">
+                <button mat-button routerLink="/charts" (click)="showPage(Page.Charts)">
                     <mat-icon>query_stats</mat-icon>
                     See charts
                 </button>
