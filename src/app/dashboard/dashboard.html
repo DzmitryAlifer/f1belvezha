@@ -51,7 +51,7 @@
             </div>
         </mat-card>
 
-        <mat-card *ngIf="!data.currentUser">
+        <mat-card>
             <mat-card-title>Account</mat-card-title>
             <mat-card-subtitle>Create an account and/or log in to play</mat-card-subtitle>
             <div>
@@ -64,7 +64,7 @@
                     <span class="large">{{data.lastRegisteredUserFullName}}</span>
                 </h3>
             </div>
-            <div class="button-bar">
+            <div class="button-bar" *ngIf="!data.currentUser">
                 <button mat-button (click)="createAccount()">
                     <mat-icon>person_add</mat-icon>
                     Create account
@@ -81,10 +81,14 @@
         <mat-card>
             <mat-card-title>Game rules</mat-card-title>
             <mat-card-subtitle>Read the game rules</mat-card-subtitle>
+            <div class="tile-content-row">
+                <p>+<coin [value]="DRIVER_IN_LIST_PTS" color="#cfd8dc"></coin> point - each correct driver on the list</p>
+                <p>+<coin [value]="DRIVER_PLACE_PTS" color="#ffc107"></coin> points - each correct driver position</p>
+            </div>
             <div class="button-bar">
                 <button mat-button routerLink="/rules" (click)="showPage(Page.GameRules)">
                     <mat-icon>question_mark</mat-icon>
-                    Read game rules
+                    Read full game rules
                 </button>
             </div>
         </mat-card>

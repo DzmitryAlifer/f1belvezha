@@ -9,7 +9,7 @@ import {ChangeDetectionStrategy, Component, Input} from '@angular/core';
 })
 export class CoinComponent {
   @Input() value = 0;
-  @Input() amount = 0;
+  @Input() amount = 1;
   @Input() color = '';
 
   readonly Array = Array;

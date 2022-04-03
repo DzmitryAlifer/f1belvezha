@@ -4,11 +4,13 @@ import {MatButtonModule} from '@angular/material/button';
 import {MatCardModule} from '@angular/material/card';
 import {MatIconModule} from '@angular/material/icon';
 import {RouterModule} from '@angular/router';
+import {CoinModule} from '../coin/coin.module';
 import {DashboardComponent} from './dashboard';
 
 
 @NgModule({
   imports: [
+    CoinModule,
     CommonModule,
     MatButtonModule,
     MatCardModule,
