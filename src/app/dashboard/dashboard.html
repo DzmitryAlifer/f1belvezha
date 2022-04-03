@@ -4,8 +4,10 @@
 <div *ngIf="{
     currentUser: currentUser | async,
     isDarkMode: isDarkMode | async,
+    lastRegisteredUserFullName: lastRegisteredUserFullName | async,
     newsList: newsList | async,
     nextRaceRound: nextRaceRound | async,
+    users: users | async,
     visibleRaces : visibleRaces | async
 } as data" class="container" [class.dark]="data.isDarkMode">
     <div class="row">
@@ -52,6 +54,16 @@
         <mat-card *ngIf="!data.currentUser">
             <mat-card-title>Account</mat-card-title>
             <mat-card-subtitle>Create an account and/or log in to play</mat-card-subtitle>
+            <div>
+                <h3>
+                    Total players<br>
+                    <span class="large">{{data.users?.length}}</span>
+                </h3>
+                <h3>
+                    Last registered<br> 
+                    <span class="large">{{data.lastRegisteredUserFullName}}</span>
+                </h3>
+            </div>
             <div class="button-bar">
                 <button mat-button (click)="createAccount()">
                     <mat-icon>person_add</mat-icon>

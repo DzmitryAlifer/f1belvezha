@@ -5,7 +5,8 @@ import {combineLatest} from 'rxjs';
 import {map} from 'rxjs/operators';
 import {USER_DIALOG_OPTIONS} from 'src/constants';
 import {Page} from '../enums'; 
-import {formatDate, getFlagLink, getNextEvent} from '../common';
+import {formatDate, getFlagLink, getFullUserName, getNextEvent} from '../common';
+import * as fullResultsSelectors from '../full-results/store/full-results.selectors';
 import {NewsService} from '../service/news.service';
 import {CreateAccountDialog} from '../toolbar/create-account-dialog/create-account-dialog';
 import {LoginDialog} from '../toolbar/login-dialog/login-dialog';
@@ -15,7 +16,7 @@ import * as toolbarSelectors from '../toolbar/store/toolbar.selectors';
 
 const DASHBOARD_NEWS_NUMBER = 6;
 const PAST_RACES_SHOWN_NUMBER = 2;
-const FUTURE_RACES_SHOWN_NUMBER = 2;
+const FUTURE_RACES_SHOWN_NUMBER = 3;
 
 
 @Component({
@@ -29,6 +30,15 @@ export class DashboardComponent {
 
   readonly isDarkMode = this.store.select(toolbarSelectors.selectIsDarkMode);
   readonly currentUser = this.store.select(toolbarSelectors.selectCurrentUser);
+  readonly users = this.store.select(fullResultsSelectors.selectUsers);
+  
+  readonly lastRegisteredUserFullName = this.users.pipe(
+    map(users => {
+      const userMaxId = Math.max.apply(Math, users.map((user) => user.id!));
+      const lastUser = users.find(user => user.id === userMaxId);
+      return getFullUserName(lastUser);
+    }));
+
   readonly nextEvent = getNextEvent();
   readonly newsList = this.newsService.getNewsEn().pipe(map(news => news.slice(0, DASHBOARD_NEWS_NUMBER)));
   private readonly races = this.store.select(toolbarSelectors.selectCalendar);

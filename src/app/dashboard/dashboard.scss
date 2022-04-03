@@ -35,7 +35,7 @@ h2 {
                 white-space: nowrap;
 
                 td {
-                    padding-bottom: 7px;
+                    padding-bottom: 4px;
                     padding-right: 6px;
 
                     &.race-name {
@@ -55,7 +55,7 @@ h2 {
                 }
 
                 .flag {
-                    height: 24px;
+                    height: 22px;
                     vertical-align: middle;
 
                     border: 1px solid grey;
@@ -65,6 +65,11 @@ h2 {
                 span {
                     line-height: 24px;
                 }
+            }
+
+            .large {
+                font-size: 24px;
+                padding-left: 8px;
             }
 
             .button-bar {

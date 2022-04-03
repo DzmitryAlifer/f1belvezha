@@ -167,7 +167,7 @@ function calculateEventPoints(actualDrivers: string[], predictedDrivers: string[
     return [driversInListPoints, driversPlacePoints];
 }
 
-export function getFullUserName(user: User|null): string {
+export function getFullUserName(user: User|null|undefined): string {
     return user ? user.firstname + (user.lastname ? ' ' + user.lastname : '') : '';
 }
 
