@@ -16,10 +16,12 @@
             <mat-card-title>News</mat-card-title>
             <mat-card-subtitle>Read latest Formula 1 news</mat-card-subtitle>
             <div>
-                <div class="tile-content-row" *ngFor="let news of data.newsList">
-                    <img class="news-thumbnail" [src]="news.enclosure">
-                    <span>{{news.title}}</span>
-                </div>
+                <ng-container *ngFor="let news of data.newsList; let index = index">
+                    <div class="tile-content-row" [style.opacity]="1 - index * 0.13">
+                        <img class="news-thumbnail" [src]="news.enclosure">
+                        <span>{{news.title}}</span>
+                    </div>
+                </ng-container>
             </div>
             <div class="button-bar">
                 <button mat-button routerLink="/news" (click)="showPage(Page.News)">
@@ -105,7 +107,9 @@
                     <td>Pts</td>
                 </thead>
                 <ng-container *ngFor="let user of data.users; let index = index">
-                    <tr *ngIf="index < 5 || user.id === data.currentUser?.id" [class.current]="user.id === data.currentUser?.id">
+                    <tr *ngIf="index < 5 || user.id === data.currentUser?.id"
+                            [class.current]="user.id === data.currentUser?.id"
+                            [style.opacity]="user.id === data.currentUser?.id ? 1 : 1 - index * 0.13">
                         <td>{{index + 1}}</td>
                         <td class="full-name">{{getFullUserName(user)}}</td>
                         <td>{{user.seasonpoints}}</td>
