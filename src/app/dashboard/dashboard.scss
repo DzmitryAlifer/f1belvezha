@@ -1,6 +1,9 @@
 @import '../../styles.scss';
 
 
+$tile-size: 280px;
+
+
 :host {
     align-items: center;
     text-align: center;
@@ -21,8 +24,27 @@ h2 {
         
         .mat-card {
             margin: 16px;
-            min-height: 240px;
-            min-width: 240px;
+            max-height: $tile-size;
+            max-width: $tile-size;
+            min-height: $tile-size;
+            min-width: $tile-size;
+
+            .tile-content {
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+
+                img {
+                    height: 24px;
+                    padding-bottom: 7px;
+                    padding-right: 7px;
+                    vertical-align: middle;
+                }
+
+                span {
+                    line-height: 24px;
+                }
+            }
 
             .button-bar {
                 bottom: 8px;

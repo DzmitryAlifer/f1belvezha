@@ -1,14 +1,18 @@
 import {ChangeDetectionStrategy, Component} from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
+import {MatDialog} from '@angular/material/dialog';
 import {Store} from '@ngrx/store';
 import {map} from 'rxjs/operators';
 import {USER_DIALOG_OPTIONS} from 'src/constants';
 import {Page} from '../enums'; 
 import {getNextEvent} from '../common';
+import {NewsService} from '../service/news.service';
 import {CreateAccountDialog} from '../toolbar/create-account-dialog/create-account-dialog';
 import {LoginDialog} from '../toolbar/login-dialog/login-dialog';
 import {ToolbarActionType} from '../toolbar/store/toolbar.actions';
 import * as toolbarSelectors from '../toolbar/store/toolbar.selectors';
+
+
+const DASHBOARD_NEWS_NUMBER = 6;
 
 
 @Component({
@@ -24,10 +28,12 @@ export class DashboardComponent {
   readonly currentUser = this.store.select(toolbarSelectors.selectCurrentUser);
   readonly nextEvent = getNextEvent();
   readonly nextRaceRound = this.nextEvent.pipe(map(nextEvent => nextEvent.round));
+  readonly newsList = this.newsService.getNewsEn().pipe(map(news => news.slice(0, DASHBOARD_NEWS_NUMBER)));
   
   constructor(
     private readonly createAccountDialog: MatDialog,
     private readonly loginDialog: MatDialog,
+    private readonly newsService: NewsService,
     private readonly store: Store,
   ) {}
 
