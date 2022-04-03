@@ -178,3 +178,7 @@ export function getIndexes(max: number): number[] {
 export function getSeasonPointsPerRound(user: User): number {
     return user.seasonpoints / user.season_events_total || 0;
 }
+
+export function compare(left: number, right: number, isAsc: boolean): number {
+    return (left < right ? -1 : 1) * (isAsc ? 1 : -1);
+}

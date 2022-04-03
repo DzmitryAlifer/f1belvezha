@@ -96,6 +96,22 @@
         <mat-card>
             <mat-card-title>Play game</mat-card-title>
             <mat-card-subtitle>See full player standings<br>Predict next Qual and Race results</mat-card-subtitle>
+            
+            <table class="user-standings">
+                <thead>
+                    <td>Plc</td>
+                    <td>Name</td>
+                    <td>Pts</td>
+                </thead>
+                <ng-container *ngFor="let user of data.users; let index = index">
+                    <tr *ngIf="index < 5 || user.id === data.currentUser?.id" [class.current]="user.id === data.currentUser?.id">
+                        <td>{{index + 1}}</td>
+                        <td class="full-name">{{getFullUserName(user)}}</td>
+                        <td>{{user.seasonpoints}}</td>
+                    </tr>
+                </ng-container>
+            </table>
+
             <div class="button-bar">
                 <button mat-button routerLink="/game" (click)="showPage(Page.FullResults)">
                     <mat-icon>lightbulb</mat-icon>

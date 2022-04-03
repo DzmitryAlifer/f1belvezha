@@ -1,6 +1,13 @@
 @import "~@angular/material/theming";
 @include mat-core();
 
+@mixin ellipsis-overflow {
+    overflow: hidden;
+    text-align: left;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
 @font-face {
   font-family: digital7-mono;
   src: url(assets/font/digital_7_mono.ttf) format("opentype");

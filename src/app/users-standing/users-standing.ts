@@ -2,7 +2,7 @@ import {AfterViewInit, ChangeDetectionStrategy, Component} from '@angular/core';
 import {Sort} from '@angular/material/sort';
 import {Store} from '@ngrx/store';
 import {merge, ReplaySubject} from 'rxjs';
-import {getSeasonPointsPerRound} from '../common';
+import {compare, getFullUserName, getSeasonPointsPerRound} from '../common';
 import {Language} from '../enums';
 import * as fullResultsSelectors from '../full-results/store/full-results.selectors';
 import {ToolbarActionType} from '../toolbar/store/toolbar.actions';
@@ -41,8 +41,9 @@ export class UsersStandingComponent implements AfterViewInit {
       return;
     }
 
+    const isAsc = sort.direction === 'asc';
+
     const sortedUsers = users.slice().sort((left, right) => {
-      const isAsc = sort.direction === 'asc';
       switch (sort.active) {
         case 'seasonPoints':
           return compare(left.seasonpoints, right.seasonpoints, isAsc);
@@ -56,11 +57,11 @@ export class UsersStandingComponent implements AfterViewInit {
     this.sortedUsers.next(sortedUsers);
   }
 
+  getFullUserName(user: User): string {
+    return getFullUserName(user);
+  }
+
   getSeasonPointsPerRound(user: User): number {
     return getSeasonPointsPerRound(user);
   }
-}
-
-function compare(left: number, right: number, isAsc: boolean): number {
-  return (left < right ? -1 : 1) * (isAsc ? 1 : -1);
 }

@@ -3,6 +3,8 @@ import {CommonModule} from '@angular/common';
 import {MatButtonModule} from '@angular/material/button';
 import {MatCardModule} from '@angular/material/card';
 import {MatIconModule} from '@angular/material/icon';
+import {MatSortModule} from '@angular/material/sort';
+import {MatTableModule} from '@angular/material/table';
 import {RouterModule} from '@angular/router';
 import {CoinModule} from '../coin/coin.module';
 import {DashboardComponent} from './dashboard';
@@ -15,6 +17,8 @@ import {DashboardComponent} from './dashboard';
     MatButtonModule,
     MatCardModule,
     MatIconModule,
+    MatSortModule,
+    MatTableModule,
     RouterModule,
   ],
   declarations: [DashboardComponent],

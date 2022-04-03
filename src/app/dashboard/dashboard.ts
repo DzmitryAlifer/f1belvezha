@@ -1,17 +1,18 @@
-import {ChangeDetectionStrategy, Component} from '@angular/core';
+import { ChangeDetectionStrategy, Component} from '@angular/core';
 import {MatDialog} from '@angular/material/dialog';
 import {Store} from '@ngrx/store';
 import {combineLatest} from 'rxjs';
 import {map} from 'rxjs/operators';
 import {USER_DIALOG_OPTIONS} from 'src/constants';
 import {Page} from '../enums'; 
-import {DRIVER_IN_LIST_PTS, DRIVER_PLACE_PTS, formatDate, getFlagLink, getFullUserName, getNextEvent} from '../common';
+import {DRIVER_IN_LIST_PTS, DRIVER_PLACE_PTS, formatDate, getFlagLink, getFullUserName, getNextEvent, getSeasonPointsPerRound} from '../common';
 import * as fullResultsSelectors from '../full-results/store/full-results.selectors';
 import {NewsService} from '../service/news.service';
 import {CreateAccountDialog} from '../toolbar/create-account-dialog/create-account-dialog';
 import {LoginDialog} from '../toolbar/login-dialog/login-dialog';
 import {ToolbarActionType} from '../toolbar/store/toolbar.actions';
 import * as toolbarSelectors from '../toolbar/store/toolbar.selectors';
+import {User} from '../types';
 
 
 const DASHBOARD_NEWS_NUMBER = 6;
@@ -29,6 +30,7 @@ export class DashboardComponent {
   readonly DRIVER_IN_LIST_PTS = DRIVER_IN_LIST_PTS;
   readonly DRIVER_PLACE_PTS = DRIVER_PLACE_PTS;
   readonly Page = Page;
+  readonly columns = ['place', 'name', 'seasonPoints'];
 
   readonly isDarkMode = this.store.select(toolbarSelectors.selectIsDarkMode);
   readonly currentUser = this.store.select(toolbarSelectors.selectCurrentUser);
@@ -84,7 +86,15 @@ export class DashboardComponent {
     return this.getCircuitPath(countryName);
   }
 
+  getFullUserName(user: User): string {
+    return getFullUserName(user);
+  }
+
   login(): void {
     this.loginDialog.open(LoginDialog, USER_DIALOG_OPTIONS);
+  }
+
+  getSeasonPointsPerRound(user: User): number {
+    return getSeasonPointsPerRound(user);
   }
 }
