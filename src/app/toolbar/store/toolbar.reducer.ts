@@ -6,6 +6,8 @@ import {ToolbarAction, ToolbarActionType} from './toolbar.actions';
 import {ToolbarState} from './toolbar.model';
 
 
+const storedPage = (localStorage.getItem('startPage') ?? Page.Dashboard) as Page;
+
 export const initialState: ToolbarState = {
     calendar: [],
     currentUser: getStoredUser(),
@@ -14,9 +16,9 @@ export const initialState: ToolbarState = {
     isLockedLayout: localStorage.getItem('layout') !== 'unlocked',
     language: (localStorage.getItem('language') ?? 'English') as Language,
     lastRound: 0,
-    page: (localStorage.getItem('startPage') ?? Page.News) as Page,
+    page: storedPage,
     playersResults: [],
-    startPage: (localStorage.getItem('startPage') ?? Page.News) as Page,
+    startPage: storedPage,
 };
 
 
