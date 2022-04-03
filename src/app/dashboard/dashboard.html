@@ -109,7 +109,7 @@
                 <ng-container *ngFor="let user of data.users; let index = index">
                     <tr *ngIf="index < 5 || user.id === data.currentUser?.id"
                             [class.current]="user.id === data.currentUser?.id"
-                            [style.opacity]="user.id === data.currentUser?.id ? 1 : 1 - index * 0.13">
+                            [style.opacity]="user.id === data.currentUser?.id ? 1 : 1 - index * 0.15">
                         <td>{{index + 1}}</td>
                         <td class="full-name">{{getFullUserName(user)}}</td>
                         <td>{{user.seasonpoints}}</td>
