@@ -29,16 +29,37 @@ h2 {
             min-height: $tile-size;
             min-width: $tile-size;
 
-            .tile-content {
+            .tile-content-row {
                 overflow: hidden;
                 text-overflow: ellipsis;
                 white-space: nowrap;
 
-                img {
+                td {
+                    padding-bottom: 7px;
+                    padding-right: 6px;
+
+                    &.race-name {
+                        max-width: 152px;
+                        overflow: hidden;
+                        text-align: left;
+                        text-overflow: ellipsis;
+                        white-space: nowrap;
+                    }
+                }
+
+                .news-thumbnail {
                     height: 24px;
                     padding-bottom: 7px;
                     padding-right: 7px;
                     vertical-align: middle;
+                }
+
+                .flag {
+                    height: 24px;
+                    vertical-align: middle;
+
+                    border: 1px solid grey;
+                    border-radius: 4px;
                 }
 
                 span {
@@ -60,4 +81,16 @@ h2 {
             }
         }
     }
+}
+
+.current {
+    color: $blue-800;
+}
+
+.old {
+    color: $grey-500;
+}
+
+.dark .current {
+    color: $blue-200;
 }

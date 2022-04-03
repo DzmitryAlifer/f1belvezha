@@ -3,15 +3,18 @@
 
 <div *ngIf="{
     currentUser: currentUser | async,
-    newsList: newsList | async
-} as data" class="container">
+    isDarkMode: isDarkMode | async,
+    newsList: newsList | async,
+    nextRaceRound: nextRaceRound | async,
+    visibleRaces : visibleRaces | async
+} as data" class="container" [class.dark]="data.isDarkMode">
     <div class="row">
         <mat-card>
             <mat-card-title>News</mat-card-title>
             <mat-card-subtitle>Read latest Formula 1 news</mat-card-subtitle>
             <div>
-                <div class="tile-content" *ngFor="let news of data.newsList">
-                    <img [src]="news.enclosure">
+                <div class="tile-content-row" *ngFor="let news of data.newsList">
+                    <img class="news-thumbnail" [src]="news.enclosure">
                     <span>{{news.title}}</span>
                 </div>
             </div>
@@ -25,7 +28,19 @@
 
         <mat-card>
             <mat-card-title>Calendar</mat-card-title>
-            <mat-card-subtitle>See full 2022 calendar<br>Discover circuits' details</mat-card-subtitle>
+            <mat-card-subtitle>See full season calendar, discover circuits'</mat-card-subtitle>
+            <table>
+                <tr class="tile-content-row" *ngFor="let race of data.visibleRaces">
+                    <td [class.current]="race.round == data.nextRaceRound"
+                        [class.old]="race.round < (data.nextRaceRound ?? 0)">#{{race.round}}</td>
+                    <td [class.current]="race.round == data.nextRaceRound"
+                        [class.old]="race.round < (data.nextRaceRound ?? 0)">{{formatDate(race.date)}}</td>
+                    <td><img class="flag" [src]="getFlagLink(race.Circuit.Location.country)"/></td>
+                    <td class="race-name"
+                        [class.current]="race.round == data.nextRaceRound"
+                        [class.old]="race.round < (data.nextRaceRound ?? 0)">{{race.raceName}}</td>
+                </tr>
+            </table>
             <div class="button-bar">
                 <button mat-button routerLink="/calendar" (click)="showPage(Page.Calendar)">
                     <mat-icon>event</mat-icon>

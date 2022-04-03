@@ -1,10 +1,11 @@
 import {ChangeDetectionStrategy, Component} from '@angular/core';
 import {MatDialog} from '@angular/material/dialog';
 import {Store} from '@ngrx/store';
+import {combineLatest} from 'rxjs';
 import {map} from 'rxjs/operators';
 import {USER_DIALOG_OPTIONS} from 'src/constants';
 import {Page} from '../enums'; 
-import {getNextEvent} from '../common';
+import {formatDate, getFlagLink, getNextEvent} from '../common';
 import {NewsService} from '../service/news.service';
 import {CreateAccountDialog} from '../toolbar/create-account-dialog/create-account-dialog';
 import {LoginDialog} from '../toolbar/login-dialog/login-dialog';
@@ -13,6 +14,8 @@ import * as toolbarSelectors from '../toolbar/store/toolbar.selectors';
 
 
 const DASHBOARD_NEWS_NUMBER = 6;
+const PAST_RACES_SHOWN_NUMBER = 2;
+const FUTURE_RACES_SHOWN_NUMBER = 2;
 
 
 @Component({
@@ -27,8 +30,18 @@ export class DashboardComponent {
   readonly isDarkMode = this.store.select(toolbarSelectors.selectIsDarkMode);
   readonly currentUser = this.store.select(toolbarSelectors.selectCurrentUser);
   readonly nextEvent = getNextEvent();
-  readonly nextRaceRound = this.nextEvent.pipe(map(nextEvent => nextEvent.round));
   readonly newsList = this.newsService.getNewsEn().pipe(map(news => news.slice(0, DASHBOARD_NEWS_NUMBER)));
+  private readonly races = this.store.select(toolbarSelectors.selectCalendar);
+  readonly nextRaceRound = this.nextEvent.pipe(map(nextEvent => nextEvent.round));
+  
+  readonly visibleRaces = combineLatest([this.races, this.nextRaceRound]).pipe(
+    map(([races, nextRaceRound]) => {
+      const nextRaceIndex = nextRaceRound - 1;
+      const startIndex = Math.max(nextRaceIndex - PAST_RACES_SHOWN_NUMBER, 0);
+      const endIndex = Math.min(nextRaceIndex + FUTURE_RACES_SHOWN_NUMBER + 1, races.length - 1);
+      return races.slice(startIndex, endIndex);
+    }),
+  );
   
   constructor(
     private readonly createAccountDialog: MatDialog,
@@ -43,8 +56,20 @@ export class DashboardComponent {
     }, 100);
   }
   
+  formatDate(dateStr: string): string {
+    return formatDate(dateStr);
+  }
+
   createAccount(): void {
     this.createAccountDialog.open(CreateAccountDialog, USER_DIALOG_OPTIONS);
+  }
+
+  getFlagLink(countryName: string): string {
+    return getFlagLink(countryName);
+  }
+
+  getCircuitPath(countryName: string): string {
+    return this.getCircuitPath(countryName);
   }
 
   login(): void {
