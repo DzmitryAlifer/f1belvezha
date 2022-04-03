@@ -2,18 +2,18 @@
     <mat-card>
         <mat-card-title>Most selected driver</mat-card-title>
         <mat-card-subtitle>How many times each driver has been selected for predictions</mat-card-subtitle>
-        <div echarts [options]="(chartOptions1 | async)!" class="chart"></div>
+        <div echarts [options]="(mostSelectableDrivers | async)!" class="chart"></div>
     </mat-card>
 
     <mat-card>
         <mat-card-title>Correct driver on the list, %</mat-card-title>
         <mat-card-subtitle>Success ratio of selecting drivers for the prediction list</mat-card-subtitle>
-        <div echarts [options]="(chartOptions2 | async)!" class="chart"></div>
+        <div echarts [options]="(correctInListRate | async)!" class="chart"></div>
     </mat-card>
 
     <mat-card>
         <mat-card-title>Correct driver position, %</mat-card-title>
         <mat-card-subtitle>Success ratio of selecting drivers exact positions</mat-card-subtitle>
-        <div echarts [options]="(chartOptions3 | async)!" class="chart"></div>
+        <div echarts [options]="(correctPositionRate | async)!" class="chart"></div>
     </mat-card>
 </div>

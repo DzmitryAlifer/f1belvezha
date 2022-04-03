@@ -188,3 +188,10 @@ export interface News {
     pubDate: Date;
     enclosure: string;
 }
+
+export interface PlayerSuccessPct {
+    userId: number;
+    correctInList: number;
+    correctPosition: number;
+    predictionsNumber: number;
+}
