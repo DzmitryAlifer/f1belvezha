@@ -43,8 +43,7 @@ export class PredictionDialog {
       `You can optionally select one winning team in each selection, or you can skip one or more selections.\n
       • Each correct selection: +${CORRECT_TEAM_FROM_PAIR_PTS} point.\n
       • Each incorrect selection: -${WRONG_TEAM_PTS} point.\n
-      • Each selection with an undefined winner: 0 points.\n
-      • Each skipped selection: 0 points.`;
+      • Each skipped selection or selection with a draw: 0 points.`;
 
   private readonly selectedTeamsSubject = new BehaviorSubject<TeamName[]>([TeamName.None, TeamName.None]);
   readonly isDarkMode = this.store.select(toolbarSelectors.selectIsDarkMode);
