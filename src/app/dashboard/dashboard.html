@@ -12,7 +12,7 @@
     visibleRaces : visibleRaces | async
 } as data" class="container" [class.dark]="data.isDarkMode">
     <div class="row">
-        <mat-card>
+        <mat-card class="tile clickable" routerLink="/news" (click)="showPage(Page.News)">
             <mat-card-title>News</mat-card-title>
             <mat-card-subtitle>Read latest Formula 1 news</mat-card-subtitle>
             <div>
@@ -31,30 +31,35 @@
             </div>
         </mat-card>
 
-        <mat-card>
-            <mat-card-title>Calendar</mat-card-title>
-            <mat-card-subtitle>See full season calendar, discover circuits'</mat-card-subtitle>
-            <table>
-                <tr class="tile-content-row" *ngFor="let race of data.visibleRaces">
-                    <td [class.current]="race.round == data.nextRaceRound"
-                        [class.old]="race.round < (data.nextRaceRound ?? 0)">#{{race.round}}</td>
-                    <td [class.current]="race.round == data.nextRaceRound"
-                        [class.old]="race.round < (data.nextRaceRound ?? 0)">{{formatDate(race.date)}}</td>
-                    <td><img class="flag" [src]="getFlagLink(race.Circuit.Location.country)"/></td>
-                    <td class="race-name"
-                        [class.current]="race.round == data.nextRaceRound"
-                        [class.old]="race.round < (data.nextRaceRound ?? 0)">{{race.raceName}}</td>
-                </tr>
+        <mat-card class="tile clickable" routerLink="/game" (click)="showPage(Page.FullResults)">
+            <mat-card-title>Play game</mat-card-title>
+            <mat-card-subtitle>See full player standings<br>Predict next Qual and Race results</mat-card-subtitle>
+        
+            <table class="user-standings">
+                <thead>
+                    <td>Plc</td>
+                    <td>Name</td>
+                    <td>Pts</td>
+                </thead>
+                <ng-container *ngFor="let user of data.users; let index = index">
+                    <tr *ngIf="index < 5 || user.id === data.currentUser?.id" [class.current]="user.id === data.currentUser?.id"
+                        [style.opacity]="user.id === data.currentUser?.id ? 1 : 1 - index * 0.15">
+                        <td>{{index + 1}}</td>
+                        <td class="full-name">{{getFullUserName(user)}}</td>
+                        <td>{{user.seasonpoints}}</td>
+                    </tr>
+                </ng-container>
             </table>
+        
             <div class="button-bar">
-                <button mat-button routerLink="/calendar" (click)="showPage(Page.Calendar)">
-                    <mat-icon>event</mat-icon>
-                    See calendar
+                <button mat-button routerLink="/game" (click)="showPage(Page.FullResults)">
+                    <mat-icon>lightbulb</mat-icon>
+                    Make prediction
                 </button>
             </div>
         </mat-card>
 
-        <mat-card>
+        <mat-card class="tile">
             <mat-card-title>Account</mat-card-title>
             <mat-card-subtitle>Create an account and/or log in to play</mat-card-subtitle>
             <div>
@@ -81,7 +86,29 @@
     </div>
 
     <div class="row">
-        <mat-card>
+        <mat-card class="tile clickable" routerLink="/calendar" (click)="showPage(Page.Calendar)">
+            <mat-card-title>Calendar</mat-card-title>
+            <mat-card-subtitle>See full season calendar, discover circuits'</mat-card-subtitle>
+            <table>
+                <tr class="tile-content-row" *ngFor="let race of data.visibleRaces">
+                    <td [class.current]="race.round == data.nextRaceRound" [class.old]="race.round < (data.nextRaceRound ?? 0)">
+                        #{{race.round}}</td>
+                    <td [class.current]="race.round == data.nextRaceRound" [class.old]="race.round < (data.nextRaceRound ?? 0)">
+                        {{formatDate(race.date)}}</td>
+                    <td><img class="flag" [src]="getFlagLink(race.Circuit.Location.country)" /></td>
+                    <td class="race-name" [class.current]="race.round == data.nextRaceRound"
+                        [class.old]="race.round < (data.nextRaceRound ?? 0)">{{race.raceName}}</td>
+                </tr>
+            </table>
+            <div class="button-bar">
+                <button mat-button routerLink="/calendar" (click)="showPage(Page.Calendar)">
+                    <mat-icon>event</mat-icon>
+                    See calendar
+                </button>
+            </div>
+        </mat-card>
+        
+        <mat-card class="tile clickable" routerLink="/rules" (click)="showPage(Page.GameRules)">
             <mat-card-title>Game rules</mat-card-title>
             <mat-card-subtitle>Read the game rules</mat-card-subtitle>
             <div class="tile-content-row">
@@ -96,36 +123,7 @@
             </div>
         </mat-card>
     
-        <mat-card>
-            <mat-card-title>Play game</mat-card-title>
-            <mat-card-subtitle>See full player standings<br>Predict next Qual and Race results</mat-card-subtitle>
-            
-            <table class="user-standings">
-                <thead>
-                    <td>Plc</td>
-                    <td>Name</td>
-                    <td>Pts</td>
-                </thead>
-                <ng-container *ngFor="let user of data.users; let index = index">
-                    <tr *ngIf="index < 5 || user.id === data.currentUser?.id"
-                            [class.current]="user.id === data.currentUser?.id"
-                            [style.opacity]="user.id === data.currentUser?.id ? 1 : 1 - index * 0.15">
-                        <td>{{index + 1}}</td>
-                        <td class="full-name">{{getFullUserName(user)}}</td>
-                        <td>{{user.seasonpoints}}</td>
-                    </tr>
-                </ng-container>
-            </table>
-
-            <div class="button-bar">
-                <button mat-button routerLink="/game" (click)="showPage(Page.FullResults)">
-                    <mat-icon>lightbulb</mat-icon>
-                    Make prediction
-                </button>
-            </div>
-        </mat-card>
-    
-        <mat-card>
+        <mat-card class="tile clickable" routerLink="/charts" (click)="showPage(Page.Charts)">
             <mat-card-title>Charts</mat-card-title>
             <mat-card-subtitle>See charts with statistics</mat-card-subtitle>
             <div><div echarts [options]="data.mostSelectableDriversChart!" class="chart"></div></div>
