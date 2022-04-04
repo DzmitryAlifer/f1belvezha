@@ -85,8 +85,7 @@
                     *ngIf="data.prediction && data.selectedTeams"
                     class="team-selection"
                     [formControlName]="'teamVsTeam' + index"
-                    [(ngModel)]="data.selectedTeams[index]"
-                    (change)="selectTeam($event, index)">
+                    [(ngModel)]="data.selectedTeams[index]">
                 <mat-radio-button [value]="proposal.teams[0]">
                     <div>{{TEAM_NAMES.get(proposal.teams[0])}}</div>
                     <img class="bolid" [src]="'/assets/images/bolids/' + proposal.teams[0] + '.png'" />

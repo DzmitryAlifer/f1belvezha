@@ -67,7 +67,7 @@ export class PredictionDialog {
   readonly selectedTeams = merge(
     this.prediction.pipe(map(({teamVsTeam}) => teamVsTeam)),
     this.selectedTeamsSubject,
-  );
+  ).pipe(map(selectedTeams => [...selectedTeams]));
   
   readonly isLoaded = combineLatest([this.drivers, this.prediction])
     .pipe(map(([drivers, prediction]) => !!drivers && !!prediction));
@@ -130,12 +130,6 @@ export class PredictionDialog {
   getBolidPath(driverFamilyName: string): string {
     const teamId = DRIVER_TEAM_MAPPING.get(driverFamilyName);
     return `/assets/images/bolids/${teamId}.png`;
-  }
-
-  selectTeam({value}: MatRadioChange, index: number): void {
-    if (index === 0) {
-      this.selectedTeamsSubject.next(value);
-    }
   }
 
   asTeamName(teamName: any): string {
