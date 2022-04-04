@@ -33,6 +33,11 @@
     .circuit-small {
         cursor: zoom-in;
         height: 40px;
+        transition: transform .2s;
+
+        &:hover {
+            transform: scale(1.2);
+        }
     }
 
     .current {
