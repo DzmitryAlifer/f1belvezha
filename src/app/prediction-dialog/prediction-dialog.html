@@ -73,15 +73,17 @@
         </ng-container>
     </fieldset>
 
-    <fieldset *ngIf="data.isLoaded && false" class="event">
+    <fieldset *ngIf="data.isLoaded" class="event">
         <h3>
             Race - teams
+            <mat-icon class="help" [matTooltip]="teamSelectionTooltip">help_outline</mat-icon>
             <mat-icon *ngIf="!data.isRaceEditable" class="lock">lock</mat-icon>
         </h3>
 
         <ng-container *ngFor="let proposal of data.teamVsTeamProposals; let index = index">
             <mat-radio-group 
                     *ngIf="data.prediction"
+                    class="team-selection"
                     [formControlName]="'teamVsTeam' + index"
                     [(ngModel)]="data.selectedTeam0"
                     (change)="selectTeam($event, index)">
@@ -90,7 +92,7 @@
                     <img class="bolid" [src]="'/assets/images/bolids/' + proposal.teams[0] + '.png'" />
                 </mat-radio-button>
                 <mat-radio-button class="none" [value]="TeamName.None">
-                    <div>skip</div>
+                    <div>vs</div>
                 </mat-radio-button>
                 <mat-radio-button [value]="proposal.teams[1]">
                     <div>{{TEAM_NAMES.get(proposal.teams[1])}}</div>

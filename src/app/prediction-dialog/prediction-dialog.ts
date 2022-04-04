@@ -11,7 +11,7 @@ import {Prediction} from '../types';
 import * as fullResultsSelectors from '../full-results/store/full-results.selectors';
 import {FullResultsActionType} from '../full-results/store/full-results.actions';
 import {DRIVER_TEAM_MAPPING, PREDICTION_PLACES_NUMBER, TEAM_NAMES} from 'src/constants';
-import {getNextEvent} from '../common';
+import {CORRECT_TEAM_FROM_PAIR_PTS, getNextEvent, WRONG_TEAM_PTS} from '../common';
 import {TeamName} from '../enums';
 import {EventType} from '../toolbar/next-event/next-event.component';
 import * as toolbarSelectors from '../toolbar/store/toolbar.selectors';
@@ -39,6 +39,12 @@ export class PredictionDialog {
   readonly PLACE_INDEXES = PLACE_INDEXES;
   readonly TEAM_NAMES = TEAM_NAMES;
   readonly TeamName = TeamName;
+  readonly teamSelectionTooltip = 
+      `You can optionally select one winning team in each selection, or you can skip one or more selections.\n
+      • Each correct selection: +${CORRECT_TEAM_FROM_PAIR_PTS} point.\n
+      • Each incorrect selection: -${WRONG_TEAM_PTS} point.\n
+      • Each selection with an undefined winner: 0 points.\n
+      • Each skipped selection: 0 points.`;
 
   private readonly selectedTeam0Subject = new BehaviorSubject<TeamName>(TeamName.None);
   readonly isDarkMode = this.store.select(toolbarSelectors.selectIsDarkMode);

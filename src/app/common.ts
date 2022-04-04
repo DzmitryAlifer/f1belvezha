@@ -7,6 +7,8 @@ import {DateTimeApi, DriverRoundResult, PlayerRoundResult, Prediction, User, Use
 
 export const DRIVER_IN_LIST_PTS = 1;
 export const DRIVER_PLACE_PTS = 2;
+export const WRONG_TEAM_PTS = -1;
+export const CORRECT_TEAM_FROM_PAIR_PTS = 1;
 
 export const SCHEDULE: EventSchedule[] = [{
     location: 'Bahrain',
