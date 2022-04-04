@@ -17,8 +17,25 @@
 
 <h2>Points system</h2>
 <ol>
-    <li>For each correct driver on the top-5 list - +1 point (<coin [value]="DRIVER_IN_LIST_PTS" color="#cfd8dc"></coin>)</li>
-    <li>For each correct driver position on the top-5 list - +2 points (<coin [value]="DRIVER_PLACE_PTS" color="#ffc107"></coin>)</li>
+    <li>Driver selection</li>
+    <ol>
+        <li>It is mandatory to fill all 5 drivers for both Qualifying and Race.</li>
+        <li>For each correct driver on the top-5 list: +1 point (<coin [value]="DRIVER_IN_LIST_PTS" color="#cfd8dc"></coin>).</li>
+        <li>For each correct driver position on the top-5 list: +2 points (<coin [value]="DRIVER_PLACE_PTS" color="#ffc107"></coin>).</li>
+    </ol>
+    
+    <li>Team selection</li>
+    <ol>
+        <li>Optionally you can make one or more winning team selections (if there are any).</li>
+        <li>The winning team from the selection is the one whose drivers took total places higher than drivers from rival team.</li>
+        <li>Example 1: Team A drivers' places: 1st and 15th. Team B drivers' places: 7st and 8th. Team B wins.</li>
+        <li>Example 2: Team A drivers' places: 2st and 13th. Team B drivers' places: 5st and 10th. It's a draw.</li>
+        <li>For each correct team-winner from pair: +1 point (<coin [value]="CORRECT_TEAM_FROM_PAIR_PTS" color="#cfd8dc"></coin>).</li>
+        <li>For each wrong team-winner from pair: -1 point (<coin [value]="WRONG_TEAM_PTS" color="#b71c1c"></coin>).</li>
+        <li>For each skipped selection (<i>"vs"</i>): 0 points.</li>
+        <li>For each draw: 0 points.</li>
+    </ol>
+
     <li>All player points are being summed up in order to get his total points.</li>
     <li>Some things related to points system are being or to be discussed. It is possible that some new ways of getting
         points will be added in the future.</li>
