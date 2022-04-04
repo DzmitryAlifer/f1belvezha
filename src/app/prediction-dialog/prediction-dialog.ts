@@ -46,7 +46,7 @@ export class PredictionDialog {
       • Each selection with an undefined winner: 0 points.\n
       • Each skipped selection: 0 points.`;
 
-  private readonly selectedTeam0Subject = new BehaviorSubject<TeamName>(TeamName.None);
+  private readonly selectedTeamsSubject = new BehaviorSubject<TeamName[]>([TeamName.None, TeamName.None]);
   readonly isDarkMode = this.store.select(toolbarSelectors.selectIsDarkMode);
   readonly drivers = this.f1PublicApiService.getDriverStandings();
   readonly teamVsTeamProposals = this.store.select(fullResultsSelectors.selectNextRaceTeamVsTeamProposals);
@@ -64,9 +64,9 @@ export class PredictionDialog {
     shareReplay(1),
   );
 
-  readonly selectedTeam0 = merge(
-    this.prediction.pipe(map(({teamVsTeam}) => teamVsTeam[0])),
-    this.selectedTeam0Subject,
+  readonly selectedTeams = merge(
+    this.prediction.pipe(map(({teamVsTeam}) => teamVsTeam)),
+    this.selectedTeamsSubject,
   );
   
   readonly isLoaded = combineLatest([this.drivers, this.prediction])
@@ -84,6 +84,7 @@ export class PredictionDialog {
     r4: defineField(this.data.isRaceLocked),
     r5: defineField(this.data.isRaceLocked),
     teamVsTeam0: new FormControl(TeamName.None),
+    teamVsTeam1: new FormControl(TeamName.None),
   }, {validators: validateForm});
 
   private readonly nextEvent = getNextEvent().pipe(
@@ -108,7 +109,7 @@ export class PredictionDialog {
   ngOnInit(): void {
     this.store.dispatch({type: FullResultsActionType.LOAD_CURRENT_USER_PREDICTIONS});
 
-    combineLatest([this.prediction, this.selectedTeam0Subject]).subscribe(([prediction, selectedTeam0]) => {
+    combineLatest([this.prediction, this.selectedTeamsSubject]).subscribe(([prediction, selectedTeams]) => {
       this.predictionForm.patchValue({
         q1: prediction.qualification[0],
         q2: prediction.qualification[1],
@@ -120,7 +121,8 @@ export class PredictionDialog {
         r3: prediction.race[2],
         r4: prediction.race[3],
         r5: prediction.race[4],
-        teamVsTeam0: selectedTeam0,
+        teamVsTeam0: selectedTeams[0],
+        teamVsTeam1: selectedTeams[1],
       });
     });
   }
@@ -132,7 +134,7 @@ export class PredictionDialog {
 
   selectTeam({value}: MatRadioChange, index: number): void {
     if (index === 0) {
-      this.selectedTeam0Subject.next(value);
+      this.selectedTeamsSubject.next(value);
     }
   }
 
@@ -141,13 +143,13 @@ export class PredictionDialog {
   }
 
   submit(): void {
-    const {q1, q2, q3, q4, q5, r1, r2, r3, r4, r5, teamVsTeam0} = this.predictionForm.value;
+    const {q1, q2, q3, q4, q5, r1, r2, r3, r4, r5, teamVsTeam0, teamVsTeam1} = this.predictionForm.value;
     const prediction: Prediction = {
       userid: this.data.userId,
       round: this.data.round,
       qualification: [q1, q2, q3, q4, q5],
       race: [r1, r2, r3, r4, r5],
-      team_vs_team: [teamVsTeam0],
+      team_vs_team: [teamVsTeam0, teamVsTeam1],
     };
     const predictionResponse = this.data.hasPrediction ? 
         this.predictionService.updatePrediction(prediction) :

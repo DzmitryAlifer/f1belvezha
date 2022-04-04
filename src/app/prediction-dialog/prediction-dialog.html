@@ -7,7 +7,7 @@
     isQualificationEditable: isQualificationEditable | async,
     isRaceEditable: isRaceEditable | async,
     prediction: prediction | async,
-    selectedTeam0: selectedTeam0 | async,
+    selectedTeams: selectedTeams | async,
     teamVsTeamProposals: teamVsTeamProposals | async
 } as data" [formGroup]="predictionForm" (ngSubmit)="submit()">
 <div class="places" [class.dark]="data.isDarkMode">    
@@ -82,10 +82,10 @@
 
         <ng-container *ngFor="let proposal of data.teamVsTeamProposals; let index = index">
             <mat-radio-group 
-                    *ngIf="data.prediction"
+                    *ngIf="data.prediction && data.selectedTeams"
                     class="team-selection"
                     [formControlName]="'teamVsTeam' + index"
-                    [(ngModel)]="data.selectedTeam0"
+                    [(ngModel)]="data.selectedTeams[index]"
                     (change)="selectTeam($event, index)">
                 <mat-radio-button [value]="proposal.teams[0]">
                     <div>{{TEAM_NAMES.get(proposal.teams[0])}}</div>
