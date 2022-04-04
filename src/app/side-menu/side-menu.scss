@@ -13,15 +13,17 @@
     &.dark {
        background-color: $grey-900; 
 
-       button.current {
-           color: $blue-200;
-       }
+       button {
+            &.current, &:hover {
+                color: $blue-200;
+            }
+        }
     }
 
     button {
         margin-top: 16px;
 
-        &.current {
+        &.current, &:hover {
             color: $blue-800;
         }
     }
