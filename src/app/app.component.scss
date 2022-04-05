@@ -17,6 +17,7 @@ toolbar {
 .page-container {
     bottom: -24px;
     left: $side-menu-width;
+    overflow-y: auto;
     padding: 20px 32px;
     position: absolute;
     right: 0;

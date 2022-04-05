@@ -91,13 +91,14 @@
                     <img class="bolid" [src]="'/assets/images/bolids/' + proposal.teams[0] + '.png'" />
                 </mat-radio-button>
                 <mat-radio-button class="none" [value]="TeamName.None">
-                    <div>vs</div>
+                    <div>VS</div>
                 </mat-radio-button>
                 <mat-radio-button [value]="proposal.teams[1]">
                     <div>{{TEAM_NAMES.get(proposal.teams[1])}}</div>
                     <img class="bolid" [src]="'/assets/images/bolids/' + proposal.teams[1] + '.png'" />
                 </mat-radio-button>
             </mat-radio-group>
+            <div class="description">Select "VS" to skip</div>
         </ng-container>
     </fieldset>
 </div>
