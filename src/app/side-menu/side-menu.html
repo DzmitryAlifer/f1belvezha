@@ -13,6 +13,15 @@
         </button>
 
         <button 
+            mat-icon-button 
+            matTooltip="Prediction game" 
+            routerLink="/game" 
+            [class.current]="data.page === Page.FullResults"
+            (click)="showPage(Page.FullResults)">
+            <mat-icon>lightbulb_outline</mat-icon>
+        </button>
+
+        <button 
             mat-icon-button
             matTooltip="News"
             routerLink="/news"
@@ -37,15 +46,6 @@
             [class.current]="data.page === Page.GameRules"
             (click)="showPage(Page.GameRules)">
             <mat-icon>question_mark</mat-icon>
-        </button>
-
-        <button
-            mat-icon-button
-            matTooltip="Prediction game"
-            routerLink="/game"
-            [class.current]="data.page === Page.FullResults"
-            (click)="showPage(Page.FullResults)">
-            <mat-icon>lightbulb_outline</mat-icon>
         </button>
 
         <button
