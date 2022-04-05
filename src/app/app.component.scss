@@ -15,8 +15,7 @@ toolbar {
 }
 
 .page-container {
-    bottom: 0;
-    display: flex;
+    bottom: -24px;
     left: $side-menu-width;
     padding: 20px 32px;
     position: absolute;
