@@ -72,6 +72,10 @@ h2, h3, .button-bar {
     font: 500 16px/20px Roboto;
     padding-left: 10px;
     vertical-align: middle;
+
+    &.mat-select-min-line {
+        font-size: 12px !important;
+    }
 }
 
 .errors {
