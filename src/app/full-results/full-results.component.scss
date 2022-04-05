@@ -84,10 +84,15 @@
         vertical-align: bottom;
 
         .circuit-small {
-            cursor: zoom-in;
+            cursor: pointer;
             height: 40px;
+            transition: transform .2s;
             vertical-align: middle;
             width: 55px;
+            
+            &:hover {
+                transform: scale(1.2);
+            }
         }
 
         &.event {
