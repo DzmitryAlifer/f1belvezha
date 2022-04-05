@@ -1,14 +1,48 @@
 @import '../../styles.scss';
 
 
+
 .menu {
-    height: 100%;
-    padding-left: 8px;
-    padding-top: calc($toolbar-height + 12px);
+    background-color: $grey-200;
+    border-bottom: 1px solid $grey-300;
+    border-right: 1px solid $grey-300;
+    border-radius: 4px;
+    border-top: 1px solid $grey-300;
+    height: calc(60px * 6);
+    margin-left: -4px;
+    margin-top: calc($toolbar-height + 32px);
+    padding: 8px 0 8px 12px;
     position: fixed;
-    text-align: center;
+    text-align: left;
     top: 0;
+    transition: .2s;
     width: $side-menu-width;
+    z-index: 500;
+
+    &.dark {
+        background-color: $grey-600;
+        border-bottom: 1px solid $grey-800;
+        border-right: 1px solid $grey-800;
+        border-top: 1px solid $grey-800;
+    }
+
+    .button-text {
+        padding-left: 16px;
+    }
+
+    &:not(.wide) {
+        .button-text {
+            display: none;
+        }
+    }
+
+    &.wide {
+        width: calc($side-menu-width + 140px);
+
+        button {
+            padding-left: 8px;
+        }
+    }
 
     &.dark {
        background-color: $grey-900; 

@@ -12,6 +12,7 @@ import * as toolbarSelectors from '../toolbar/store/toolbar.selectors';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SideMenuComponent {
+  isOpen = false;
   readonly Page = Page;
 
   readonly isDarkMode = this.store.select(toolbarSelectors.selectIsDarkMode);
