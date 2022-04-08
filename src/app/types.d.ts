@@ -1,6 +1,8 @@
 import {TeamName} from './enums';
 
 
+declare module '/animejs/lib/anime.es.js';
+
 export interface User {
     username: string;
     firstname: string;

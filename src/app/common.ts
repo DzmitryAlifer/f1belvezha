@@ -1,11 +1,10 @@
 import * as moment from 'moment';
 import {interval, Observable} from 'rxjs';
 import {map, shareReplay, startWith} from 'rxjs/operators';
-import { getTextOfJSDocComment } from 'typescript';
 import {DisplayEvent, EventSchedule, EventType} from './toolbar/next-event/next-event.component';
 import {DateTimeApi, Driver, DriverRoundResult, DriverStanding, PlayerRoundResult, Prediction, Race, User, UserPoints} from './types';
 
-
+declare let anime: any;
 export const DRIVER_IN_LIST_PTS = 1;
 export const DRIVER_PLACE_PTS = 2;
 export const WRONG_TEAM_PTS = -1;
@@ -244,4 +243,31 @@ export function getSeasonPointsPerRound(user: User): number {
 
 export function compare(left: number, right: number, isAsc: boolean): number {
     return (left < right ? -1 : 1) * (isAsc ? 1 : -1);
+}
+
+export function animateTextElements(selectors: string[], duration: number, delayIn: number, delayOut: number): void {
+    let targetsList = selectors.map(selector => {
+        let textWrapper = document.querySelector(selector)!;
+        textWrapper.innerHTML = textWrapper.textContent!.replace(/\S/g, "<span class='letter' style='display:inline-block;'>$&</span>");
+        return `${selector} .letter`;
+    });
+    
+    targetsList.reduce((acc, targets) => {
+        return acc.add({
+            targets,
+            translateX: [40, 0],
+            translateZ: 0,
+            opacity: [0, 1],
+            easing: 'easeOutExpo',
+            duration,
+            delay: (el: any, index: number) => delayIn + 30 * index,
+        }).add({
+            targets,
+            translateX: [0, -30],
+            opacity: [1, 0],
+            easing: 'easeInExpo',
+            duration,
+            delay: (el: any, index: number) => delayOut + 30 * index,
+        })
+    }, anime.timeline({loop: true}));
 }

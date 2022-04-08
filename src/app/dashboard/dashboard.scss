@@ -27,8 +27,23 @@ h2 {
     }
 }
 
-h4 {
-    margin-bottom: 0;
+.animation1,
+.animation2,
+.animation3,
+.animation4 {
+    font-weight: 300;
+    font-size: 1.4em;
+    text-transform: uppercase;
+    letter-spacing: 0.5em;
+    margin: -16px auto 0 auto;
+    left: $side-menu-width;
+    position: fixed;
+    right: 0;
+
+    .letter {
+        display: inline-block;
+        line-height: 1em;
+    }
 }
 
 .container {

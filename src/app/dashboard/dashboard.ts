@@ -1,11 +1,11 @@
-import {ChangeDetectionStrategy, Component, OnInit} from '@angular/core';
+import {AfterViewInit, ChangeDetectionStrategy, Component, OnInit} from '@angular/core';
 import {MatDialog} from '@angular/material/dialog';
 import {Store} from '@ngrx/store';
 import {combineLatest} from 'rxjs';
 import {map} from 'rxjs/operators';
 import {USER_DIALOG_OPTIONS} from 'src/constants';
 import {Page} from '../enums'; 
-import {CORRECT_TEAM_FROM_PAIR_PTS, DRIVER_IN_LIST_PTS, DRIVER_PLACE_PTS, formatDate, getFlagLink, getFullUserName, getNextEvent, getSeasonPointsPerRound, WRONG_TEAM_PTS} from '../common';
+import {animateTextElements, CORRECT_TEAM_FROM_PAIR_PTS, DRIVER_IN_LIST_PTS, DRIVER_PLACE_PTS, formatDate, getFlagLink, getFullUserName, getNextEvent, getSeasonPointsPerRound, WRONG_TEAM_PTS} from '../common';
 import {FullResultsActionType} from '../full-results/store/full-results.actions'; 
 import * as fullResultsSelectors from '../full-results/store/full-results.selectors';
 import {ChartService} from '../service/chart.service';
@@ -16,11 +16,10 @@ import {ToolbarActionType} from '../toolbar/store/toolbar.actions';
 import * as toolbarSelectors from '../toolbar/store/toolbar.selectors';
 import {User} from '../types';
 
-
 const DASHBOARD_NEWS_NUMBER = 6;
 const PAST_RACES_SHOWN_NUMBER = 2;
 const FUTURE_RACES_SHOWN_NUMBER = 3;
-
+declare let anime: any;   
 
 @Component({
   selector: 'dashboard',
@@ -28,7 +27,7 @@ const FUTURE_RACES_SHOWN_NUMBER = 3;
   styleUrls: ['./dashboard.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class DashboardComponent implements OnInit {
+export class DashboardComponent implements AfterViewInit, OnInit {
   readonly DRIVER_IN_LIST_PTS = DRIVER_IN_LIST_PTS;
   readonly DRIVER_PLACE_PTS = DRIVER_PLACE_PTS;
   readonly CORRECT_TEAM_FROM_PAIR_PTS = CORRECT_TEAM_FROM_PAIR_PTS;
@@ -74,6 +73,10 @@ export class DashboardComponent implements OnInit {
   ngOnInit(): void {
     this.store.dispatch({type: FullResultsActionType.LOAD_ALL_PREDICTIONS});
     this.store.dispatch({type: FullResultsActionType.LOAD_CURRENT_YEAR_RESULTS});
+  }
+
+  ngAfterViewInit(): void {
+    animateTextElements(['.animation1', '.animation2', '.animation3', '.animation4'], 1500, 500, 3000);
   }
 
   showPage(page: Page): void {
