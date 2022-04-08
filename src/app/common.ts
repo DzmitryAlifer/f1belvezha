@@ -1,8 +1,9 @@
 import * as moment from 'moment';
 import {interval, Observable} from 'rxjs';
 import {map, shareReplay, startWith} from 'rxjs/operators';
+import { getTextOfJSDocComment } from 'typescript';
 import {DisplayEvent, EventSchedule, EventType} from './toolbar/next-event/next-event.component';
-import {DateTimeApi, Driver, DriverRoundResult, DriverStanding, PlayerRoundResult, Prediction, User, UserPoints} from './types';
+import {DateTimeApi, Driver, DriverRoundResult, DriverStanding, PlayerRoundResult, Prediction, Race, User, UserPoints} from './types';
 
 
 export const DRIVER_IN_LIST_PTS = 1;
@@ -92,6 +93,57 @@ export function getFlagLink(countryName: string): string {
 export function getCircuitPath(countryName: string, isLarge = false): string {
     const smallOrLarge = isLarge ? 'large' : 'small';
     return `/assets/images/circuits/${smallOrLarge}/${countryName}.png`;
+}
+
+function toMoment2(date: string, time: string): moment.Moment {
+    return moment(new Date(`${date}T${time}`));
+}
+
+function toMoment(dateTime: DateTimeApi): moment.Moment {
+    return toMoment2(dateTime.date, dateTime.time);
+}
+
+export function findNextEvent2(races: Race[]): DisplayEvent {
+    const nextEventIndex = races.findIndex(event => toMoment(event).isAfter(NOW));
+    const previousEvent = races[nextEventIndex - 1];
+    const previousEventQualifyingStart = toMoment(previousEvent.Qualifying);
+    const previousEventQualifyingEnd = previousEventQualifyingStart.add(1, 'hour');
+    const previousEventRaceStart = toMoment(previousEvent as DateTimeApi);
+    const previousEventRaceEnd = previousEventRaceStart.add(2, 'hours');
+
+    if (nextEventIndex === 0 || previousEventRaceEnd.isBefore(NOW)) {
+        return {
+            round: nextEventIndex + 1,
+            location: races[nextEventIndex].Circuit.Location.country,
+            eventType: EventType.Qualification,
+            start: toMoment(races[nextEventIndex].Qualifying),
+        };
+    }
+
+    if (previousEventRaceStart.isBefore(NOW)) {
+        return {
+            round: nextEventIndex,
+            location: previousEvent.Circuit.Location.country,
+            eventType: EventType.Race,
+            end: previousEventRaceEnd,
+        };
+    }
+
+    if (previousEventQualifyingEnd.isBefore(NOW)) {
+        return {
+            round: nextEventIndex,
+            location: previousEvent.Circuit.Location.country,
+            eventType: EventType.Race,
+            start: previousEventRaceStart,
+        };
+    }
+
+    return {
+        round: nextEventIndex,
+        location: previousEvent.Circuit.Location.country,
+        eventType: EventType.Qualification,
+        end: previousEventQualifyingEnd,
+    };
 }
 
 function findNextEvent(): DisplayEvent {

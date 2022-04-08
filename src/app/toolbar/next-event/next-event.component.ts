@@ -1,9 +1,9 @@
 import {ChangeDetectionStrategy, Component, AfterViewInit} from '@angular/core';
 import {Store} from '@ngrx/store';
 import * as moment from 'moment';
-import {combineLatest, interval} from 'rxjs';
-import {map} from 'rxjs/operators';
-import {getFlagLink, getNextEvent} from 'src/app/common';
+import {combineLatest, interval, timer} from 'rxjs';
+import { filter, map, startWith } from 'rxjs/operators';
+import {findNextEvent2, getFlagLink, getNextEvent} from 'src/app/common';
 import {CountDownDigits} from 'src/app/types';
 import * as toolbarSelectors from '../store/toolbar.selectors';
 
@@ -40,11 +40,19 @@ export interface DateRange {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class NextEventComponent implements AfterViewInit {
-  readonly calendar = this.store.select(toolbarSelectors.selectCalendar);
-  readonly nextEvent = getNextEvent();
   readonly isDarkMode = this.store.select(toolbarSelectors.selectIsDarkMode);
+  readonly calendarEvents = this.store.select(toolbarSelectors.selectCalendar);
+  readonly nextEvent2 = getNextEvent();
+  // Finds next event each 2 minutes
+  readonly nextEvent = combineLatest([this.calendarEvents, timer(0, 2 * 60 * 1000)]).pipe(
+    filter(([calendarEvents]) => !!calendarEvents.length),
+    map(([calendarEvents]) => findNextEvent2(calendarEvents)),
+  );
 
-  constructor(private readonly store: Store) {}
+  constructor(private readonly store: Store) {
+    this.nextEvent.subscribe(r=>console.log(r))
+    this.nextEvent2.subscribe(r=>console.log(r))
+  }
 
   ngAfterViewInit(): void {
     combineLatest([this.nextEvent, interval(1000)]).pipe(
