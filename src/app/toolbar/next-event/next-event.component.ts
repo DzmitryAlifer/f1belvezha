@@ -40,6 +40,7 @@ export interface DateRange {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class NextEventComponent implements AfterViewInit {
+  readonly calendar = this.store.select(toolbarSelectors.selectCalendar);
   readonly nextEvent = getNextEvent();
   readonly isDarkMode = this.store.select(toolbarSelectors.selectIsDarkMode);
 

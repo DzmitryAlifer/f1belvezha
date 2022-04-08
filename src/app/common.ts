@@ -20,8 +20,8 @@ export const SCHEDULE: EventSchedule[] = [{
     race: {start: moment('2022-03-27T20:00:00+03:00'), end: moment('2022-03-27T22:00:00+03:00')},
 }, {
     location: 'Australia',
-    qualification: {start: moment('2022-04-09T16:00:00+11:00'), end: moment('2022-04-09T17:00:00+11:00')},
-    race: {start: moment('2022-04-10T15:00:00+11:00'), end: moment('2022-04-10T17:00:00+11:00')},
+    qualification: {start: moment('2022-04-09T16:00:00+10:00'), end: moment('2022-04-09T17:00:00+10:00')},
+    race: {start: moment('2022-04-10T15:00:00+10:00'), end: moment('2022-04-10T17:00:00+10:00')},
 }, {
     location: 'Italy',
     qualification: {start: moment('2022-04-23T16:00:00+11:00'), end: moment('2022-04-23T17:00:00+11:00')},
