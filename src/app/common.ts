@@ -24,8 +24,8 @@ export const SCHEDULE: EventSchedule[] = [{
     race: {start: moment('2022-04-10T15:00:00+10:00'), end: moment('2022-04-10T17:00:00+10:00')},
 }, {
     location: 'Italy',
-    qualification: {start: moment('2022-04-23T16:00:00+11:00'), end: moment('2022-04-23T17:00:00+11:00')},
-    race: {start: moment('2022-04-24T15:00:00+11:00'), end: moment('2022-04-24T17:00:00+11:00')},
+    qualification: {start: moment('2022-04-23T16:00:00+01:00'), end: moment('2022-04-23T17:00:00+01:00')},
+    race: {start: moment('2022-04-24T15:00:00+01:00'), end: moment('2022-04-24T17:00:00+01:00')},
 } ];
 
 export const NOT_SELECTED_DRIVER_NAME = 'not selected';
