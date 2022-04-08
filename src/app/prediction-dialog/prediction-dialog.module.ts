@@ -8,6 +8,7 @@ import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatRadioModule} from '@angular/material/radio';
 import {MatSelectModule} from '@angular/material/select';
 import {MatTooltipModule} from '@angular/material/tooltip';
+import {DriverBolidComponent} from './driver-bolid';
 import {PredictionDialog} from './prediction-dialog';
 
 
@@ -24,6 +25,6 @@ import {PredictionDialog} from './prediction-dialog';
     MatTooltipModule, 
     ReactiveFormsModule,
   ],
-  declarations: [PredictionDialog],
+  declarations: [DriverBolidComponent, PredictionDialog],
 })
 export class PredictionDialogModule { }

@@ -21,23 +21,21 @@
             <mat-form-field *ngIf="data.prediction">
                 <mat-label>Place {{placeIndex + 1}}</mat-label>
                         
-                <mat-select
-                    [disabled]="!data.isQualificationEditable"
-                    [formControlName]="'q' + (placeIndex + 1)" 
-                    [(value)]="data.prediction.qualification[placeIndex]">
-                            
-                    <mat-select-trigger>
-                        <img *ngIf="data.prediction.qualification[placeIndex]"
-                            class="bolid"
-                            [src]="getBolidPath(data.prediction.qualification[placeIndex]!)" />
-                        <span>{{data.prediction.qualification[placeIndex]}}</span>
-                    </mat-select-trigger>
-                            
-                    <mat-option *ngFor="let driver of data.drivers" [value]="driver.Driver.familyName" >
-                        <img class="bolid" [src]="getBolidPath(driver.Driver.familyName)" />
-                        <span class="name">{{driver.Driver.familyName}}</span>
-                    </mat-option>
-                </mat-select>
+                <ng-container *ngIf="{driverFamilyName : data.prediction.qualification[placeIndex]} as innerData">
+                    <mat-select
+                        [disabled]="!data.isQualificationEditable"
+                        [formControlName]="'q' + (placeIndex + 1)" 
+                        [(value)]="innerData.driverFamilyName">
+                                
+                        <mat-select-trigger>
+                            <driver-bolid [driverFamilyName]="innerData.driverFamilyName"></driver-bolid>
+                        </mat-select-trigger>
+                                
+                        <mat-option *ngFor="let driver of data.drivers" [value]="driver.Driver.familyName" >
+                            <driver-bolid [driverFamilyName]="driver.Driver.familyName"></driver-bolid>
+                        </mat-option>
+                    </mat-select>
+                </ng-container>
             </mat-form-field>
         </ng-container>
     </fieldset>
@@ -52,23 +50,21 @@
             <mat-form-field *ngIf="data.prediction">
                 <mat-label>Place {{placeIndex + 1}}</mat-label>
                     
-                <mat-select
-                    [disabled]="!data.isRaceEditable"
-                    [formControlName]="'r' + (placeIndex + 1)" 
-                    [(value)]="data.prediction.race[placeIndex]">
-                        
-                    <mat-select-trigger>
-                        <img *ngIf="data.prediction.race[placeIndex]" 
-                            class="bolid" 
-                            [src]="getBolidPath(data.prediction.race[placeIndex]!)" />
-                        <span>{{data.prediction.race[placeIndex]}}</span>
-                    </mat-select-trigger>
-                        
-                    <mat-option *ngFor="let driver of data.drivers" [value]="driver.Driver.familyName" >
-                        <img class="bolid" [src]="getBolidPath(driver.Driver.familyName)" />
-                        <span class="name">{{driver.Driver.familyName}}</span>
-                    </mat-option>
-                </mat-select>
+                <ng-container *ngIf="{driverFamilyName : data.prediction.race[placeIndex]} as innerData">
+                    <mat-select
+                        [disabled]="!data.isRaceEditable"
+                        [formControlName]="'r' + (placeIndex + 1)" 
+                        [(value)]="innerData.driverFamilyName">
+                            
+                        <mat-select-trigger>
+                            <driver-bolid [driverFamilyName]="innerData.driverFamilyName"></driver-bolid>
+                        </mat-select-trigger>
+                            
+                        <mat-option *ngFor="let driver of data.drivers" [value]="driver.Driver.familyName" >
+                            <driver-bolid [driverFamilyName]="driver.Driver.familyName"></driver-bolid>
+                        </mat-option>
+                    </mat-select>
+                </ng-container>
             </mat-form-field>
         </ng-container>
     </fieldset>

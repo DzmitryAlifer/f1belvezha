@@ -1,7 +1,6 @@
 import {Component, Inject} from '@angular/core';
 import {AbstractControl, FormControl, FormGroup, ValidationErrors, Validators} from '@angular/forms';
 import {MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
-import {MatRadioChange} from '@angular/material/radio';
 import {Store} from '@ngrx/store';
 import {BehaviorSubject, combineLatest, merge} from 'rxjs';
 import {filter, map, shareReplay} from 'rxjs/operators';
@@ -11,7 +10,7 @@ import {Prediction} from '../types';
 import * as fullResultsSelectors from '../full-results/store/full-results.selectors';
 import {FullResultsActionType} from '../full-results/store/full-results.actions';
 import {DRIVER_TEAM_MAPPING, PREDICTION_PLACES_NUMBER, TEAM_NAMES} from 'src/constants';
-import {CORRECT_TEAM_FROM_PAIR_PTS, getNextEvent, WRONG_TEAM_PTS} from '../common';
+import {CORRECT_TEAM_FROM_PAIR_PTS, getNextEvent, NOT_SELECTED_DRIVER_NAME, NOT_SELECTED_DRIVER_POSITION, WRONG_TEAM_PTS} from '../common';
 import {TeamName} from '../enums';
 import {EventType} from '../toolbar/next-event/next-event.component';
 import * as toolbarSelectors from '../toolbar/store/toolbar.selectors';
@@ -27,7 +26,11 @@ export interface PredictionDialogData {
 
 
 const PLACE_INDEXES = Array.from({length: PREDICTION_PLACES_NUMBER}, (v, i) => i);
-const EMPTY_PREDICTION: Prediction = {qualification: ['', '', '', '', ''], race: ['', '', '', '', ''], team_vs_team: []};
+const EMPTY_PREDICTION: Prediction = {
+  qualification: [NOT_SELECTED_DRIVER_NAME, NOT_SELECTED_DRIVER_NAME, NOT_SELECTED_DRIVER_NAME, NOT_SELECTED_DRIVER_NAME, NOT_SELECTED_DRIVER_NAME], 
+  race: [NOT_SELECTED_DRIVER_NAME, NOT_SELECTED_DRIVER_NAME, NOT_SELECTED_DRIVER_NAME, NOT_SELECTED_DRIVER_NAME, NOT_SELECTED_DRIVER_NAME], 
+  team_vs_team: []
+};
 
 
 @Component({
@@ -38,6 +41,7 @@ const EMPTY_PREDICTION: Prediction = {qualification: ['', '', '', '', ''], race:
 export class PredictionDialog {
   readonly PLACE_INDEXES = PLACE_INDEXES;
   readonly TEAM_NAMES = TEAM_NAMES;
+  readonly NOT_SELECTED_DRIVER_NAME = NOT_SELECTED_DRIVER_NAME;
   readonly TeamName = TeamName;
   readonly teamSelectionTooltip = 
       `You can optionally select one winning team in each selection, or you can skip one or more selections.\n
@@ -47,7 +51,8 @@ export class PredictionDialog {
 
   private readonly selectedTeamsSubject = new BehaviorSubject<TeamName[]>([TeamName.None, TeamName.None]);
   readonly isDarkMode = this.store.select(toolbarSelectors.selectIsDarkMode);
-  readonly drivers = this.f1PublicApiService.getDriverStandings();
+  readonly drivers = this.f1PublicApiService.getDriverStandings()
+    .pipe(map(driverStandings => [...driverStandings, NOT_SELECTED_DRIVER_POSITION]));
   readonly teamVsTeamProposals = this.store.select(fullResultsSelectors.selectNextRaceTeamVsTeamProposals);
 
   readonly prediction = this.store.select(fullResultsSelectors.selectCurrentUserPredictions).pipe(
@@ -178,7 +183,7 @@ function areFilledNamesUnique(control: AbstractControl, controlPrefix: 'q' | 'r'
     control.get(controlPrefix + 3)?.value,
     control.get(controlPrefix + 4)?.value,
     control.get(controlPrefix + 5)?.value,
-  ].filter(name => !!name);
+  ].filter(name => !!name && name !== NOT_SELECTED_DRIVER_NAME);
 
   return filledNames.length === new Set(filledNames).size
 }

@@ -2,7 +2,7 @@ import * as moment from 'moment';
 import {interval, Observable} from 'rxjs';
 import {map, shareReplay, startWith} from 'rxjs/operators';
 import {DisplayEvent, EventSchedule, EventType} from './toolbar/next-event/next-event.component';
-import {DateTimeApi, DriverRoundResult, PlayerRoundResult, Prediction, User, UserPoints} from './types';
+import {DateTimeApi, Driver, DriverRoundResult, DriverStanding, PlayerRoundResult, Prediction, User, UserPoints} from './types';
 
 
 export const DRIVER_IN_LIST_PTS = 1;
@@ -27,6 +27,15 @@ export const SCHEDULE: EventSchedule[] = [{
     qualification: {start: moment('2022-04-23T16:00:00+11:00'), end: moment('2022-04-23T17:00:00+11:00')},
     race: {start: moment('2022-04-24T15:00:00+11:00'), end: moment('2022-04-24T17:00:00+11:00')},
 } ];
+
+export const NOT_SELECTED_DRIVER_NAME = 'not selected';
+
+export const NOT_SELECTED_DRIVER_POSITION: DriverStanding = {
+    position: 100,
+    points: 0,
+    wins: 0,
+    Driver: {familyName: NOT_SELECTED_DRIVER_NAME} as Driver,
+}; 
 
 const NOW = moment();
 
