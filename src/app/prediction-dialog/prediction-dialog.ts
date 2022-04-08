@@ -131,11 +131,6 @@ export class PredictionDialog {
     });
   }
 
-  getBolidPath(driverFamilyName: string): string {
-    const teamId = DRIVER_TEAM_MAPPING.get(driverFamilyName);
-    return `/assets/images/bolids/${teamId}.png`;
-  }
-
   asTeamName(teamName: any): string {
     return (teamName as TeamName).toString();
   }
