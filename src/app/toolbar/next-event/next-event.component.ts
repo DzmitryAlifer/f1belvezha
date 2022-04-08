@@ -2,7 +2,7 @@ import {ChangeDetectionStrategy, Component, AfterViewInit} from '@angular/core';
 import {Store} from '@ngrx/store';
 import * as moment from 'moment';
 import {combineLatest, interval, timer} from 'rxjs';
-import { filter, map, startWith } from 'rxjs/operators';
+import {filter, map} from 'rxjs/operators';
 import {findNextEvent2, getFlagLink, getNextEvent} from 'src/app/common';
 import {CountDownDigits} from 'src/app/types';
 import * as toolbarSelectors from '../store/toolbar.selectors';
@@ -49,10 +49,7 @@ export class NextEventComponent implements AfterViewInit {
     map(([calendarEvents]) => findNextEvent2(calendarEvents)),
   );
 
-  constructor(private readonly store: Store) {
-    this.nextEvent.subscribe(r=>console.log(r))
-    this.nextEvent2.subscribe(r=>console.log(r))
-  }
+  constructor(private readonly store: Store) {}
 
   ngAfterViewInit(): void {
     combineLatest([this.nextEvent, interval(1000)]).pipe(
