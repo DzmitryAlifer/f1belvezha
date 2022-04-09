@@ -1,5 +1,6 @@
 import {NgModule} from '@angular/core';
 import {RouterModule, Routes} from '@angular/router';
+import {AccountComponent} from './account/account';
 import {CalendarComponent} from './calendar/calendar.component';
 import {ChartsComponent} from './charts/charts';
 import {DashboardComponent} from './dashboard/dashboard';
@@ -15,7 +16,8 @@ const routes: Routes = [
   {path: 'rules', component: GameRulesComponent},
   {path: 'game', component: PredictionGameComponent},
   {path: 'charts', component: ChartsComponent},
-  { path: '**', redirectTo: 'dashboard', pathMatch: 'full'},
+  {path: 'account', component: AccountComponent},
+  {path: '**', redirectTo: 'dashboard', pathMatch: 'full'},
 ];
 
 

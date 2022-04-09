@@ -72,5 +72,15 @@
                 <span class="button-text">Players stats</span>
             </button>
         </div>
+
+        <div *ngIf="false">
+            <button 
+                mat-icon-button routerLink="/account"
+                [class.current]="data.page === Page.Account"
+                (click)="showPage(Page.Account)">
+                <mat-icon>account_circle</mat-icon>
+                <span class="button-text">Account</span>
+            </button>
+        </div>
     </div>
 </ng-container>
