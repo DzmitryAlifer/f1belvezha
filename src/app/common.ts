@@ -37,8 +37,6 @@ export const NOT_SELECTED_DRIVER_POSITION: DriverStanding = {
     Driver: {familyName: NOT_SELECTED_DRIVER_NAME} as Driver,
 }; 
 
-const NOW = moment();
-
 const COUNTRY_MAP = new Map<string, string>()
     .set('Bahrain', 'BH')
     .set('Saudi Arabia', 'SA')
@@ -103,6 +101,7 @@ function toMoment(dateTime: DateTimeApi): moment.Moment {
 }
 
 export function findNextEvent2(races: Race[]): DisplayEvent {
+    const NOW = moment();
     const nextEventIndex = races.findIndex(event => toMoment(event).isAfter(NOW));
     const previousEvent = races[nextEventIndex - 1];
     const previousEventQualifyingStart = toMoment(previousEvent.Qualifying);
@@ -146,6 +145,7 @@ export function findNextEvent2(races: Race[]): DisplayEvent {
 }
 
 function findNextEvent(): DisplayEvent {
+    const NOW = moment();
     const nextEventIndex = SCHEDULE.findIndex(event => event.qualification.start.isAfter(NOW));
     const previousEvent = SCHEDULE[nextEventIndex - 1];
 
