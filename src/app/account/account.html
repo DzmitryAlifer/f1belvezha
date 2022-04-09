@@ -1,1 +1,10 @@
-<p>account works!</p>
+<ng-container *ngIf="{
+    isDarkMode: isDarkMode | async,
+    predictions: currentUserPredictions | async,
+    results: currentUserResults | async
+} as data">
+    <table mat-table [class.dark]="data.isDarkMode" [dataSource]="currentUserPredictions">
+        <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+</ng-container>

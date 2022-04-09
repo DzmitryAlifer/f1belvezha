@@ -12,10 +12,7 @@
     points: points | async,
     users: users | async
  } as data" class="container">
-    <table 
-            mat-table
-            [class.dark]="data.isDarkMode"
-            [dataSource]="races">
+    <table mat-table [class.dark]="data.isDarkMode" [dataSource]="races">
         <ng-container matColumnDef="event">
             <th class="event" mat-header-cell *matHeaderCellDef>
                 <mat-paginator 
