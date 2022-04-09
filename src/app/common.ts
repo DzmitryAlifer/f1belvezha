@@ -105,16 +105,48 @@ export function findNextEvent2(races: Race[]): DisplayEvent {
     const nextEventIndex = races.findIndex(event => toMoment(event).isAfter(NOW));
     const previousEvent = races[nextEventIndex - 1];
     const previousEventQualifyingStart = toMoment(previousEvent.Qualifying);
-    const previousEventQualifyingEnd = previousEventQualifyingStart.add(1, 'hour');
-    const previousEventRaceStart = toMoment(previousEvent as DateTimeApi);
-    const previousEventRaceEnd = previousEventRaceStart.add(2, 'hours');
+    const previousEventQualifyingEnd = previousEventQualifyingStart.clone().add(1, 'hours');
+    const previousEventRaceStart = toMoment(previousEvent);
+    const previousEventRaceEnd = previousEventRaceStart.clone().add(2, 'hours');
+    const nextEvent = races[nextEventIndex];
+    const nextEventQualifyingStart = toMoment(nextEvent.Qualifying);
+    const nextEventQualifyingEnd = nextEventQualifyingStart.clone().add(1, 'hours');
+    const nextEventRaceStart = toMoment(nextEvent);
+    const nextEventRaceEnd = nextEventRaceStart.clone().add(2, 'hours');
 
-    if (nextEventIndex === 0 || previousEventRaceEnd.isBefore(NOW)) {
+    if (nextEventIndex === 0) {
         return {
             round: nextEventIndex + 1,
-            location: races[nextEventIndex].Circuit.Location.country,
+            location: nextEvent.Circuit.Location.country,
             eventType: EventType.Qualification,
-            start: toMoment(races[nextEventIndex].Qualifying),
+            start: nextEventQualifyingStart,
+        };
+    }
+
+    if (nextEventRaceStart.isBefore(NOW)) {
+        return {
+            round: nextEventIndex + 1,
+            location: nextEvent.Circuit.Location.country,
+            eventType: EventType.Race,
+            end: nextEventRaceEnd,
+        };
+    }
+
+    if (nextEventQualifyingEnd.isBefore(NOW)) {
+        return {
+            round: nextEventIndex + 1,
+            location: nextEvent.Circuit.Location.country,
+            eventType: EventType.Race,
+            start: nextEventRaceStart,
+        };
+    }
+
+    if (previousEventRaceEnd.isBefore(NOW)) {
+        return {
+            round: nextEventIndex + 1,
+            location: nextEvent.Circuit.Location.country,
+            eventType: EventType.Qualification,
+            start: nextEventQualifyingStart,
         };
     }
 

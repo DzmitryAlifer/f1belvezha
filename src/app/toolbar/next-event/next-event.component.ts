@@ -46,7 +46,7 @@ export class NextEventComponent implements AfterViewInit {
   readonly calendarEvents = this.store.select(toolbarSelectors.selectCalendar);
   readonly nextEvent2 = getNextEvent();
   // Finds next event each 2 minutes
-  readonly nextEvent = combineLatest([this.calendarEvents, timer(0, 2 * 60 * 1000)]).pipe(
+  readonly nextEvent = combineLatest([this.calendarEvents, timer(0, 1 * 20 * 1000)]).pipe(
     filter(([calendarEvents]) => !!calendarEvents.length),
     map(([calendarEvents]) => findNextEvent2(calendarEvents)),
   );
