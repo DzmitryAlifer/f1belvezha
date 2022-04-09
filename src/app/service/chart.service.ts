@@ -1,10 +1,10 @@
 import {Injectable} from '@angular/core';
 import {Store} from '@ngrx/store';
 import {EChartsOption} from 'echarts';
-import {combineLatest, Observable } from 'rxjs';
-import {debounceTime, map, shareReplay} from 'rxjs/operators';
+import {combineLatest, Observable, timer} from 'rxjs';
+import {debounceTime, filter, map, shareReplay} from 'rxjs/operators';
 import {PREDICTION_PLACES_NUMBER, TEAM_DRIVER_COLORS} from 'src/constants';
-import {getFullUserName, getNextEvent} from '../common';
+import {findNextEvent2, getFullUserName, getNextEvent} from '../common';
 import * as fullResultsSelectors from '../full-results/store/full-results.selectors';
 import {DisplayEvent, EventType} from '../toolbar/next-event/next-event.component';
 import * as toolbarSelectors from '../toolbar/store/toolbar.selectors';
@@ -25,7 +25,12 @@ export class ChartService {
   private readonly users = this.store.select(fullResultsSelectors.selectUsers);
   private readonly currentUserFullName = this.store.select(toolbarSelectors.selectCurrentUser).pipe(map(user => getFullUserName(user)));
   private readonly playersYearResults = this.store.select(toolbarSelectors.selectPlayersResults);
-  private readonly nextEvent = getNextEvent();
+  // private readonly nextEvent = getNextEvent();
+  private readonly calendarEvents = this.store.select(toolbarSelectors.selectCalendar);
+  private readonly nextEvent = combineLatest([this.calendarEvents, timer(0, 1 * 20 * 1000)]).pipe(
+    filter(([calendarEvents]) => !!calendarEvents.length),
+    map(([calendarEvents]) => findNextEvent2(calendarEvents)),
+  );
   private readonly allPredictions = this.store.select(fullResultsSelectors.selectAllPredictions);
 
   private readonly driversCount = this.allPredictions.pipe(
@@ -46,7 +51,7 @@ export class ChartService {
       const predictionsNumber = allPredictions.filter(prediction => prediction.userid == userId && prediction.round! <= lastRound).length;
       const singlePlayerResults = results.filter(result => result.userid === userId);
       const singlePlayerSuccessPct = map.get(playerFullName) ??
-        { userId, correctInList: 0, correctPosition: 0, predictionsNumber: 0 };
+          {userId, correctInList: 0, correctPosition: 0, predictionsNumber: 0};
       return map.set(playerFullName, {
         userId,
         correctInList: singlePlayerSuccessPct.correctInList + countGettingsInList(singlePlayerResults),
@@ -96,8 +101,8 @@ export class ChartService {
 }
 
 function getGuessesRatio(nextEvent: DisplayEvent, correctGuessesNumber: number, predictionsNumber: number): number {
-  const fullRoundsCount = nextEvent.eventType === EventType.Race ? nextEvent.round : nextEvent.round - 1;
-  return correctGuessesNumber * PREDICTION_PLACES_NUMBER * fullRoundsCount / predictionsNumber;
+  const fullRoundsCount = nextEvent.eventType === EventType.Race ? nextEvent.round - 0.5 : nextEvent.round;
+  return correctGuessesNumber / (2 * PREDICTION_PLACES_NUMBER * fullRoundsCount) * 100;
 }
 
 function countGettingsInList(singlePlayerResults: PlayerRoundResult[]): number {
@@ -139,7 +144,7 @@ export function getBarChartOptions(data: Array<{name: string, value: number}>, c
   const labelColor = isDarkMode ? GREY_400 : GREY_750;
   const gridColor = isDarkMode ? GREY_750 : GREY_250;
   const names = data.map(({name}) => name);
-  const values = data.map(({value}) => value);
+  const values = data.map(({value}) => Math.round(value));
   const min = Math.min(...values);
   const yAxisMin = Math.max(0, min % 10 ? Math.floor(min / 10) * 10 : (min / 10 - 1));
   const max = Math.max(...values);
