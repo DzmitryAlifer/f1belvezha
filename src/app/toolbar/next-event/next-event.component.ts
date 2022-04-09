@@ -1,4 +1,4 @@
-import {ChangeDetectionStrategy, Component, AfterViewInit} from '@angular/core';
+import {AfterViewInit, ChangeDetectionStrategy, Component} from '@angular/core';
 import {Store} from '@ngrx/store';
 import * as moment from 'moment';
 import {combineLatest, interval, timer} from 'rxjs';
@@ -31,6 +31,8 @@ export interface DateRange {
   start: moment.Moment;
   end: moment.Moment;
 }
+
+const COUNTDOWN_NOW: CountDownDigits = {daysDigits: 'n', hoursDigits: 'o', minutesDigits: 'w', secondsDigits: ''};
 
 
 @Component({
@@ -69,30 +71,24 @@ export class NextEventComponent implements AfterViewInit {
 }
 
 function getCountDownDigits(nextEvent: DisplayEvent): CountDownDigits {
-  let daysDigits;
-  let hoursDigits;
-  let minutesDigits;
-  let secondsDigits;
-
-  if (nextEvent.start) {
-    const difference = moment.duration(nextEvent.start?.diff(moment())).asMilliseconds();
-    let seconds = Math.floor(difference / 1000);
-    let minutes = Math.floor(seconds / 60);
-    let hours = Math.floor(minutes / 60);
-    const days = Math.floor(hours / 24);
-    hours %= 24;
-    minutes %= 60;
-    seconds %= 60;
-    daysDigits = (days < 10 ? '0' + days : days).toString();
-    hoursDigits = (hours < 10 ? '0' + hours : hours).toString();
-    minutesDigits = (minutes < 10 ? '0' + minutes : minutes).toString();
-    secondsDigits = (seconds < 10 ? '0' + seconds : seconds).toString();
-  } else {
-    daysDigits = 'n';
-    hoursDigits = 'o';
-    minutesDigits = 'w';
-    secondsDigits = '';
+  if (!nextEvent.start) {
+    return COUNTDOWN_NOW;
   }
 
-  return { daysDigits, hoursDigits, minutesDigits, secondsDigits } as CountDownDigits;
+  const difference = moment.duration(nextEvent.start?.diff(moment())).asMilliseconds();
+  let seconds = Math.floor(difference / 1000);
+  let minutes = Math.floor(seconds / 60);
+  let hours = Math.floor(minutes / 60);
+  const days = Math.floor(hours / 24);
+  hours %= 24;
+  minutes %= 60;
+  seconds %= 60;
+  const daysDigits = (days < 10 ? '0' + days : days).toString();
+  const hoursDigits = (hours < 10 ? '0' + hours : hours).toString();
+  const minutesDigits = (minutes < 10 ? '0' + minutes : minutes).toString();
+  const secondsDigits = (seconds < 10 ? '0' + seconds : seconds).toString();
+
+  return days >= 0 && hours >= 0 && minutes >= 0 && seconds >= 0 ? 
+      {daysDigits, hoursDigits, minutesDigits, secondsDigits} :
+      COUNTDOWN_NOW;
 }
