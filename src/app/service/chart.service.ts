@@ -4,11 +4,11 @@ import {EChartsOption} from 'echarts';
 import {combineLatest, Observable, timer} from 'rxjs';
 import {debounceTime, filter, map, shareReplay} from 'rxjs/operators';
 import {PREDICTION_PLACES_NUMBER, TEAM_DRIVER_COLORS} from 'src/constants';
-import {findNextEvent2, getFullUserName, getNextEvent} from '../common';
+import {findNextEvent2, getFullUserName, NOT_SELECTED_DRIVER_NAME} from '../common';
 import * as fullResultsSelectors from '../full-results/store/full-results.selectors';
 import {DisplayEvent, EventType} from '../toolbar/next-event/next-event.component';
 import * as toolbarSelectors from '../toolbar/store/toolbar.selectors';
-import {PlayerRoundResult, PlayerSuccessPct} from '../types';
+import {PlayerRoundResult, PlayerSuccessPct, Prediction} from '../types';
 
 
 const GREY_250 = '#e7e7e7';
@@ -25,9 +25,8 @@ export class ChartService {
   private readonly users = this.store.select(fullResultsSelectors.selectUsers);
   private readonly currentUserFullName = this.store.select(toolbarSelectors.selectCurrentUser).pipe(map(user => getFullUserName(user)));
   private readonly playersYearResults = this.store.select(toolbarSelectors.selectPlayersResults);
-  // private readonly nextEvent = getNextEvent();
   private readonly calendarEvents = this.store.select(toolbarSelectors.selectCalendar);
-  private readonly nextEvent = combineLatest([this.calendarEvents, timer(0, 1 * 20 * 1000)]).pipe(
+  private readonly nextEvent = combineLatest([this.calendarEvents, timer(0, 5 * 60 * 1000)]).pipe(
     filter(([calendarEvents]) => !!calendarEvents.length),
     map(([calendarEvents]) => findNextEvent2(calendarEvents)),
   );
@@ -43,40 +42,48 @@ export class ChartService {
     map(driversMap => Array.from(driversMap, ([name, value]) => ({ name, value }))),
   );
   
-  private readonly playersSuccessRates = combineLatest([this.users, this.allPredictions, this.playersYearResults, this.lastRound]).pipe(
+  private readonly playersSuccessRates = combineLatest([this.users, this.allPredictions, this.playersYearResults, this.lastRound, this.nextEvent]).pipe(
     debounceTime(0),
-    map(([users, allPredictions, results, lastRound]) => users.reduce((map, user) => {
+    map(([users, allPredictions, results, lastRound, nextEvent]) => users.reduce((map, user) => {
       const userId = user.id!;
       const playerFullName = getFullUserName(user);
-      const predictionsNumber = allPredictions.filter(prediction => prediction.userid == userId && prediction.round! <= lastRound).length;
+      const userPredictions = allPredictions.filter(prediction => prediction.userid == userId && prediction.round! <= lastRound);
       const singlePlayerResults = results.filter(result => result.userid === userId);
       const singlePlayerSuccessPct = map.get(playerFullName) ??
           {userId, correctInList: 0, correctPosition: 0, predictionsNumber: 0};
-      return map.set(playerFullName, {
-        userId,
-        correctInList: singlePlayerSuccessPct.correctInList + countGettingsInList(singlePlayerResults),
-        correctPosition: singlePlayerSuccessPct.correctPosition + countCorrectPositions(singlePlayerResults),
-        predictionsNumber: singlePlayerSuccessPct.predictionsNumber + predictionsNumber,
-      });
+      const correctInList = singlePlayerSuccessPct.correctInList + countGettingsInList(singlePlayerResults);
+      const correctPosition = singlePlayerSuccessPct.correctPosition + countCorrectPositions(singlePlayerResults);
+      const predictionsNumber = this.calculateUserPredictionsNumber(userPredictions, nextEvent);
+
+      return map.set(playerFullName, {userId, correctInList, correctPosition, predictionsNumber});
     }, new Map<string, PlayerSuccessPct>())),
     shareReplay(1),
   );
 
-  private readonly playersCorrectInListRate = combineLatest([this.playersSuccessRates, this.nextEvent]).pipe(
-    debounceTime(0),
-    map(([playersMap, nextEvent]) => Array.from(playersMap, ([name, result]) => {
-      const value = getGuessesRatio(nextEvent, result.correctInList, result.predictionsNumber);
-      return ({ name, value });
-    })),
+  calculateUserPredictionsNumber(userPredictions: Prediction[], nextEvent: DisplayEvent): number {
+    const allUserPredictionsCount = userPredictions 
+        .filter(prediction => prediction.round && (prediction.round < nextEvent.round || prediction.round === nextEvent.round))
+        .reduce((total, prediction) => {
+          const hasQualifyngPrediction = prediction.qualification.some(driverName => driverName !== NOT_SELECTED_DRIVER_NAME);
+          const hasRacePrediction = prediction.race.some(driverName => driverName !== NOT_SELECTED_DRIVER_NAME);
+          return total + Number(hasQualifyngPrediction) + Number(hasRacePrediction);
+        }, 0);
+    
+    const hasNextEventPrediction = userPredictions.some(prediction => 
+        nextEvent.round === prediction.round  && 
+        (nextEvent.eventType === EventType.Qualification && prediction.qualification.some(driverName => driverName !== NOT_SELECTED_DRIVER_NAME) || 
+        nextEvent.eventType === EventType.Race && prediction.race.some(driverName => driverName !== NOT_SELECTED_DRIVER_NAME)));
+
+    return (allUserPredictionsCount - Number(hasNextEventPrediction)) / 2;
+  }
+
+  private readonly playersCorrectInListRate = this.playersSuccessRates.pipe(
+    map(playersMap => Array.from(playersMap, ([name, result]) => ({name, value: getGuessesRatio(result.correctInList, result.predictionsNumber)}))),
     map(list => list.filter(item => !!item.value).sort((left, right) => right.value - left.value)),
   );
 
-  private readonly playersCorrectPositionRate = combineLatest([this.playersSuccessRates, this.nextEvent]).pipe(
-    debounceTime(0),
-    map(([playersMap, nextEvent]) => Array.from(playersMap, ([name, result]) => {
-      const value = getGuessesRatio(nextEvent, result.correctPosition, result.predictionsNumber);
-      return ({ name, value });
-    })),
+  private readonly playersCorrectPositionRate = this.playersSuccessRates.pipe(
+    map(playersMap => Array.from(playersMap, ([name, result]) => ({name, value: getGuessesRatio(result.correctPosition, result.predictionsNumber)}))),
     map(list => list.filter(item => !!item.value).sort((left, right) => right.value - left.value)),
   );
 
@@ -100,9 +107,8 @@ export class ChartService {
   }
 }
 
-function getGuessesRatio(nextEvent: DisplayEvent, correctGuessesNumber: number, predictionsNumber: number): number {
-  const fullRoundsCount = nextEvent.eventType === EventType.Race ? nextEvent.round - 0.5 : nextEvent.round;
-  return correctGuessesNumber / (2 * PREDICTION_PLACES_NUMBER * fullRoundsCount) * 100;
+function getGuessesRatio(correctGuessesNumber: number, predictionsNumber: number): number {
+  return correctGuessesNumber / (2 * PREDICTION_PLACES_NUMBER * predictionsNumber) * 100;
 }
 
 function countGettingsInList(singlePlayerResults: PlayerRoundResult[]): number {
