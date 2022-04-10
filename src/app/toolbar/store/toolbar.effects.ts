@@ -3,6 +3,7 @@ import {Actions, createEffect, ofType} from '@ngrx/effects';
 import {Store} from '@ngrx/store';
 import {combineLatest} from 'rxjs';
 import {debounceTime, map, switchMap, tap} from 'rxjs/operators';
+import {getCorrectTeams, getWrongTeams} from 'src/app/common';
 import {Theme, ThemeService} from 'src/app/service/theme.service';
 import {ToolbarAction, ToolbarActionType} from './toolbar.actions';
 import * as toolbarSelectors from './toolbar.selectors';
@@ -12,7 +13,6 @@ import {ResultService} from '../../service/result.service';
 import {UserService} from '../../service/user.service';
 import {DriverRoundResult, PlayerRoundResult, Prediction, TeamVsTeam} from 'src/app/types';
 import {F1PublicApiService} from '../../service/f1-public-api.service';
-import { TeamName } from 'src/app/enums';
 
 
 const CURRENT_YEAR = new Date().getFullYear();
@@ -162,20 +162,4 @@ function intersection(left: string[], right: string[]): string[] {
 
 function getSamePlaces(left: string[], right: string[]): string[] {
     return left.filter((element, index) => right.indexOf(element) === index);
-}
-
-function getCorrectTeams(predictedTeams: TeamName[], resultTeams: TeamVsTeam[]): TeamName[] {
-    if (predictedTeams.length !== resultTeams.length) {
-        return [];
-    }
-
-    return predictedTeams.filter((predictedTeam, index) => predictedTeam !== TeamName.None && predictedTeam === resultTeams[index].winner);
-}
-
-function getWrongTeams(predictedTeams: TeamName[], resultTeams: TeamVsTeam[]): TeamName[] {
-    if (predictedTeams.length !== resultTeams.length) {
-        return [];
-    }
-
-    return predictedTeams.filter((predictedTeam, index) => predictedTeam !== TeamName.None && predictedTeam !== resultTeams[index].winner);
 }

@@ -94,7 +94,7 @@ export class FullResultsComponent implements OnInit, AfterViewInit {
     private readonly localStorageService: LocalStorageService,
     private readonly predictionDialog: MatDialog,
     private readonly store: Store,
-  ) {}
+  ) {this.points.subscribe(r=>console.log(r))}
 
   ngOnInit(): void {
     const pageSize = this.localStorageService.getItem<number>('pageSize') ?? PAGE_SIZES[0];
@@ -141,7 +141,7 @@ export class FullResultsComponent implements OnInit, AfterViewInit {
   }
 
   getPoints(points: Map<number, Map<number, number[][]>>, user: User, race: Race): Array<number[]|null> {
-    return points.get(user.id!)?.get(race.round) ?? [null, null];
+    return points.get(user.id!)?.get(race.round) ?? [null, null, null];
   }
 
   openPredictionDialog(userId: number, round: number, hasPrediction: boolean, isQualificationLocked: boolean, isRaceLocked: boolean): void {

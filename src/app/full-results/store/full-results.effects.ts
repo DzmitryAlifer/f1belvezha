@@ -11,6 +11,8 @@ import {F1PublicApiService} from 'src/app/service/f1-public-api.service';
 import {ResultService} from 'src/app/service/result.service';
 import {calculateRoundPoints} from 'src/app/common';
 import {TeamProposalService} from 'src/app/service/team-proposal.service';
+import { TeamName } from 'src/app/enums';
+import { TeamVsTeam } from 'src/app/types';
 
 
 const CURRENT_YEAR = new Date().getFullYear();
@@ -31,22 +33,24 @@ export class FullResultsEffects {
         map(([currentUser, predictions]) => predictions.filter(prediction => prediction.userid == currentUser!.id!)),
     );
 
-    private readonly currentYearPoints = combineLatest([this.currentYearDriverResults, this.allPredictions, this.users]).pipe(
-        debounceTime(0),
-        map(([driverResults, allRacesPredictions, users]) => 
-            users.reduce((userResults, user) => {
-                const allRacesUserPredictions = allRacesPredictions.filter(prediction => prediction.userid == user.id!);
-                const singleUserResults = allRacesUserPredictions.reduce((acc, prediction) => {
-                    const round = prediction.round!
-                    const roundResult = driverResults[round - 1];
-                    const userRoundPoints = calculateRoundPoints(roundResult, prediction);
-                    acc.set(round, userRoundPoints);
-                    return acc;
-                }, new Map<number, Array<number[]|null>>());
-                userResults.set(user.id!, singleUserResults);
-                return userResults;
-            }, new Map<number, Map<number, Array<number[]|null>>>())),
-    );
+    private readonly currentYearPoints = 
+        combineLatest([this.currentYearDriverResults, this.yearTeamVsTeamList, this.allPredictions, this.users]).pipe(
+            debounceTime(0),
+            map(([driverResults, teamVsTeamResults, allRacesPredictions, users]) => 
+                users.reduce((userResults, user) => {
+                    const allRacesUserPredictions = allRacesPredictions.filter(prediction => prediction.userid == user.id!);
+                    const singleUserResults = allRacesUserPredictions.reduce((acc, prediction) => {
+                        const round = prediction.round!
+                        const driversRoundResult = driverResults[round - 1];
+                        const teamVsTeamRoundResults = teamVsTeamResults.filter(teamVsTeamResult => teamVsTeamResult.round === round);
+                        const userRoundPts = calculateRoundPoints(driversRoundResult, teamVsTeamRoundResults, prediction);
+                        acc.set(round, userRoundPts);
+                        return acc;
+                    }, new Map<number, Array<number[]|null>>());
+                    userResults.set(user.id!, singleUserResults);
+                    return userResults;
+                }, new Map<number, Map<number, Array<number[]|null>>>())),
+        );
 
     constructor(
         private actions: Actions<FullResultsAction>,

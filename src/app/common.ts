@@ -1,8 +1,9 @@
 import * as moment from 'moment';
 import {interval, Observable} from 'rxjs';
 import {map, shareReplay, startWith} from 'rxjs/operators';
+import { TeamName } from './enums';
 import {DisplayEvent, EventSchedule, EventType} from './toolbar/next-event/next-event.component';
-import {DateTimeApi, Driver, DriverRoundResult, DriverStanding, PlayerRoundResult, Prediction, Race, User, UserPoints} from './types';
+import {DateTimeApi, Driver, DriverRoundResult, DriverStanding, PlayerRoundResult, Prediction, Race, TeamVsTeam, User, UserPoints} from './types';
 
 declare let anime: any;
 export const DRIVER_IN_LIST_PTS = 1;
@@ -232,22 +233,24 @@ export function toPoints(results: PlayerRoundResult[], users: User[]): UserPoint
             const driversPositionsPts = DRIVER_PLACE_PTS * (result.qual_guessed_position.length + result.race_guessed_position.length);
             const correctTeamsPts = result.correct_teams ? CORRECT_TEAM_FROM_PAIR_PTS * result.correct_teams.length : 0;
             const wrongTeamsPts = result.wrong_teams ? WRONG_TEAM_PTS * result.wrong_teams.length : 0;
-            return sum + driversInListPts + driversPositionsPts + correctTeamsPts - wrongTeamsPts;
+            return sum + driversInListPts + driversPositionsPts + correctTeamsPts + wrongTeamsPts;
         }, 0);
         acc.push({ user, points });
         return acc;
     }, [] as UserPoints[]).sort((left, right) => right.points - left.points);
 }
 
-export function calculateRoundPoints(roundResult: DriverRoundResult, prediction: Prediction): Array<number[]|null> {
+export function calculateRoundPoints(roundResult: DriverRoundResult, teamVsTeamRoundResults: TeamVsTeam[], prediction: Prediction): Array<number[]|null> {
     if (!roundResult) {
         return [];
     }
-    
+
     const qualifyngPredictionPoints = calculateEventPoints(roundResult.qualifying, prediction.qualification);
     const racePredictionPoints = calculateEventPoints(roundResult.race, prediction.race);
+    const userCorrectTeamVsTeamPts = getCorrectTeams(prediction.team_vs_team, teamVsTeamRoundResults).length;
+    const userWrongTeamVsTeamPts = getWrongTeams(prediction.team_vs_team, teamVsTeamRoundResults).length;
 
-    return [qualifyngPredictionPoints, racePredictionPoints];
+    return [qualifyngPredictionPoints, racePredictionPoints, [userCorrectTeamVsTeamPts, userWrongTeamVsTeamPts]];
 }
 
 function calculateEventPoints(actualDrivers: string[], predictedDrivers: string[]): number[]|null {
@@ -304,4 +307,21 @@ export function animateTextElements(selectors: string[], duration: number, delay
             delay: (el: any, index: number) => delayOut + 30 * index,
         })
     }, anime.timeline({loop: true}));
+}
+
+
+export function getCorrectTeams(predictedTeams: TeamName[], resultTeams: TeamVsTeam[]): TeamName[] {
+    if (!predictedTeams || !resultTeams || predictedTeams.length !== resultTeams.length) {
+        return [];
+    }
+
+    return predictedTeams.filter((predictedTeam, index) => predictedTeam !== TeamName.None && predictedTeam === resultTeams[index].winner);
+}
+
+export function getWrongTeams(predictedTeams: TeamName[], resultTeams: TeamVsTeam[]): TeamName[] {
+    if (!predictedTeams || !resultTeams || predictedTeams.length !== resultTeams.length) {
+        return [];
+    }
+
+    return predictedTeams.filter((predictedTeam, index) => predictedTeam !== TeamName.None && predictedTeam !== resultTeams[index].winner);
 }
