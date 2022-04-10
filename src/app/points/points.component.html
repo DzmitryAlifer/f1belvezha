@@ -4,14 +4,19 @@
 } as data">
     <div [class.current-user]="isCurrentUser" [class.dark]="data.isDarkMode">
         <table>
-            <tr *ngIf="points[0]">
-                <td><coin [value]="DRIVER_IN_LIST_PTS" [amount]="points[0][0]" color="#cfd8dc"></coin></td>
-                <td *ngIf="points[0][1]"><coin [value]="DRIVER_PLACE_PTS" [amount]="points[0][1]" color="#ffc107"></coin></td>
+            <tr *ngIf="points[0]" class="drivers-qualifying" matTooltip="Qualifying - Drivers">
+                <td><coin [value]="DRIVER_IN_LIST_PTS" [amount]="points[0][0]" [color]="DRIVER_IN_LIST_COLOR"></coin></td>
+                <td *ngIf="points[0][1]"><coin [value]="DRIVER_PLACE_PTS" [amount]="points[0][1]" [color]="DRIVER_CORRECT_PLACE_COLOR"></coin></td>
             </tr>
             
-            <tr *ngIf="points[1]">
-                <td><coin [value]="DRIVER_IN_LIST_PTS" [amount]="points[1][0]" color="#cfd8dc"></coin></td>
-                <td *ngIf="points[1][1]"><coin [value]="DRIVER_PLACE_PTS" [amount]="points[1][1]" color="#ffc107"></coin></td>
+            <tr *ngIf="points[1]" class="drivers-qualifying" matTooltip="Race - Drivers">
+                <td><coin [value]="DRIVER_IN_LIST_PTS" [amount]="points[1][0]" [color]="DRIVER_IN_LIST_COLOR"></coin></td>
+                <td *ngIf="points[1][1]"><coin [value]="DRIVER_PLACE_PTS" [amount]="points[1][1]" [color]="DRIVER_CORRECT_PLACE_COLOR"></coin></td>
+            </tr>
+
+            <tr *ngIf="points[2]" class="drivers-qualifying" matTooltip="Race - Teams">
+                <td><coin [value]="CORRECT_TEAM_FROM_PAIR_PTS" [amount]="points[2][0]" [color]="CORRECT_TEAM_FROM_PAIR_COLOR"></coin></td>
+                <td *ngIf="points[2][1]"><coin [value]="WRONG_TEAM_PTS" [amount]="points[2][1]" [color]="WRONG_TEAM_COLOR"></coin></td>
             </tr>
         </table>
 

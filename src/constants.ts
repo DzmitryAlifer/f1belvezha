@@ -63,3 +63,8 @@ export const TEAM_DRIVER_COLORS: any = {
     Magnussen: '#b6babd',
     Schumacher: '#b6babd',
 };
+
+export const DRIVER_IN_LIST_COLOR = '#cfd8dc';
+export const DRIVER_CORRECT_PLACE_COLOR = '#ffc107';
+export const CORRECT_TEAM_FROM_PAIR_COLOR = '#a5d6a7';
+export const WRONG_TEAM_COLOR = '#ef9a9a';
