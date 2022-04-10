@@ -16,18 +16,18 @@ export class TeamProposalService {
 
   constructor(private readonly httpService: HttpService) {}
 
-  getNextRaceTeamVsTeamProposals(): Observable<TeamVsTeam[]> {
+  getNextRaceTeamVsTeamList(): Observable<TeamVsTeam[]> {
     return this.nextRound.pipe(
       switchMap((nextRound: number) => {
         const queryParams: Params = {year: CURRENT_YEAR, round: nextRound};
-        return this.httpService.getByParams<TeamVsTeam[]>('/teamVsTeam', queryParams);
+        return this.httpService.getByParams<TeamVsTeam[]>('/teamVsTeam/round', queryParams);
       }),
     );
   }
 
   getTeamYearResults(year: number): Observable<TeamVsTeam[]> {
     const queryParams: Params = {year: String(year)};
-    return this.httpService.getByParams<TeamVsTeam[]>('/teamVsTeam', queryParams);
+    return this.httpService.getByParams<TeamVsTeam[]>('/teamVsTeam/year', queryParams);
   }
 
 }
