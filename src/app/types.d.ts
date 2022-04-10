@@ -162,6 +162,8 @@ export interface PlayerRoundResult {
     qual_guessed_position: string[];
     race_guessed_on_list: string[];
     race_guessed_position: string[];
+    correct_teams?: TeamName[];
+    wrong_teams?: TeamName[];
 }
 
 export interface UserPoints {

@@ -10,8 +10,9 @@ import * as fullResultsSelectors from '../../full-results/store/full-results.sel
 import {PredictionService} from '../../service/prediction.service';
 import {ResultService} from '../../service/result.service';
 import {UserService} from '../../service/user.service';
-import {DriverRoundResult, PlayerRoundResult, Prediction} from 'src/app/types';
+import {DriverRoundResult, PlayerRoundResult, Prediction, TeamVsTeam} from 'src/app/types';
 import {F1PublicApiService} from '../../service/f1-public-api.service';
+import { TeamName } from 'src/app/enums';
 
 
 const CURRENT_YEAR = new Date().getFullYear();
@@ -26,6 +27,7 @@ export class ToolbarEffects {
     private readonly lastRound = this.store.select(toolbarSelectors.selectLastRound);
     private readonly users = this.store.select(fullResultsSelectors.selectUsers);
     private readonly driverResults = this.store.select(fullResultsSelectors.selectCurrentYearResults);
+    private readonly teamVsTeamResults = this.store.select(fullResultsSelectors.selectCurrentYearTeamVsTeamList);
     private readonly playersResults = this.resultService.getPlayersYearResults(CURRENT_YEAR);
     private readonly allPredictions = this.predictionService.getAllPredictions();
     private readonly calendar = this.f1PublicApiService.getCurrentCalendar();
@@ -43,11 +45,23 @@ export class ToolbarEffects {
             driverResults.filter(driverResult =>
                 !playersResults.some(playersResult => playersResult.round === driverResult.round))));
 
-    private readonly newPlayersResults = combineLatest([this.unprocessedDriversResults, this.allPredictions]).pipe(
-        map(([driverResults, predictions]) =>
-            driverResults.map(driverResult =>
-                predictions.filter(({round}) => round === driverResult.round).map(prediction =>
-                    getPlayerResult(prediction, driverResult))).flat()));
+    private readonly unprocessedTeamVsTeamResults = combineLatest([this.teamVsTeamResults, this.playersResults]).pipe(
+        debounceTime(0),
+        map(([teamVsTeamResults, playersResults]) =>
+            teamVsTeamResults.filter(teamVsTeamResult =>
+                !playersResults.some(playersResult => playersResult.round === teamVsTeamResult.round))));
+
+    private readonly newPlayersResults = 
+        combineLatest([this.unprocessedDriversResults, this.unprocessedTeamVsTeamResults, this.allPredictions]).pipe(
+            map(([driverResults, teamVsTeamResults, predictions]) => {
+                const playerDriverResults =  driverResults.map(driverResult => {
+                    const teamVsTeamRoundResults = teamVsTeamResults.filter(({round}) => round === driverResult.round);
+                    return predictions.filter(({round}) => round === driverResult.round).map(prediction => getPlayerResult(prediction, driverResult, teamVsTeamRoundResults));
+                }).flat();
+
+                return playerDriverResults;
+            }),
+        );
 
     constructor(
         private actions: Actions<ToolbarAction>,
@@ -128,7 +142,7 @@ export class ToolbarEffects {
     ));
 }
 
-function getPlayerResult(prediction: Prediction, { year, round, qualifying, race }: DriverRoundResult): PlayerRoundResult {
+function getPlayerResult(prediction: Prediction, {year, round, qualifying, race}: DriverRoundResult, teamVsTeamRoundResults: TeamVsTeam[]): PlayerRoundResult {
     return {
         userid: prediction.userid!,
         year,
@@ -137,6 +151,8 @@ function getPlayerResult(prediction: Prediction, { year, round, qualifying, race
         qual_guessed_position: getSamePlaces(prediction.qualification, qualifying),
         race_guessed_on_list: intersection(prediction.race, race ?? []),
         race_guessed_position: getSamePlaces(prediction.race, race ?? []),
+        correct_teams: getCorrectTeams(prediction.team_vs_team, teamVsTeamRoundResults),
+        wrong_teams: getWrongTeams(prediction.team_vs_team, teamVsTeamRoundResults),
     };
 }
 
@@ -146,4 +162,12 @@ function intersection(left: string[], right: string[]): string[] {
 
 function getSamePlaces(left: string[], right: string[]): string[] {
     return left.filter((element, index) => right.indexOf(element) === index);
+}
+
+function getCorrectTeams(predictedTeams: TeamName[], resultTeams: TeamVsTeam[]): TeamName[] {
+    return [];
+}
+
+function getWrongTeams(predictedTeams: TeamName[], resultTeams: TeamVsTeam[]): TeamName[] {
+    return [];
 }
