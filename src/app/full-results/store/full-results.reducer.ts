@@ -10,7 +10,7 @@ export const initialState: FullResultsState = {
     currentYearResults: [],
     isAuthenticated: false,
     isLoaded: false,
-    nextRaceTeamVsTeamProposals: [],
+    nextRaceTeamVsTeamList: [],
     nextRound: 0,
     nextRoundPredictions: [],
     predictions: [],
@@ -40,7 +40,7 @@ export function fullResultsReducer(state: FullResultsState = initialState, actio
             return {...state, users: action.payload.users, isLoaded: true};
 
         case FullResultsActionType.LOAD_NEXT_RACE_TEAM_VS_TEAM_PROPOSALS_SUCCESS:
-            return { ...state, nextRaceTeamVsTeamProposals: action.payload.nextRaceTeamVsTeamProposals, isLoaded: true };
+            return {...state, nextRaceTeamVsTeamList: action.payload.nextRaceTeamVsTeamList, isLoaded: true};
 
         case FullResultsActionType.LOAD_CURRENT_YEAR_RESULTS_SUCCESS:
             return {...state, currentYearResults: action.payload.currentYearResults, isLoaded: true};
@@ -52,7 +52,7 @@ export function fullResultsReducer(state: FullResultsState = initialState, actio
             return {...state, currentUserPredictions: action.payload.currentUserPredictions, isLoaded: true};
 
         case FullResultsActionType.CALCULATE_CURRENT_YEAR_POINTS_SUCCESS:
-            return { ...state, currentYearPoints: action.payload.currentYearPoints, isLoaded: true};
+            return {...state, currentYearPoints: action.payload.currentYearPoints, isLoaded: true};
         default:
             return state;
     }

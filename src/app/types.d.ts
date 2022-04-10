@@ -82,10 +82,11 @@ export interface Team {
     nationality: string;
 }
 
-export interface TeamVsTeamProposal {
+export interface TeamVsTeam {
     year: number;
     round: number;
     teams: TeamName[];
+    winner?: TeamName;
 }
 
 export interface Driver {
