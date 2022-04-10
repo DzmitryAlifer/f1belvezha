@@ -152,7 +152,7 @@ export function getBarChartOptions(data: Array<{name: string, value: number}>, c
   const names = data.map(({name}) => name);
   const values = data.map(({value}) => Math.round(value));
   const min = Math.min(...values);
-  const yAxisMin = Math.max(0, min % 10 ? Math.floor(min / 10) * 10 : (min / 10 - 1));
+  const yAxisMin = Math.max(0, min % 10 ? Math.floor(min / 10) * 10 : min - 10);
   const max = Math.max(...values);
 
   return {
