@@ -165,9 +165,17 @@ function getSamePlaces(left: string[], right: string[]): string[] {
 }
 
 function getCorrectTeams(predictedTeams: TeamName[], resultTeams: TeamVsTeam[]): TeamName[] {
-    return [];
+    if (predictedTeams.length !== resultTeams.length) {
+        return [];
+    }
+
+    return predictedTeams.filter((predictedTeam, index) => predictedTeam !== TeamName.None && predictedTeam === resultTeams[index].winner);
 }
 
 function getWrongTeams(predictedTeams: TeamName[], resultTeams: TeamVsTeam[]): TeamName[] {
-    return [];
+    if (predictedTeams.length !== resultTeams.length) {
+        return [];
+    }
+
+    return predictedTeams.filter((predictedTeam, index) => predictedTeam !== TeamName.None && predictedTeam !== resultTeams[index].winner);
 }
