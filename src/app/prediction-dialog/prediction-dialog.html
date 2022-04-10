@@ -80,6 +80,7 @@
             <mat-radio-group 
                     *ngIf="data.prediction && data.selectedTeams"
                     class="team-selection"
+                    [disabled]="!data.isRaceEditable"
                     [formControlName]="'teamVsTeam' + index"
                     [(ngModel)]="data.selectedTeams[index]">
                 <mat-radio-button [value]="proposal.teams[0]">
