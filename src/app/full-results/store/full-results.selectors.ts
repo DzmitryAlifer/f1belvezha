@@ -10,7 +10,7 @@ export const selectRaces = createSelector(selectFullResults, (state: FullResults
 export const selectUsers = createSelector(selectFullResults, (state: FullResultsState) => state.users);
 export const selectUsernames = createSelector(selectUsers, (users: User[]) => users.map(({username}) => username));
 export const selectNextRaceTeamVsTeamProposals = createSelector(selectFullResults, (state: FullResultsState) => state.nextRaceTeamVsTeamList);
-export const selectCurrentYearResults = createSelector(selectFullResults, (state: FullResultsState) => state.currentYearResults);
+export const selectCurrentYearResults = createSelector(selectFullResults, (state: FullResultsState) => state.currentYearDriverResults);
 export const selectAllPredictions = createSelector(selectFullResults, (state: FullResultsState) => state.predictions);
 export const selectCurrentUserPredictions = createSelector(selectFullResults,(state: FullResultsState) => state.currentUserPredictions);
 export const selectNextRoundPredictions = createSelector(selectFullResults, (state: FullResultsState) => state.nextRoundPredictions);

@@ -25,9 +25,8 @@ export class TeamProposalService {
     );
   }
 
-  getTeamYearResults(year: number): Observable<TeamVsTeam[]> {
+  getYearTeamVsTeamResults(year: number): Observable<TeamVsTeam[]> {
     const queryParams: Params = {year: String(year)};
     return this.httpService.getByParams<TeamVsTeam[]>('/teamVsTeam/year', queryParams);
   }
-
 }

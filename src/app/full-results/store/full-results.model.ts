@@ -6,7 +6,7 @@ export interface FullResultsState {
     currentUser: User | null;
     currentUserPredictions: Prediction[];
     currentYearPoints: Map<number, Map<number, number[][]>>;
-    currentYearResults: DriverRoundResult[];
+    currentYearDriverResults: DriverRoundResult[];
     isAuthenticated: boolean;
     isLoaded: boolean;
     nextRaceTeamVsTeamList: TeamVsTeam[];
@@ -15,4 +15,5 @@ export interface FullResultsState {
     predictions: Prediction[];
     races: Race[];
     users: User[];
+    yearTeamVsTeamList: TeamVsTeam[];
 }

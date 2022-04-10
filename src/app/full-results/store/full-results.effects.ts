@@ -20,24 +20,25 @@ const CURRENT_YEAR = new Date().getFullYear();
 export class FullResultsEffects {
     private readonly users = this.userService.getAllUsers();
     private readonly currentUser = this.store.select(toolbarSelectors.selectCurrentUser);
-    private readonly currentYearResults = this.resultService.getDriverYearResults(CURRENT_YEAR);
+    private readonly currentYearDriverResults = this.resultService.getDriverYearResults(CURRENT_YEAR);
     private readonly allPredictions = this.predictionService.getAllPredictions();
     private readonly races = this.f1PublicApiService.getCurrentYearSchedule();
     private readonly nextRaceTeamVsTeamList = this.teamProposalService.getNextRaceTeamVsTeamList();
+    private readonly yearTeamVsTeamList = this.teamProposalService.getYearTeamVsTeamResults(CURRENT_YEAR);
 
     private readonly currentUserPredictions = combineLatest([this.currentUser, this.allPredictions]).pipe(
         filter(([currentUser, ]) => !!currentUser?.id),
         map(([currentUser, predictions]) => predictions.filter(prediction => prediction.userid == currentUser!.id!)),
     );
 
-    private readonly currentYearPoints = combineLatest([this.currentYearResults, this.allPredictions, this.users]).pipe(
+    private readonly currentYearPoints = combineLatest([this.currentYearDriverResults, this.allPredictions, this.users]).pipe(
         debounceTime(0),
-        map(([results, allRacesPredictions, users]) => 
+        map(([driverResults, allRacesPredictions, users]) => 
             users.reduce((userResults, user) => {
                 const allRacesUserPredictions = allRacesPredictions.filter(prediction => prediction.userid == user.id!);
                 const singleUserResults = allRacesUserPredictions.reduce((acc, prediction) => {
                     const round = prediction.round!
-                    const roundResult = results[round - 1];
+                    const roundResult = driverResults[round - 1];
                     const userRoundPoints = calculateRoundPoints(roundResult, prediction);
                     acc.set(round, userRoundPoints);
                     return acc;
@@ -71,20 +72,33 @@ export class FullResultsEffects {
         ))
     ));
 
-    loadNextRoundTeamVsTeamProposals = createEffect(() => this.actions.pipe(
-        ofType(FullResultsActionType.LOAD_NEXT_RACE_TEAM_VS_TEAM_PROPOSALS),
+    loadNextRoundTeamVsTeamList = createEffect(() => this.actions.pipe(
+        ofType(FullResultsActionType.LOAD_NEXT_RACE_TEAM_VS_TEAM_LIST),
         switchMap(() => this.nextRaceTeamVsTeamList.pipe(
             map(nextRaceTeamVsTeamList => ({
-                type: FullResultsActionType.LOAD_NEXT_RACE_TEAM_VS_TEAM_PROPOSALS_SUCCESS,
+                type: FullResultsActionType.LOAD_NEXT_RACE_TEAM_VS_TEAM_LIST_SUCCESS,
                 payload: {nextRaceTeamVsTeamList},
+            })),
+        ))
+    ));
+
+    loadYearTeamVsTeamList = createEffect(() => this.actions.pipe(
+        ofType(FullResultsActionType.LOAD_YEAR_TEAM_VS_TEAM_LIST),
+        switchMap(() => this.yearTeamVsTeamList.pipe(
+            map(yearTeamVsTeamList => ({
+                type: FullResultsActionType.LOAD_YEAR_TEAM_VS_TEAM_LIST_SUCCESS,
+                payload: {yearTeamVsTeamList},
             })),
         ))
     ));
 
     loadYearResults = createEffect(() => this.actions.pipe(
         ofType(FullResultsActionType.LOAD_CURRENT_YEAR_RESULTS),
-        switchMap(() => this.currentYearResults.pipe(
-            map(currentYearResults => ({type: FullResultsActionType.LOAD_CURRENT_YEAR_RESULTS_SUCCESS, payload: {currentYearResults}})),
+        switchMap(() => this.currentYearDriverResults.pipe(
+            map(currentYearDriverResults => ({
+                type: FullResultsActionType.LOAD_CURRENT_YEAR_RESULTS_SUCCESS,
+                payload: {currentYearDriverResults},
+            })),
         ))
     ));
 

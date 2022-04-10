@@ -8,8 +8,10 @@ export enum FullResultsActionType {
     LOAD_RACES_SUCCESS = '[Full Results] Load races - success',
     LOAD_USERS = '[Full Results] Load users',
     LOAD_USERS_SUCCESS = '[Full Results] Load users - success',
-    LOAD_NEXT_RACE_TEAM_VS_TEAM_PROPOSALS = '[Full Results] Load team vsteam proposals for next race',
-    LOAD_NEXT_RACE_TEAM_VS_TEAM_PROPOSALS_SUCCESS = '[Full Results] Load team vsteam proposals for next race - success',
+    LOAD_NEXT_RACE_TEAM_VS_TEAM_LIST = '[Full Results] Load team vs team proposals for next race',
+    LOAD_NEXT_RACE_TEAM_VS_TEAM_LIST_SUCCESS = '[Full Results] Load team vs team proposals for next race - success',
+    LOAD_YEAR_TEAM_VS_TEAM_LIST = '[Full Results] Load team vs team results for the current year',
+    LOAD_YEAR_TEAM_VS_TEAM_LIST_SUCCESS = '[Full Results] Load team vs team results for the current year - success',
     LOAD_CURRENT_YEAR_RESULTS = '[Full Results] Load current year results',
     LOAD_CURRENT_YEAR_RESULTS_SUCCESS = '[Full Results] Load current year results - success',
     LOAD_ALL_PREDICTIONS = '[Full Results] Load all predictions',
@@ -45,14 +47,24 @@ export class LoadUsersSuccess implements Action {
     constructor(readonly payload: {users: User[]}) {}
 }
 
-export class LoadNextRaceTeamVsTeamProposals implements Action {
-    readonly type = FullResultsActionType.LOAD_NEXT_RACE_TEAM_VS_TEAM_PROPOSALS;
+export class LoadNextRaceTeamVsTeamList implements Action {
+    readonly type = FullResultsActionType.LOAD_NEXT_RACE_TEAM_VS_TEAM_LIST;
     constructor(readonly payload: {}) {}
 }
 
-export class LoadNextRaceTeamVsTeamProposalsSuccess implements Action {
-    readonly type = FullResultsActionType.LOAD_NEXT_RACE_TEAM_VS_TEAM_PROPOSALS_SUCCESS;
+export class LoadNextRaceTeamVsTeamListSuccess implements Action {
+    readonly type = FullResultsActionType.LOAD_NEXT_RACE_TEAM_VS_TEAM_LIST_SUCCESS;
     constructor(readonly payload: {nextRaceTeamVsTeamList: TeamVsTeam[]}) {}
+}
+
+export class LoadYearTeamVsTeamList implements Action {
+    readonly type = FullResultsActionType.LOAD_YEAR_TEAM_VS_TEAM_LIST;
+    constructor(readonly payload: {}) {}
+}
+
+export class LoadYearTeamVsTeamListSuccess implements Action {
+    readonly type = FullResultsActionType.LOAD_YEAR_TEAM_VS_TEAM_LIST_SUCCESS;
+    constructor(readonly payload: {yearTeamVsTeamList: TeamVsTeam[]}) {}
 }
 
 export class LoadCurrentYearResults implements Action {
@@ -62,7 +74,7 @@ export class LoadCurrentYearResults implements Action {
 
 export class LoadCurrentYearResultsSuccess implements Action {
     readonly type = FullResultsActionType.LOAD_CURRENT_YEAR_RESULTS_SUCCESS;
-    constructor(readonly payload: {currentYearResults: DriverRoundResult[]}) {}
+    constructor(readonly payload: {currentYearDriverResults: DriverRoundResult[]}) {}
 }
 
 export class LoadAllPredictions implements Action {
@@ -101,8 +113,10 @@ export type FullResultsAction =
     | LoadRacesSuccess
     | LoadUsers
     | LoadUsersSuccess
-    | LoadNextRaceTeamVsTeamProposals
-    | LoadNextRaceTeamVsTeamProposalsSuccess
+    | LoadNextRaceTeamVsTeamList
+    | LoadNextRaceTeamVsTeamListSuccess
+    | LoadYearTeamVsTeamList
+    | LoadYearTeamVsTeamListSuccess
     | LoadCurrentYearResults
     | LoadCurrentYearResultsSuccess
     | LoadAllPredictions
