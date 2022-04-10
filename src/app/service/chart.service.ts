@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {Store} from '@ngrx/store';
 import {EChartsOption} from 'echarts';
-import {combineLatest, Observable, timer} from 'rxjs';
+import {combineLatest, Observable, of, timer} from 'rxjs';
 import {debounceTime, filter, map, shareReplay} from 'rxjs/operators';
 import {PREDICTION_PLACES_NUMBER, TEAM_DRIVER_COLORS} from 'src/constants';
 import {findNextEvent2, getFullUserName, NOT_SELECTED_DRIVER_NAME} from '../common';
@@ -104,6 +104,10 @@ export class ChartService {
     return combineLatest([this.playersCorrectPositionRate, this.currentUserFullName, this.isDarkMode]).pipe(
       map(([playersCorrectPositionRate, currentUserFullName, isDarkMode]) => 
         getBarChartOptions(playersCorrectPositionRate, currentUserFullName, isDarkMode)));
+  }
+
+  getPlayersProgress(): Observable<EChartsOption> {
+    return of();
   }
 }
 

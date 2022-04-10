@@ -16,4 +16,10 @@
         <mat-card-subtitle>Success ratio of selecting drivers exact positions</mat-card-subtitle>
         <div echarts [options]="(correctPositionRate | async)!" class="chart"></div>
     </mat-card>
+
+    <mat-card *ngIf="0">
+        <mat-card-title>Players progress, pts</mat-card-title>
+        <mat-card-subtitle>Players progress across all the season results</mat-card-subtitle>
+        <div echarts [options]="(playersProgress | async)!" class="chart"></div>
+    </mat-card>
 </div>

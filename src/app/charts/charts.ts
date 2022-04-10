@@ -14,6 +14,7 @@ export class ChartsComponent implements OnInit {
   readonly mostSelectableDrivers = this.chartService.getMostSelectableDrivers();
   readonly correctInListRate = this.chartService.getCorrectInListRate();
   readonly correctPositionRate = this.chartService.getCorrectPositionRate();
+  readonly playersProgress = this.chartService.getPlayersProgress();
 
   constructor(
     private readonly chartService: ChartService,
