@@ -121,10 +121,10 @@
             <mat-card-title>Game rules</mat-card-title>
             <mat-card-subtitle>Read the game rules</mat-card-subtitle>
             <div class="tile-content-row">
-                <p><coin [value]="DRIVER_IN_LIST_PTS" color="#cfd8dc"></coin> point - each correct driver on the list</p>
-                <p><coin [value]="DRIVER_PLACE_PTS" color="#ffc107"></coin> points - each correct driver position</p>
-                <p><coin [value]="CORRECT_TEAM_FROM_PAIR_PTS" color="#cfd8dc"></coin> points - each correct team from pair</p>
-                <p><coin [value]="WRONG_TEAM_PTS" color="#b71c1c"></coin> points - each incorrect team from pair</p>
+                <p><coin [value]="DRIVER_IN_LIST_PTS" [color]="DRIVER_IN_LIST_COLOR"></coin> point - each correct driver on the list</p>
+                <p><coin [value]="DRIVER_PLACE_PTS" [color]="DRIVER_CORRECT_PLACE_COLOR"></coin> points - each correct driver position</p>
+                <p><coin [value]="CORRECT_TEAM_FROM_PAIR_PTS" [color]="CORRECT_TEAM_FROM_PAIR_COLOR"></coin> points - each correct team from pair</p>
+                <p><coin [value]="WRONG_TEAM_PTS" [color]="WRONG_TEAM_COLOR"></coin> points - each incorrect team from pair</p>
             </div>
             <div class="button-bar">
                 <button mat-button routerLink="/rules" (click)="showPage(Page.GameRules)">

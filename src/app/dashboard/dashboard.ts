@@ -6,6 +6,7 @@ import {map} from 'rxjs/operators';
 import {USER_DIALOG_OPTIONS} from 'src/constants';
 import {Page} from '../enums'; 
 import {animateTextElements, CORRECT_TEAM_FROM_PAIR_PTS, DRIVER_IN_LIST_PTS, DRIVER_PLACE_PTS, formatDate, getFlagLink, getFullUserName, getNextEvent, getSeasonPointsPerRound, WRONG_TEAM_PTS} from '../common';
+import {CORRECT_TEAM_FROM_PAIR_COLOR, DRIVER_IN_LIST_COLOR, DRIVER_CORRECT_PLACE_COLOR, WRONG_TEAM_COLOR} from '../../constants';
 import {FullResultsActionType} from '../full-results/store/full-results.actions'; 
 import * as fullResultsSelectors from '../full-results/store/full-results.selectors';
 import {ChartService} from '../service/chart.service';
@@ -32,6 +33,12 @@ export class DashboardComponent implements AfterViewInit, OnInit {
   readonly DRIVER_PLACE_PTS = DRIVER_PLACE_PTS;
   readonly CORRECT_TEAM_FROM_PAIR_PTS = CORRECT_TEAM_FROM_PAIR_PTS;
   readonly WRONG_TEAM_PTS = WRONG_TEAM_PTS;
+
+  readonly DRIVER_IN_LIST_COLOR = DRIVER_IN_LIST_COLOR;
+  readonly DRIVER_CORRECT_PLACE_COLOR = DRIVER_CORRECT_PLACE_COLOR;
+  readonly CORRECT_TEAM_FROM_PAIR_COLOR = CORRECT_TEAM_FROM_PAIR_COLOR;
+  readonly WRONG_TEAM_COLOR = WRONG_TEAM_COLOR;
+
   readonly Page = Page;
   readonly columns = ['place', 'name', 'seasonPoints'];
 
