@@ -1,3 +1,4 @@
+import {HttpClient, HttpEvent, HttpRequest} from '@angular/common/http';
 import {Injectable} from '@angular/core';
 import {Observable, of} from 'rxjs';
 import {CURRENT_USER_KEY} from 'src/constants';
@@ -8,11 +9,15 @@ import {HttpService} from './http.service';
 import {LocalStorageService} from './local-storage.service';
 
 
+const API_DOMAIN = 'https://safe-crag-81937.herokuapp.com';
+
+
 @Injectable({providedIn: 'root'})
 export class UserService {
 
   constructor(
     private readonly encryptionService: EncryptionService,
+    private readonly httpClient: HttpClient,
     private readonly httpService: HttpService,
     private readonly localStorageService: LocalStorageService,
   ) {}
@@ -48,7 +53,12 @@ export class UserService {
           allPredictions.filter(prediction => prediction.userid == user.id && prediction.round! <= lastRound).length,
     }));
     
-      return this.httpService.put<User[]>('/users', updatedUsers);
+    return this.httpService.put<User[]>('/users', updatedUsers);
+  }
+
+  updateUserAvatar(user: User): Observable<HttpEvent<User>> {
+    const request = new HttpRequest('PUT', `${API_DOMAIN}/updateAvatar`, user, {reportProgress: true, responseType: 'json'});
+    return this.httpClient.request<User>(request);
   }
 }
 

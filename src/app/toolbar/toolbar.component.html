@@ -57,6 +57,7 @@
         
         <button mat-icon-button class="user" [matMenuTriggerFor]="userMenu">
             <mat-icon>{{data.user ? 'face' : 'account_circle'}}</mat-icon>
+            <!-- <img *ngIf="avatarImage" height="24px" width="24px" [src]="avatarImage"/> -->
         </button>
 
         <mat-menu #userMenu="matMenu">

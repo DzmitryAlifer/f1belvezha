@@ -11,6 +11,7 @@ export interface User {
     password?: string;
     seasonpoints: number;
     season_events_total: number;
+    avatar?: File; 
 }
 
 export interface RacesResponse {

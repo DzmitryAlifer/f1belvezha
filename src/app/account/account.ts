@@ -1,9 +1,13 @@
-import {ChangeDetectionStrategy, Component} from '@angular/core';
+import {ChangeDetectionStrategy, Component, OnInit} from '@angular/core';
 import {Store} from '@ngrx/store';
-import {combineLatest} from 'rxjs';
-import {debounceTime, map} from 'rxjs/operators';
+import {combineLatest, Observable} from 'rxjs';
+import {debounceTime, map, switchMap} from 'rxjs/operators';
 import * as fullResultsSelectors from '../full-results/store/full-results.selectors';
 import * as toolbarSelectors from '../toolbar/store/toolbar.selectors';
+import { HttpEventType, HttpResponse } from '@angular/common/http';
+import { UserService } from '../service/user.service';
+import { User } from '../types';
+import { DomSanitizer } from '@angular/platform-browser';
 
 
 @Component({
@@ -31,8 +35,58 @@ export class AccountComponent {
       playersResults.filter(playersResult => playersResult.userid == currentUser?.id)
         .sort((left, right) => (left.round ?? 0) - (right.round ?? 0))));
   
-  constructor(private readonly store: Store) {
-    this.currentUserPredictions.subscribe(r=>console.log(r));
-    this.currentUserResults.subscribe(r=>console.log(r));
+  selectedFile?: File;
+  selectedFileName?: string;
+  progressInfo: any;
+  message = '';
+  loadedImage: any;
+
+  readonly loadedImage2 = this.currentUser.pipe(
+    switchMap(user => this.userService.getUserById(user?.id!)),
+    map(user => user.avatar),
+    map(avatarImage => {
+      // const reader = new FileReader();
+      // reader.onload = (e: any) => this.loadedImage2 = e.target.result;
+      // reader.readAsDataURL(this.selectedFile);
+      const objectURL = URL.createObjectURL(new Blob([avatarImage!]))
+      return this.domSanitizer.bypassSecurityTrustUrl(objectURL);
+    }),
+  );
+
+  constructor(
+    private readonly domSanitizer: DomSanitizer,
+    private readonly store: Store,
+    private readonly userService: UserService,
+  ) {this.currentUser.subscribe(r=>console.log(r));}
+
+  selectFile(event: any): void {
+    this.message = '';
+    this.selectedFileName = '';
+    this.selectedFile = event.target.files[0];
+
+    if (this.selectedFile) {
+      const reader = new FileReader();
+      reader.onload = (e: any) => this.loadedImage = e.target.result;
+      reader.readAsDataURL(this.selectedFile);
+    }
+  }
+
+  upload(user: User | null): void {
+    if (!this.selectedFile || !user) {
+      return;
+    }
+
+    this.progressInfo = {value: 0, fileName: this.selectedFile.name};
+
+    this.userService.updateUserAvatar({...user, avatar: this.selectedFile}).subscribe((event: any) => {
+      if (event.type === HttpEventType.UploadProgress) {
+        this.progressInfo.value = Math.round(100 * event.loaded / event.total);
+      } else if (event instanceof HttpResponse) {
+        this.message = 'Uploaded the file successfully: ' + this.selectedFile?.name;
+      }
+    }, (err: any) => {
+      this.progressInfo.value = 0;
+      this.message = 'Could not upload the file: ' + this.selectedFile?.name;
+    });
   }
 }

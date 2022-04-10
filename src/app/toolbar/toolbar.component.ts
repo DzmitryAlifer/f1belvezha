@@ -1,7 +1,9 @@
-import {ChangeDetectionStrategy, Component} from '@angular/core';
+import {AfterViewInit, ChangeDetectionStrategy, Component} from '@angular/core';
 import {MatDialog} from '@angular/material/dialog';
+import {DomSanitizer} from '@angular/platform-browser';
 import {Store} from '@ngrx/store';
-import {delay} from 'rxjs/operators';
+import {Observable} from 'rxjs';
+import {delay, filter, map} from 'rxjs/operators';
 import {CURRENT_USER_KEY, USER_DIALOG_OPTIONS} from 'src/constants';
 import {Language, Page} from '../enums';
 import {FullResultsActionType} from '../full-results/store/full-results.actions';
@@ -19,18 +21,21 @@ import * as toolbarSelectors from './store/toolbar.selectors';
   styleUrls: ['./toolbar.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ToolbarComponent {
+export class ToolbarComponent implements AfterViewInit {
+  // avatarImage: any;
   readonly Language = Language;
   readonly Page = Page;
 
   readonly isDarkMode = this.store.select(toolbarSelectors.selectIsDarkMode);
   readonly isLockedLayout = this.store.select(toolbarSelectors.selectIsLockedLayout).pipe(delay(200));
   readonly user = this.store.select(toolbarSelectors.selectCurrentUser);
+  // readonly avatar: Observable<File|undefined> = this.user.pipe(map(user => user?.avatar), filter(avatar => !!avatar));
   readonly page = this.store.select(toolbarSelectors.selectPage);
   readonly startPage = this.store.select(toolbarSelectors.selectStartPage);
 
   constructor(
     private readonly createAccountDialog: MatDialog,
+    // private readonly domSanitizer: DomSanitizer,
     private readonly localStorageService: LocalStorageService,
     private readonly loginDialog: MatDialog,
     private readonly store: Store,
@@ -43,6 +48,20 @@ export class ToolbarComponent {
     this.store.dispatch({type: ToolbarActionType.LOAD_PLAYERS_RESULTS}); 
     this.store.dispatch({type: ToolbarActionType.LOAD_CALENDAR}); 
     this.store.dispatch({type: ToolbarActionType.SET_LAST_ROUND});
+  }
+
+  ngAfterViewInit(): void {
+    // this.avatar.subscribe((avatarImage: File|undefined) => {
+    //   if (avatarImage) {
+    //     // const reader = new FileReader();
+    //     // reader.onloadend = (e: any) => this.avatarImage = this.domSanitizer.bypassSecurityTrustUrl(e?.target?.result as string);
+    //     // reader.readAsDataURL(new Blob([avatarImage]));
+        
+       
+    //     const objectURL = URL.createObjectURL(new Blob([avatarImage]))
+    //     this.avatarImage = this.domSanitizer.bypassSecurityTrustUrl(objectURL);
+    //   }
+    // });
   }
 
   createAccount(): void {
