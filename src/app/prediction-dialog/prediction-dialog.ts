@@ -53,7 +53,7 @@ export class PredictionDialog {
   readonly isDarkMode = this.store.select(toolbarSelectors.selectIsDarkMode);
   readonly drivers = this.f1PublicApiService.getDriverStandings()
     .pipe(map(driverStandings => [...driverStandings, NOT_SELECTED_DRIVER_POSITION]));
-  readonly teamVsTeamProposals = this.store.select(fullResultsSelectors.selectNextRaceTeamVsTeamProposals);
+  readonly teamVsTeamProposals = this.store.select(fullResultsSelectors.selectNextRaceTeamVsTeamList);
 
   readonly prediction = this.store.select(fullResultsSelectors.selectCurrentUserPredictions).pipe(
     map(predictions => 

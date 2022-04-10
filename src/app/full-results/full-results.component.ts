@@ -41,6 +41,7 @@ export class FullResultsComponent implements OnInit, AfterViewInit {
     map(([currentUser, allPredictions]) => allPredictions.filter(prediction => prediction.userid == currentUser?.id)));
 
   readonly races = this.store.select(fullResultsSelectors.selectRaces).pipe(shareReplay(1));
+  readonly teamVsTeamResults = this.store.select(fullResultsSelectors.selectCurrentYearTeamVsTeamList);
   readonly nextEvent = getNextEvent();
   readonly nextRaceRound = this.nextEvent.pipe(map(nextEvent => nextEvent.round));
   readonly isLoaded = combineLatest([this.users, this.races]).pipe(map(([users, races]) => !!races && !!users));
@@ -102,6 +103,7 @@ export class FullResultsComponent implements OnInit, AfterViewInit {
     this.currentUserHasPrediction.subscribe();
     this.store.dispatch({type: FullResultsActionType.LOAD_RACES});
     this.store.dispatch({type: FullResultsActionType.LOAD_NEXT_RACE_TEAM_VS_TEAM_LIST});
+    this.store.dispatch({type: FullResultsActionType.LOAD_YEAR_TEAM_VS_TEAM_LIST});
     this.store.dispatch({type: FullResultsActionType.LOAD_ALL_PREDICTIONS});
     this.store.dispatch({type: FullResultsActionType.LOAD_CURRENT_YEAR_RESULTS});
     this.store.dispatch({type: FullResultsActionType.CALCULATE_CURRENT_YEAR_POINTS});
