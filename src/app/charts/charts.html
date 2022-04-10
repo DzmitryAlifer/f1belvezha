@@ -17,9 +17,8 @@
         <div echarts [options]="(correctPositionRate | async)!" class="chart"></div>
     </mat-card>
 
-    <mat-card *ngIf="0">
-        <mat-card-title>Players progress, pts</mat-card-title>
-        <mat-card-subtitle>Players progress across all the season results</mat-card-subtitle>
+    <mat-card>
+        <mat-card-title>Players points</mat-card-title>
         <div echarts [options]="(playersProgress | async)!" class="chart"></div>
     </mat-card>
 </div>

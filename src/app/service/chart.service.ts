@@ -1,14 +1,14 @@
 import {Injectable} from '@angular/core';
 import {Store} from '@ngrx/store';
-import {EChartsOption} from 'echarts';
+import {EChartsOption, SeriesOption} from 'echarts';
 import {combineLatest, Observable, of, timer} from 'rxjs';
 import {debounceTime, filter, map, shareReplay} from 'rxjs/operators';
 import {PREDICTION_PLACES_NUMBER, TEAM_DRIVER_COLORS} from 'src/constants';
-import {findNextEvent2, getFullUserName, NOT_SELECTED_DRIVER_NAME} from '../common';
+import {CORRECT_TEAM_FROM_PAIR_PTS, DRIVER_IN_LIST_PTS, DRIVER_PLACE_PTS, findNextEvent2, getFullUserName, NOT_SELECTED_DRIVER_NAME, resultToPoints, WRONG_TEAM_PTS} from '../common';
 import * as fullResultsSelectors from '../full-results/store/full-results.selectors';
 import {DisplayEvent, EventType} from '../toolbar/next-event/next-event.component';
 import * as toolbarSelectors from '../toolbar/store/toolbar.selectors';
-import {PlayerRoundResult, PlayerSuccessPct, Prediction} from '../types';
+import {PlayerRoundResult, PlayerSuccessPct, Prediction, User} from '../types';
 
 
 const GREY_250 = '#e7e7e7';
@@ -60,6 +60,23 @@ export class ChartService {
     shareReplay(1),
   );
 
+  private readonly playersProgressTotalPts = 
+      combineLatest([this.users, this.playersYearResults, this.calendarEvents, this.nextEvent]).pipe(
+        debounceTime(0),
+        map(([users, results, calendarEvents, nextEvent]) => {
+          const seriesData: {country: string, roundUserPts: number[]}[] = [];
+
+          for (let round = 1; round < nextEvent.round; round++) {
+            const country = calendarEvents.find(event => event.round === round)!.Circuit.Location.country;
+            const roundUserPts = getRoundUsersPoints(round, users, results)
+            seriesData.push({country, roundUserPts});
+          }
+
+          return seriesData;
+        }), 
+        shareReplay(1),
+      );
+
   calculateUserPredictionsNumber(userPredictions: Prediction[], nextEvent: DisplayEvent): number {
     const allUserPredictionsCount = userPredictions 
         .filter(prediction => prediction.round && (prediction.round < nextEvent.round || prediction.round === nextEvent.round))
@@ -87,7 +104,7 @@ export class ChartService {
     map(list => list.filter(item => !!item.value).sort((left, right) => right.value - left.value)),
   );
 
-  constructor(private readonly store: Store) {}
+  constructor(private readonly store: Store) { this.playersProgressTotalPts.subscribe(r=>console.log(r))}
 
   getMostSelectableDrivers(): Observable<EChartsOption> {
     return combineLatest([this.driversCount, this.isDarkMode]).pipe(
@@ -107,7 +124,10 @@ export class ChartService {
   }
 
   getPlayersProgress(): Observable<EChartsOption> {
-    return of();
+    return combineLatest([this.playersProgressTotalPts, this.users, this.currentUserFullName, this.isDarkMode]).pipe(
+      map(([playersProgressTotalPts, users, currentUserFullName, isDarkMode]) => 
+        getHorizontalStackedBarChartOptions(playersProgressTotalPts, users, currentUserFullName, isDarkMode)),
+    );
   }
 }
 
@@ -123,6 +143,18 @@ function countGettingsInList(singlePlayerResults: PlayerRoundResult[]): number {
 function countCorrectPositions(singlePlayerResults: PlayerRoundResult[]): number {
   return singlePlayerResults.reduce((sum, result) =>
     sum + result.qual_guessed_position.length + result.race_guessed_position.length, 0);
+}
+
+function getRoundUsersPoints(round: number, users: User[], results: PlayerRoundResult[]): number[] {
+  const playersRoundPoints: number[] = [];
+
+  for (let user of users) {
+    const playerRoundResult = results.find(result => result.userid === user.id && result.round === round);
+    const playerRoundPoints = playerRoundResult ? resultToPoints(playerRoundResult) : 0;
+    playersRoundPoints.push(playerRoundPoints);
+  }
+
+  return playersRoundPoints;
 }
 
 export function getPieChartOptions(data: Array<{ name: string, value: number }>, isDarkMode: boolean, customColors?: any): EChartsOption {
@@ -160,7 +192,7 @@ export function getBarChartOptions(data: Array<{name: string, value: number}>, c
   const max = Math.max(...values);
 
   return {
-    grid: {bottom: 90, left: 80},
+    grid: {bottom: 90, left: 50},
     xAxis: {
       type: 'category',
       data: names,
@@ -174,13 +206,39 @@ export function getBarChartOptions(data: Array<{name: string, value: number}>, c
       type: 'value',
       min: yAxisMin,
       max,
-      splitLine: {
-        lineStyle: {color: gridColor},
-      },
+      splitLine: {lineStyle: {color: gridColor}},
     },
-    series: {
-      type: 'bar',
-      data: values,
-    },
+    series: {type: 'bar', data: values},
   };
-} 
+}
+
+function getHorizontalStackedBarChartOptions(playersPtsByCountries: {country: string, roundUserPts: number[]}[], users: User[], currentUserFullName: string, isDarkMode: boolean): EChartsOption {
+  const currentUserColor = isDarkMode ? BLUE_200 : BLUE_800;
+  const labelColor = isDarkMode ? GREY_400 : GREY_750;
+  const gridColor = isDarkMode ? GREY_750 : GREY_250;
+  const usersAxisLabels = users.map(user => getFullUserName(user)).slice().reverse();
+  const series: SeriesOption[] = playersPtsByCountries.map(countryPlayersPts => ({
+    type: 'bar',
+    stack: 'total',
+    label: {show: true},
+    emphasis: {focus: 'series'},
+    name: countryPlayersPts.country,
+    data: countryPlayersPts.roundUserPts.slice().reverse(),
+  }));
+  
+  return {
+    tooltip: {trigger: 'axis', axisPointer: {type: 'shadow'}},
+    legend: {textStyle: {color: labelColor}},
+    grid: {top: 36, left: 6, bottom: -2, right: 16, containLabel: true},
+    xAxis: {
+      type: 'value',
+      splitLine: {lineStyle: {color: gridColor}},
+    },
+    yAxis: {
+      type: 'category',
+      data: usersAxisLabels,
+      axisLabel: {color: (value: any): any => value === currentUserFullName ? currentUserColor : labelColor},
+    },
+    series,
+  };
+}

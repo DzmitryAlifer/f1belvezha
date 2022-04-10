@@ -226,16 +226,20 @@ export function getNextEvent(): Observable<DisplayEvent> {
     );
 }
 
+export function resultToPoints(result: PlayerRoundResult): number {
+    const driversInListPts = DRIVER_IN_LIST_PTS * (result.qual_guessed_on_list.length + result.race_guessed_on_list.length);
+    const driversPositionsPts = DRIVER_PLACE_PTS * (result.qual_guessed_position.length + result.race_guessed_position.length);
+    const correctTeamsPts = result.correct_teams ? CORRECT_TEAM_FROM_PAIR_PTS * result.correct_teams.length : 0;
+    const wrongTeamsPts = result.wrong_teams ? WRONG_TEAM_PTS * result.wrong_teams.length : 0;
+    
+    return driversInListPts + driversPositionsPts + correctTeamsPts + wrongTeamsPts;
+}
+
 export function toPoints(results: PlayerRoundResult[], users: User[]): UserPoints[] {
     return users.reduce((acc, user) => {
-        const points = results.filter(result => result.userid === user.id).reduce((sum, result) => {
-            const driversInListPts = DRIVER_IN_LIST_PTS * (result.qual_guessed_on_list.length + result.race_guessed_on_list.length);
-            const driversPositionsPts = DRIVER_PLACE_PTS * (result.qual_guessed_position.length + result.race_guessed_position.length);
-            const correctTeamsPts = result.correct_teams ? CORRECT_TEAM_FROM_PAIR_PTS * result.correct_teams.length : 0;
-            const wrongTeamsPts = result.wrong_teams ? WRONG_TEAM_PTS * result.wrong_teams.length : 0;
-            return sum + driversInListPts + driversPositionsPts + correctTeamsPts + wrongTeamsPts;
-        }, 0);
-        acc.push({ user, points });
+        const points = results.filter(result => result.userid === user.id)
+            .reduce((sum, result) => sum + resultToPoints(result), 0);
+        acc.push({user, points});
         return acc;
     }, [] as UserPoints[]).sort((left, right) => right.points - left.points);
 }
