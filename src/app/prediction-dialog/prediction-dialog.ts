@@ -9,10 +9,9 @@ import {PredictionService} from '../service/prediction.service';
 import {Prediction} from '../types';
 import * as fullResultsSelectors from '../full-results/store/full-results.selectors';
 import {FullResultsActionType} from '../full-results/store/full-results.actions';
-import {DRIVER_TEAM_MAPPING, PREDICTION_PLACES_NUMBER, TEAM_NAMES} from 'src/constants';
+import {PREDICTION_PLACES_NUMBER, TEAM_NAMES} from 'src/constants';
 import {CORRECT_TEAM_FROM_PAIR_PTS, getNextEvent, NOT_SELECTED_DRIVER_NAME, NOT_SELECTED_DRIVER_POSITION, WRONG_TEAM_PTS} from '../common';
-import {TeamName} from '../enums';
-import {EventType} from '../toolbar/next-event/next-event.component';
+import {EventType, TeamName} from '../enums';
 import * as toolbarSelectors from '../toolbar/store/toolbar.selectors';
 
 

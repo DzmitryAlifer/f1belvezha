@@ -1,4 +1,4 @@
-import {TeamName} from './enums';
+import {EventType, TeamName} from './enums';
 
 
 declare module '/animejs/lib/anime.es.js';
@@ -200,4 +200,23 @@ export interface PlayerSuccessPct {
     correctInList: number;
     correctPosition: number;
     predictionsNumber: number;
+}
+
+export interface EventSchedule {
+    location: string;
+    qualification: DateRange;
+    race: DateRange;
+}
+
+export interface DisplayEvent {
+    round: number;
+    location: string;
+    eventType: EventType;
+    start?: moment.Moment;
+    end?: moment.Moment;
+}
+
+export interface DateRange {
+    start: moment.Moment;
+    end: moment.Moment;
 }

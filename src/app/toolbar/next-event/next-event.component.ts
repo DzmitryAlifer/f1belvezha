@@ -4,33 +4,9 @@ import * as moment from 'moment';
 import {combineLatest, interval, timer} from 'rxjs';
 import {filter, map} from 'rxjs/operators';
 import {findNextEvent2, getFlagLink, getNextEvent} from 'src/app/common';
-import {CountDownDigits} from 'src/app/types';
+import {CountDownDigits, DisplayEvent} from 'src/app/types';
 import * as toolbarSelectors from '../store/toolbar.selectors';
 
-
-export enum EventType {
-  Qualification = 'qual',
-  Race = 'race',
-}
-
-export interface EventSchedule {
-  location: string;
-  qualification: DateRange;
-  race: DateRange;
-}
-
-export interface DisplayEvent {
-  round: number;
-  location: string;
-  eventType: EventType;
-  start?: moment.Moment;
-  end?: moment.Moment;
-}
-
-export interface DateRange {
-  start: moment.Moment;
-  end: moment.Moment;
-}
 
 const COUNTDOWN_NOW: CountDownDigits = {daysDigits: 'n', hoursDigits: 'o', minutesDigits: 'w', secondsDigits: ''};
 

@@ -26,3 +26,8 @@ export enum TeamName {
     Haas = 'haas',
     None = 'none',
 }
+
+export enum EventType {
+    Qualification = 'qual',
+    Race = 'race',
+}

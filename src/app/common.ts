@@ -1,8 +1,8 @@
 import * as moment from 'moment';
 import {interval, Observable} from 'rxjs';
 import {map, shareReplay, startWith} from 'rxjs/operators';
-import { TeamName } from './enums';
-import {DisplayEvent, EventSchedule, EventType} from './toolbar/next-event/next-event.component';
+import {EventType, TeamName} from './enums';
+import {DisplayEvent, EventSchedule} from './types';
 import {DateTimeApi, Driver, DriverRoundResult, DriverStanding, PlayerRoundResult, Prediction, Race, TeamVsTeam, User, UserPoints} from './types';
 
 declare let anime: any;

@@ -1,14 +1,14 @@
 import {Injectable} from '@angular/core';
 import {Store} from '@ngrx/store';
 import {EChartsOption, SeriesOption} from 'echarts';
-import {combineLatest, Observable, of, timer} from 'rxjs';
+import {combineLatest, Observable, timer} from 'rxjs';
 import {debounceTime, filter, map, shareReplay} from 'rxjs/operators';
 import {PREDICTION_PLACES_NUMBER, TEAM_DRIVER_COLORS} from 'src/constants';
-import {CORRECT_TEAM_FROM_PAIR_PTS, DRIVER_IN_LIST_PTS, DRIVER_PLACE_PTS, findNextEvent2, getFullUserName, NOT_SELECTED_DRIVER_NAME, resultToPoints, WRONG_TEAM_PTS} from '../common';
+import {findNextEvent2, getFullUserName, NOT_SELECTED_DRIVER_NAME, resultToPoints} from '../common';
+import {EventType} from '../enums';
 import * as fullResultsSelectors from '../full-results/store/full-results.selectors';
-import {DisplayEvent, EventType} from '../toolbar/next-event/next-event.component';
 import * as toolbarSelectors from '../toolbar/store/toolbar.selectors';
-import {PlayerRoundResult, PlayerSuccessPct, Prediction, User} from '../types';
+import {DisplayEvent, PlayerRoundResult, PlayerSuccessPct, Prediction, User} from '../types';
 
 
 const GREY_250 = '#e7e7e7';
