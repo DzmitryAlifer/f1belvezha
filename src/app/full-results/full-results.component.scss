@@ -83,15 +83,19 @@
         padding: 8px;
         vertical-align: bottom;
 
-        .circuit-small {
-            cursor: pointer;
-            height: 40px;
-            transition: transform .2s;
-            vertical-align: middle;
-            width: 55px;
+        .circuit-container {
+            align-self: center;
+
+            .circuit-small {
+                cursor: pointer;
+                height: 40px;
+                transition: transform .2s;
+                vertical-align: middle;
+                width: 55px;
             
-            &:hover {
-                transform: scale(1.2);
+                &:hover {
+                    transform: scale(1.2);
+                }
             }
         }
 
