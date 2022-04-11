@@ -14,4 +14,5 @@ export const selectIsLockedLayout = createSelector(selectToolbar, (state: Toolba
 export const selectIsLoaded = createSelector(selectToolbar, (state: ToolbarState) => state?.isLoaded);
 export const selectCalendar = createSelector(selectToolbar, (state: ToolbarState) => state?.calendar);
 export const selectLastRound = createSelector(selectToolbar, (state: ToolbarState) => state?.lastRound);
+export const selectNextEvent = createSelector(selectToolbar, (state: ToolbarState) => state?.nextEvent);
 export const selectPlayersResults = createSelector(selectToolbar, (state: ToolbarState) => state?.playersResults);

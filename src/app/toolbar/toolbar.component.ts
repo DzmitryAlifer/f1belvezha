@@ -47,6 +47,7 @@ export class ToolbarComponent implements AfterViewInit {
     this.store.dispatch({type: FullResultsActionType.LOAD_USERS});
     this.store.dispatch({type: ToolbarActionType.LOAD_PLAYERS_RESULTS}); 
     this.store.dispatch({type: ToolbarActionType.LOAD_CALENDAR}); 
+    this.store.dispatch({type: ToolbarActionType.LOAD_NEXT_EVENT}); 
     this.store.dispatch({type: ToolbarActionType.SET_LAST_ROUND});
   }
 

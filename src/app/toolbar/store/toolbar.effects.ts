@@ -1,9 +1,9 @@
 import {Injectable} from '@angular/core';
 import {Actions, createEffect, ofType} from '@ngrx/effects';
 import {Store} from '@ngrx/store';
-import {combineLatest} from 'rxjs';
-import {debounceTime, map, switchMap, tap} from 'rxjs/operators';
-import {getCorrectTeams, getWrongTeams} from 'src/app/common';
+import {combineLatest, timer} from 'rxjs';
+import {debounceTime, filter, map, switchMap, tap} from 'rxjs/operators';
+import {findNextEvent2, getCorrectTeams, getWrongTeams} from 'src/app/common';
 import {Theme, ThemeService} from 'src/app/service/theme.service';
 import {ToolbarAction, ToolbarActionType} from './toolbar.actions';
 import * as toolbarSelectors from './toolbar.selectors';
@@ -31,6 +31,12 @@ export class ToolbarEffects {
     private readonly playersResults = this.resultService.getPlayersYearResults(CURRENT_YEAR);
     private readonly allPredictions = this.predictionService.getAllPredictions();
     private readonly calendar = this.f1PublicApiService.getCurrentCalendar();
+    
+    private readonly nextEvent = 
+        combineLatest([this.store.select(toolbarSelectors.selectCalendar), timer(0, 5 * 60 * 1000)]).pipe(
+        filter(([calendarEvents]) => !!calendarEvents.length),
+        map(([calendarEvents]) => findNextEvent2(calendarEvents)),
+    );
 
     private readonly lastRoundCalculated = this.driverResults.pipe(
         map(driverResults => {
@@ -124,6 +130,13 @@ export class ToolbarEffects {
         ofType(ToolbarActionType.SET_LAST_ROUND),
         switchMap(() => this.lastRoundCalculated.pipe(
             map(lastRound => ({type: ToolbarActionType.SET_LAST_ROUND_SUCCESS, payload: {lastRound}})),
+        )),
+    ));
+
+    loadNextEvent = createEffect(() => this.actions.pipe(
+        ofType(ToolbarActionType.LOAD_NEXT_EVENT),
+        switchMap(() => this.nextEvent.pipe(
+            map(nextEvent => ({type: ToolbarActionType.LOAD_NEXT_EVENT_SUCCESS, payload: {nextEvent}})),
         )),
     ));
 

@@ -1,9 +1,9 @@
 import {AfterViewInit, ChangeDetectionStrategy, Component} from '@angular/core';
 import {Store} from '@ngrx/store';
 import * as moment from 'moment';
-import {combineLatest, interval, timer} from 'rxjs';
+import {combineLatest, interval} from 'rxjs';
 import {filter, map} from 'rxjs/operators';
-import {findNextEvent2, getFlagLink, getNextEvent} from 'src/app/common';
+import {getFlagLink} from 'src/app/common';
 import {CountDownDigits, DisplayEvent} from 'src/app/types';
 import * as toolbarSelectors from '../store/toolbar.selectors';
 
@@ -20,19 +20,15 @@ const COUNTDOWN_NOW: CountDownDigits = {daysDigits: 'n', hoursDigits: 'o', minut
 export class NextEventComponent implements AfterViewInit {
   readonly isDarkMode = this.store.select(toolbarSelectors.selectIsDarkMode);
   readonly calendarEvents = this.store.select(toolbarSelectors.selectCalendar);
-  readonly nextEvent2 = getNextEvent();
-  // Finds next event each 2 minutes
-  readonly nextEvent = combineLatest([this.calendarEvents, timer(0, 5 * 60 * 1000)]).pipe(
-    filter(([calendarEvents]) => !!calendarEvents.length),
-    map(([calendarEvents]) => findNextEvent2(calendarEvents)),
-  );
+  readonly nextEvent = this.store.select(toolbarSelectors.selectNextEvent);
 
   constructor(private readonly store: Store) {}
 
   ngAfterViewInit(): void {
     combineLatest([this.nextEvent, interval(1000)]).pipe(
+      filter(nextEvent => !!nextEvent),
       map(([nextEvent]) => {
-        const digits = getCountDownDigits(nextEvent);
+        const digits = getCountDownDigits(nextEvent!);
         document.getElementById('days')!.innerText = digits.daysDigits;
         document.getElementById('hours')!.innerText = digits.hoursDigits;
         document.getElementById('mins')!.innerText = digits.minutesDigits;

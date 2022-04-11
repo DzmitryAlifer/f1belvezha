@@ -31,6 +31,7 @@ export function toolbarReducer(state: ToolbarState = initialState, action: Toolb
             return {...state, startPage: action.payload.startPage};
 
         case ToolbarActionType.LOAD_CALENDAR:
+        case ToolbarActionType.LOAD_NEXT_EVENT:
         case ToolbarActionType.LOAD_PLAYERS_RESULTS:
             return {...state, isLoaded: false};
 
@@ -51,6 +52,9 @@ export function toolbarReducer(state: ToolbarState = initialState, action: Toolb
 
         case ToolbarActionType.LOAD_CALENDAR_SUCCESS:
             return {...state, calendar: action.payload.calendar, isLoaded: true};
+
+        case ToolbarActionType.LOAD_NEXT_EVENT_SUCCESS:
+            return {...state, nextEvent: action.payload.nextEvent, isLoaded: true};
 
         case ToolbarActionType.LOAD_PLAYERS_RESULTS_SUCCESS:
             return {...state, playersResults: action.payload.playersResults, isLoaded: true};

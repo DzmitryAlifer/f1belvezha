@@ -57,7 +57,7 @@ export class AccountComponent {
     private readonly domSanitizer: DomSanitizer,
     private readonly store: Store,
     private readonly userService: UserService,
-  ) {this.currentUser.subscribe(r=>console.log(r));}
+  ) {}
 
   selectFile(event: any): void {
     this.message = '';

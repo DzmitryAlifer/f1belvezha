@@ -1,5 +1,5 @@
 import {Language, Page} from 'src/app/enums';
-import {PlayerRoundResult, Race, User} from 'src/app/types';
+import {DisplayEvent, PlayerRoundResult, Race, User} from 'src/app/types';
 
 
 export interface ToolbarState {
@@ -10,6 +10,7 @@ export interface ToolbarState {
     isLockedLayout: boolean;
     language: Language;
     lastRound: number;
+    nextEvent?: DisplayEvent;
     page: Page;
     playersResults: PlayerRoundResult[];
     startPage: Page;

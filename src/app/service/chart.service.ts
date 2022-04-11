@@ -104,7 +104,7 @@ export class ChartService {
     map(list => list.filter(item => !!item.value).sort((left, right) => right.value - left.value)),
   );
 
-  constructor(private readonly store: Store) { this.playersProgressTotalPts.subscribe(r=>console.log(r))}
+  constructor(private readonly store: Store) {}
 
   getMostSelectableDrivers(): Observable<EChartsOption> {
     return combineLatest([this.driversCount, this.isDarkMode]).pipe(
