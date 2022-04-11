@@ -1,12 +1,16 @@
 @import '../../styles.scss';
 
 
+$border-color-light: $grey-400;
+$border-color-dark: $grey-700;
+
+
 .menu {
-    background-color: $grey-200;
-    border-bottom: 1px solid $grey-300;
-    border-right: 1px solid $grey-300;
+    background-color: rgba(245, 245, 245, .85);
+    border-bottom: 1px solid $border-color-light;
+    border-right: 1px solid $border-color-light;
     border-radius: 4px;
-    border-top: 1px solid $grey-300;
+    border-top: 1px solid $border-color-light;
     height: calc(58px * 6);
     margin-left: -4px;
     margin-top: calc($toolbar-height + 32px);
@@ -19,10 +23,17 @@
     z-index: 500;
 
     &.dark {
-        background-color: $grey-600;
-        border-bottom: 1px solid $grey-800;
-        border-right: 1px solid $grey-800;
-        border-top: 1px solid $grey-800;
+        background-color: rgba(45, 45, 45, .85);
+        border-bottom: 1px solid $border-color-dark;
+        border-right: 1px solid $border-color-dark;
+        border-top: 1px solid $border-color-dark;
+
+        button {
+            &.current,
+            &:hover {
+                color: $blue-200;
+            }
+        }
     }
 
     .button-text {
@@ -40,16 +51,6 @@
 
         button {
             padding-left: 8px;
-        }
-    }
-
-    &.dark {
-       background-color: $grey-900; 
-
-       button {
-            &.current, &:hover {
-                color: $blue-200;
-            }
         }
     }
 
