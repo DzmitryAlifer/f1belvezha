@@ -2,6 +2,7 @@ import {ChangeDetectionStrategy, Component} from '@angular/core';
 import {MatSlideToggleChange} from '@angular/material/slide-toggle';
 import {BehaviorSubject, combineLatest, interval, merge, ReplaySubject} from 'rxjs';
 import {filter, switchMap} from 'rxjs/operators';
+import {Language} from '../enums';
 import {NewsService} from '../service/news.service';
 
 
@@ -16,6 +17,7 @@ const NEWS_AUTO_REFRESH_INTERVAL = 5 * 60 * 1000;
 })
 export class NewsComponent {
   readonly Date = Date;
+  readonly Language = Language;
 
   readonly savedAutoRefreshStatus = localStorage.getItem('auto-refresh') === 'true';
   private readonly refreshNewsSubject = new ReplaySubject<void>(1);
@@ -42,6 +44,10 @@ export class NewsComponent {
   toggleAutoRefresh({checked}: MatSlideToggleChange): void {
     this.toggleAutoRefreshSubject.next(checked);
     localStorage.setItem('auto-refresh', checked.toString());
+  }
+
+  showNews(language: Language, index: number): void {
+    (document.querySelector(`.${language} .text${index} .description .more`) as HTMLElement)?.click();
   }
 
   addTargetBlankAttribute(newsText: string): string {
