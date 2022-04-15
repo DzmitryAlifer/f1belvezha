@@ -57,7 +57,9 @@ export class UserService {
   }
 
   updateUserAvatar(user: User): Observable<HttpEvent<User>> {
-    const request = new HttpRequest('PUT', `${API_DOMAIN}/updateAvatar`, user, {reportProgress: true, responseType: 'json'});
+    const formData = new FormData();
+    formData.append('file', user.avatar!, '' + user.id);
+    const request = new HttpRequest('PUT', `${API_DOMAIN}/updateAvatar`, formData, {reportProgress: true, responseType: 'json'});
     return this.httpClient.request<User>(request);
   }
 }

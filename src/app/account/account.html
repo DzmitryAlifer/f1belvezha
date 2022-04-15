@@ -9,8 +9,7 @@
         <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
     </table>
 
-    <div><img [src]="loadedImage2 | async" class="loadedImage"></div>
-
+    <div><img [src]="loadedImage | async" class="loadedImage"></div>
     <div *ngIf="progressInfo">
         <span>{{progressInfo.fileName}}</span>
         <mat-toolbar class="progress-bar">
@@ -30,6 +29,6 @@
         </div>
     </mat-form-field>
     
-    <div><img [src]="loadedImage" class="loadedImage"></div>
+    <div><img [src]="uploadedImage" class="loadedImage"></div>
     <div *ngIf="message" class="message"><ul><li>{{message}}</li></ul></div>
 </ng-container>

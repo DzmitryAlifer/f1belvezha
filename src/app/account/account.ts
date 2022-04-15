@@ -1,7 +1,7 @@
 import {ChangeDetectionStrategy, Component, OnInit} from '@angular/core';
 import {Store} from '@ngrx/store';
 import {combineLatest, Observable} from 'rxjs';
-import {debounceTime, map, switchMap} from 'rxjs/operators';
+import { debounceTime, filter, map, switchMap} from 'rxjs/operators';
 import * as fullResultsSelectors from '../full-results/store/full-results.selectors';
 import * as toolbarSelectors from '../toolbar/store/toolbar.selectors';
 import { HttpEventType, HttpResponse } from '@angular/common/http';
@@ -14,7 +14,7 @@ import { DomSanitizer } from '@angular/platform-browser';
   selector: 'app-account',
   templateUrl: './account.html',
   styleUrls: ['./account.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  // changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AccountComponent {
   readonly displayedColumns = [];
@@ -39,17 +39,16 @@ export class AccountComponent {
   selectedFileName?: string;
   progressInfo: any;
   message = '';
-  loadedImage: any;
+  uploadedImage: any;
+  isImageLoaded = false
 
-  readonly loadedImage2 = this.currentUser.pipe(
+  readonly loadedImage = this.currentUser.pipe(
     switchMap(user => this.userService.getUserById(user?.id!)),
     map(user => user.avatar),
-    map(avatarImage => {
-      // const reader = new FileReader();
-      // reader.onload = (e: any) => this.loadedImage2 = e.target.result;
-      // reader.readAsDataURL(this.selectedFile);
-      const objectURL = URL.createObjectURL(new Blob([avatarImage!]))
-      return this.domSanitizer.bypassSecurityTrustUrl(objectURL);
+    filter(avatar => !!avatar),
+    map(imageFile => {
+      const imageUrl = URL.createObjectURL(new Blob([imageFile!], {type: 'image/png'}));
+      return this.domSanitizer.bypassSecurityTrustUrl(imageUrl);
     }),
   );
 
@@ -66,7 +65,7 @@ export class AccountComponent {
 
     if (this.selectedFile) {
       const reader = new FileReader();
-      reader.onload = (e: any) => this.loadedImage = e.target.result;
+      reader.onload = (e: any) => this.uploadedImage = e.target.result;
       reader.readAsDataURL(this.selectedFile);
     }
   }
