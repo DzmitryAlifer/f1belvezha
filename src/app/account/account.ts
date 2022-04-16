@@ -41,22 +41,31 @@ export class AccountComponent {
   message = '';
   uploadedImage: any;
   isImageLoaded = false
+  loadedImage2: any;
 
-  readonly loadedImage = this.currentUser.pipe(
+  private readonly imageFile: Observable<File|undefined> = this.currentUser.pipe(
     switchMap(user => this.userService.getUserById(user?.id!)),
     map(user => user.avatar),
     filter(avatar => !!avatar),
-    map(imageFile => {
-      const imageUrl = URL.createObjectURL(new Blob([imageFile!], {type: 'image/png'}));
-      return this.domSanitizer.bypassSecurityTrustUrl(imageUrl);
-    }),
   );
 
   constructor(
-    private readonly domSanitizer: DomSanitizer,
     private readonly store: Store,
     private readonly userService: UserService,
-  ) {}
+  ) {
+    this.imageFile.subscribe((imageFile: File|undefined) => {
+      const blob = new Blob([imageFile!], {type: 'image/png'});
+      var reader = new FileReader();
+      reader.readAsDataURL(blob);
+      // reader.readAsBinaryString(blob);
+
+      reader.onload = () => {
+        const image = document.getElementById('loadedImage') as HTMLImageElement;
+        image.src = 'data:image/png;base64,' + btoa('' + reader.result);
+        // image.src = '' + reader.result;
+      };
+    });
+  }
 
   selectFile(event: any): void {
     this.message = '';

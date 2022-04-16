@@ -9,7 +9,9 @@
         <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
     </table>
 
-    <div><img [src]="loadedImage | async" class="loadedImage"></div>
+    <div><img [src]="loadedImage2" class="loadedImage"></div>
+    <div><img id="loadedImage" src=""></div>
+    
     <div *ngIf="progressInfo">
         <span>{{progressInfo.fileName}}</span>
         <mat-toolbar class="progress-bar">
