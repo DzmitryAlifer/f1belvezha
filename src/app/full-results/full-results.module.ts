@@ -13,6 +13,7 @@ import {FullResultsComponent} from './full-results.component';
 import {FullResultsEffects} from './store/full-results.effects';
 import {fullResultsReducer} from './store/full-results.reducer';
 import {PointsModule} from '../points/points.module';
+import {ResultDetailsModule} from '../result-details/result-details.module';
 
 
 @NgModule({
@@ -26,6 +27,7 @@ import {PointsModule} from '../points/points.module';
     MatSlideToggleModule,
     MatTableModule,
     PointsModule,
+    ResultDetailsModule,
     StoreModule.forFeature('fullResults', fullResultsReducer),
     EffectsModule.forFeature([FullResultsEffects]),
   ],

@@ -18,6 +18,7 @@ import {DriversStandingModule} from './drivers-standing/drivers-standing.module'
 import {FullResultsModule} from './full-results/full-results.module';
 import {GameRulesModule} from './game-rules/game-rules.module';
 import {NewsModule} from './news/news.module';
+import {ResultDetailsModule} from './result-details/result-details.module';
 import {ToolbarModule} from './toolbar/toolbar.module';
 import {CreateAccountDialogModule} from './toolbar/create-account-dialog/create-account-dialog.module';
 import {LoginDialogModule} from './toolbar/login-dialog/login-dialog.module';
@@ -54,6 +55,7 @@ import {PredictionGameModule} from './prediction-game/prediction-game.module';
     PointsModule,
     PredictionDialogModule,
     PredictionGameModule,
+    ResultDetailsModule,
     SideMenuModule,
     ToolbarModule,
     UsersStandingModule,

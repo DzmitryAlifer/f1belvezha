@@ -1,4 +1,5 @@
 <div *ngIf="{
+    allPredictions: allPredictions | async,
     currentUser: currentUser | async,
     currentUserHasPrediction: currentUserHasPrediction | async,
     displayedColumns: displayedColumns | async,
@@ -50,7 +51,9 @@
                     <div class="name">{{user.firstname}} {{user.lastname ?? ''}}</div>
                 </th>
                 <td class="points" mat-cell *matCellDef="let race">
-                    <!-- <div class="details" [class.hidden]="!data.expandedRounds?.has(race.round)">hello</div> -->
+                    <div *ngIf="0" class="details" [class.hidden]="!data.expandedRounds?.has(race.round)">
+                        <result-details></result-details>
+                    </div>
 
                     <ng-container *ngIf="!!data.points && (race.round < data.nextRaceRound! || race.round === data.nextEvent?.round && data.nextEvent?.eventType === EventType.Race)">
                         <points [points]="getPoints(data.points, user, race)" [isCurrentUser]="userData.isCurrentUser"></points>
