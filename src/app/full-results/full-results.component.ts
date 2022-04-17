@@ -141,6 +141,18 @@ export class FullResultsComponent implements OnInit, AfterViewInit {
     this.circuitDialog.open(CircuitDialog, {data: {raceName}});
   }
 
+  getPlayerPredictions(allPredictions: Prediction[], userId: number): Prediction[] {
+    return allPredictions.filter(prediction => prediction.userid === userId);
+  }
+
+  getPlayerPrediction(playerPredictions: Prediction[], round: number): Prediction|undefined {
+    return playerPredictions.find(prediction => prediction.round === round);
+  }
+
+  getRoundResults(results: Race[], round: number): Race|undefined {
+    return results.find(result => result.round === round);
+  }
+
   getPoints(points: Map<number, Map<number, number[][]>>, user: User, race: Race): Array<number[]|null> {
     return points.get(user.id!)?.get(race.round) ?? [null, null, null];
   }

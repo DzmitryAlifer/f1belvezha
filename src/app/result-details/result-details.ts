@@ -1,4 +1,5 @@
 import {ChangeDetectionStrategy, Component, Input} from '@angular/core';
+import {Prediction, Race} from '../types';
 
 
 @Component({
@@ -8,6 +9,8 @@ import {ChangeDetectionStrategy, Component, Input} from '@angular/core';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ResultDetailsComponent {
+  @Input() playerPrediction: Prediction|undefined;
+  @Input() result: Race|undefined;
 
   constructor() {}
 }
