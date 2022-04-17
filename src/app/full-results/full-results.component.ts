@@ -2,7 +2,7 @@ import {AfterViewInit, ChangeDetectionStrategy, Component, OnInit} from '@angula
 import {MatDialog} from '@angular/material/dialog';
 import {MatPaginatorIntl, PageEvent} from '@angular/material/paginator';
 import {Store} from '@ngrx/store';
-import {combineLatest, merge, ReplaySubject} from 'rxjs';
+import {BehaviorSubject, combineLatest, merge, ReplaySubject} from 'rxjs';
 import {filter, debounceTime, map, shareReplay} from 'rxjs/operators';
 import {CircuitDialog} from '../circuit-dialog/circuit-dialog';
 import {EventType} from '../enums';
@@ -32,6 +32,7 @@ export class FullResultsComponent implements OnInit, AfterViewInit {
 
   readonly pageSize = new ReplaySubject<number>(1);
   private readonly pageEventSubject = new ReplaySubject<PageEvent>(1);
+  readonly expandedRounds = new BehaviorSubject<Set<number>>(new Set());
 
   readonly isDarkMode = this.store.select(toolbarSelectors.selectIsDarkMode);
   readonly users = this.store.select(fullResultsSelectors.selectUsers);
@@ -163,5 +164,11 @@ export class FullResultsComponent implements OnInit, AfterViewInit {
     const trailingColumnsCount = pageSize - users.length % pageSize;
 
     return getIndexes(trailingColumnsCount);
+  }
+
+  toggleRowDetails(round: number): void {
+    const expandedRoundValues = this.expandedRounds.getValue();
+    expandedRoundValues.has(round) ? expandedRoundValues.delete(round) : expandedRoundValues.add(round);
+    this.expandedRounds.next(expandedRoundValues);
   }
 }

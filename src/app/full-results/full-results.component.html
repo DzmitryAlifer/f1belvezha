@@ -1,7 +1,8 @@
 <div *ngIf="{
     currentUser: currentUser | async,
-    displayedColumns: displayedColumns | async,
     currentUserHasPrediction: currentUserHasPrediction | async,
+    displayedColumns: displayedColumns | async,
+    expandedRounds: expandedRounds | async,
     isDarkMode: isDarkMode | async,
     isLoaded: isLoaded | async,
     nextEvent: nextEvent | async,
@@ -49,6 +50,8 @@
                     <div class="name">{{user.firstname}} {{user.lastname ?? ''}}</div>
                 </th>
                 <td class="points" mat-cell *matCellDef="let race">
+                    <!-- <div class="details" [class.hidden]="!data.expandedRounds?.has(race.round)">hello</div> -->
+
                     <ng-container *ngIf="!!data.points && (race.round < data.nextRaceRound! || race.round === data.nextEvent?.round && data.nextEvent?.eventType === EventType.Race)">
                         <points [points]="getPoints(data.points, user, race)" [isCurrentUser]="userData.isCurrentUser"></points>
                     </ng-container>
@@ -93,7 +96,7 @@
         </ng-container>
        
         <tr mat-header-row *matHeaderRowDef="data.displayedColumns; sticky: true"></tr>
-        <tr mat-row *matRowDef="let row; columns: data.displayedColumns;"></tr>
+        <tr mat-row *matRowDef="let row; columns: data.displayedColumns;" (click)="toggleRowDetails(row.round)"></tr>
     </table>
 </div>
   
