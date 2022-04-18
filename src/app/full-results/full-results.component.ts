@@ -2,12 +2,12 @@ import {AfterViewInit, ChangeDetectionStrategy, Component, OnInit} from '@angula
 import {MatDialog} from '@angular/material/dialog';
 import {MatPaginatorIntl, PageEvent} from '@angular/material/paginator';
 import {Store} from '@ngrx/store';
-import {BehaviorSubject, combineLatest, merge, ReplaySubject} from 'rxjs';
+import {BehaviorSubject, combineLatest, merge, Observable, ReplaySubject} from 'rxjs';
 import {filter, debounceTime, map, shareReplay} from 'rxjs/operators';
 import {CircuitDialog} from '../circuit-dialog/circuit-dialog';
 import {EventType} from '../enums';
 import {PredictionDialog} from '../prediction-dialog/prediction-dialog';
-import {Prediction, Race, User} from '../types';
+import {DriverRoundResult, Prediction, Race, User} from '../types';
 import * as fullResultsSelectors from './store/full-results.selectors';
 import {FullResultsActionType} from './store/full-results.actions';
 import * as toolbarSelectors from '../toolbar/store/toolbar.selectors';
@@ -42,6 +42,7 @@ export class FullResultsComponent implements OnInit, AfterViewInit {
     map(([currentUser, allPredictions]) => allPredictions.filter(prediction => prediction.userid == currentUser?.id)));
 
   readonly races = this.store.select(fullResultsSelectors.selectRaces).pipe(shareReplay(1));
+  readonly currentYearResults = this.store.select(fullResultsSelectors.selectCurrentYearResults);
   readonly teamVsTeamResults = this.store.select(fullResultsSelectors.selectCurrentYearTeamVsTeamList);
   readonly nextEvent = getNextEvent();
   readonly nextRaceRound = this.nextEvent.pipe(map(nextEvent => nextEvent.round));
@@ -141,15 +142,17 @@ export class FullResultsComponent implements OnInit, AfterViewInit {
     this.circuitDialog.open(CircuitDialog, {data: {raceName}});
   }
 
-  getPlayerPredictions(allPredictions: Prediction[], userId: number): Prediction[] {
-    return allPredictions.filter(prediction => prediction.userid === userId);
+  getPlayerPredictions(userId: number): Observable<Prediction[]> {
+    return this.allPredictions.pipe(
+      map(allPredictions => allPredictions.filter(prediction => prediction.userid == userId)),
+    );
   }
 
   getPlayerPrediction(playerPredictions: Prediction[], round: number): Prediction|undefined {
     return playerPredictions.find(prediction => prediction.round === round);
   }
 
-  getRoundResults(results: Race[], round: number): Race|undefined {
+  getRoundResults(results: DriverRoundResult[], round: number): DriverRoundResult|undefined {
     return results.find(result => result.round === round);
   }
 

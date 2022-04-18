@@ -1,3 +1,43 @@
 @import '../../styles.scss';
 
 
+table {
+    font-size: 9px;
+    line-height: 10px;
+
+    tr {
+        &:first-child {
+            color: $grey-500;
+        }
+
+        &:not(:first-child) {
+            td:not(.correct-on-list) {
+                color: $grey-500;
+                text-decoration: line-through;
+            }
+
+            td {
+                &.correct-on-list,
+                &.correct-position {
+                    .chip {
+                        border-radius: 4px;
+                        color: $grey-900;
+                        padding: 0 2px;
+                    }
+                }
+
+                &.correct-on-list .chip {
+                    background-color: $driver-on-list-color;
+                }
+
+                &.correct-position .chip {
+                    background-color: $driver-correct-place-color;
+                }
+            }
+        }
+        
+        td {
+            text-align: left;
+        }
+    }
+}

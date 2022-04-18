@@ -274,6 +274,10 @@ export function getFullUserName(user: User|null|undefined): string {
     return user ? user.firstname + (user.lastname ? ' ' + user.lastname : '') : '';
 }
 
+export function getShortName(fullName: string): string {
+    return fullName.substring(0, 3).toLocaleUpperCase();
+}
+
 export function getIndexes(max: number): number[] {
     return Array(max).fill(0).map((x, i) => i);
 }

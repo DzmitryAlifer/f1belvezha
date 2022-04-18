@@ -1,1 +1,23 @@
-<p>result-details works!</p>
+<table *ngIf="playerPrediction?.qualification?.length || playerPrediction?.race?.length">
+    <tr>
+        <td>Qual</td>
+        <td>Race</td>
+    </tr>
+
+    <ng-container *ngFor="let driver of driverResultCodeNames?.qualifying; let index = index">
+        <tr *ngIf="driverResultCodeNames?.qualifying && driverResultCodeNames?.race">
+            <td *ngIf="driverResultCodeNames?.qualifying as qualifyingResult"
+                [class.correct-on-list]="isCorrectOnList(EventType.Qualification, index)"
+                [class.correct-position]="isCorrectPosition(EventType.Qualification, index)">
+                {{(index + 1)}}.
+                <span class="chip">{{qualifyingResult[index]}}</span>
+            </td>
+            <td *ngIf="driverResultCodeNames?.race as raceResult"
+                [class.correct-on-list]="isCorrectOnList(EventType.Race, index)"
+                [class.correct-position]="isCorrectPosition(EventType.Race, index)">
+                {{(index + 1)}}.
+                <span class="chip">{{raceResult[index]}}</span>
+            </td>
+        </tr>
+    </ng-container>
+</table>

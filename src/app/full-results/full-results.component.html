@@ -2,6 +2,7 @@
     allPredictions: allPredictions | async,
     currentUser: currentUser | async,
     currentUserHasPrediction: currentUserHasPrediction | async,
+    currentYearResults: currentYearResults | async,
     displayedColumns: displayedColumns | async,
     expandedRounds: expandedRounds | async,
     isDarkMode: isDarkMode | async,
@@ -48,17 +49,19 @@
         <ng-container *ngFor="let user of data.users; let index = index" [matColumnDef]="'user' + user.id">
             <ng-container *ngIf="{
                 isCurrentUser: user.id === data.currentUser?.id,
-                playerPredictions: getPlayerPredictions(data.allPredictions ?? [], user.id!)
+                playerPredictions: getPlayerPredictions(user.id!) | async
             } as userData">
                 <th class="user" mat-header-cell *matHeaderCellDef [class.current-user]="userData.isCurrentUser">
                     <div class="place">{{index + 1}}</div>
                     <div class="name">{{user.firstname}} {{user.lastname ?? ''}}</div>
                 </th>
                 <td class="points" mat-cell *matCellDef="let race">
-                    <div *ngIf="0" class="details" [class.hidden]="!data.expandedRounds?.has(race.round)">
+                    <div *ngIf="userData.playerPredictions && data.currentYearResults && !!race.round && !!data.nextRaceRound && race.round < data.nextRaceRound"
+                        class="details"
+                        [class.hidden]="!data.expandedRounds?.has(race.round)">
                         <result-details 
                             [playerPrediction]="getPlayerPrediction(userData.playerPredictions, race.round)"
-                            [result]="getRoundResults(data.races ?? [], race.round)">
+                            [result]="getRoundResults(data.currentYearResults, race.round)">
                         </result-details>
                     </div>
 

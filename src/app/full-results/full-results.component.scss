@@ -115,9 +115,10 @@
             width: 80px;
 
             .details {
-                height: 80px;
+                height: 100px;
                 transition: height .2s ease-out;
                 overflow: hidden;
+                width: 88px;
 
                 &.hidden {
                     height: 0;
