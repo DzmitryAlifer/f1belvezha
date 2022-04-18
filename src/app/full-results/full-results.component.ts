@@ -116,6 +116,7 @@ export class FullResultsComponent implements OnInit, AfterViewInit {
   }
 
   onPageChange(pageEvent: PageEvent): void {
+    this.expandedRounds.next(new Set());
     const previousPageSize = this.localStorageService.getItem<number>('pageSize');
 
     if (pageEvent.pageSize !== previousPageSize) {
