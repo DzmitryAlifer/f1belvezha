@@ -1,1 +1,48 @@
-<p>admin works!</p>
+<ng-container *ngIf="{
+    events: availableEvents | async,
+    isDarkMode: isDarkMode | async,
+    nextRaceRound: nextRaceRound | async,
+    results: results | async
+} as data">
+    <mat-accordion [class.dark]="data.isDarkMode">
+        <mat-expansion-panel *ngFor="let event of data.events">
+            <mat-expansion-panel-header>
+                <mat-panel-title
+                    [class.old]="event.round < (data.nextRaceRound ?? 0)"
+                    [class.current]="event.round == data.nextRaceRound">
+                    <span class="round">{{event.round}}</span>
+                    <span class="date">{{formatDate(event.date)}}</span>
+                    <img class="flag" [src]="getFlagLink(event.Circuit.Location.country)" />
+                    <span class="name">{{event.raceName}}</span>
+                </mat-panel-title>
+                <mat-panel-description>
+                    <span *ngIf="hasQualifyingResults(data.results, event.round)" class="event">
+                        Qualifyng<mat-icon>verified</mat-icon>
+                    </span>
+                    <span *ngIf="hasRaceResults(data.results, event.round)" class="event">
+                        Race<mat-icon >verified</mat-icon>
+                    </span>
+                </mat-panel-description>
+            </mat-expansion-panel-header>
+            
+            <div *ngIf="{roundResults: findRoundResults(data.results, event.round)} as innerData" class="content">
+                <div *ngIf="innerData.roundResults?.qualifying?.length">
+                    <span class="event">Qualifying:</span>
+                    {{innerData.roundResults?.qualifying?.toString()}}
+                </div>
+                <div *ngIf="innerData.roundResults?.race?.length">
+                    <span class="event">Race:</span>
+                    {{innerData.roundResults?.race?.toString()}}
+                </div>
+                <div *ngIf="!innerData.roundResults?.qualifying?.length">
+                    <span class="event">Qualifying:</span>
+                    fill form
+                </div>
+                <div *ngIf="!innerData.roundResults?.race?.length">
+                    <span class="event">Race:</span>
+                    fill form
+                </div>
+            </div>
+        </mat-expansion-panel>
+    </mat-accordion>
+</ng-container>

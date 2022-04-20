@@ -1,0 +1,55 @@
+@import '../../styles.scss';
+
+
+.current {
+    color: $blue-800;
+}
+    
+.old {
+    color: $grey-500;
+}
+    
+.dark .current {
+    color: $blue-200;
+}
+
+mat-panel-title {
+    width: 200px;
+
+    .round,
+    .date,
+    .name {
+        text-align: left;
+    }
+
+    .round {
+        width: 40px;
+    }
+
+    .date {
+        width: 60px;
+    }
+
+    .flag {
+        border: 1px solid grey;
+        border-radius: 4px;
+        height: 24px;
+    }
+
+    .name {
+        padding-left: 16px;
+    }
+}
+
+.event {
+    padding: 0 20px;
+
+    .mat-icon {
+        padding: 0 8px;
+        vertical-align: middle;
+    }
+}
+
+.content {
+    text-align: left;
+}
