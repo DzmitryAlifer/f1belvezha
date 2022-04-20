@@ -10,7 +10,8 @@ export enum Page {
     Charts = 'charts',
     Calendar = 'calendar',
     GameRules = 'rules',
-    Account = 'account,'
+    Account = 'account',
+    Admin = 'admin',
 }
 
 export enum TeamName {

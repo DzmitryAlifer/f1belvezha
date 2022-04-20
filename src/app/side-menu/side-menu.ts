@@ -1,5 +1,6 @@
 import {ChangeDetectionStrategy, Component} from '@angular/core';
 import {Store} from '@ngrx/store';
+import {map} from 'rxjs/operators';
 import {Page} from '../enums';
 import {ToolbarActionType} from '../toolbar/store/toolbar.actions';
 import * as toolbarSelectors from '../toolbar/store/toolbar.selectors';
@@ -16,6 +17,7 @@ export class SideMenuComponent {
   readonly Page = Page;
 
   readonly isDarkMode = this.store.select(toolbarSelectors.selectIsDarkMode);
+  readonly isCurrentUserAdmin = this.store.select(toolbarSelectors.selectCurrentUser).pipe(map(user => user?.admin));
   readonly page = this.store.select(toolbarSelectors.selectPage);
 
   constructor(private readonly store: Store) {}
