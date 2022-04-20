@@ -4,7 +4,8 @@
     page: page | async
 } as data">
     <div class="menu"
-            [class.dark]="isDarkMode | async"
+            [class.dark]="data.isDarkMode"
+            [class.is-admin]="data.isCurrentUserAdmin"
             [class.wide]="isOpen"
             (mouseenter)="isOpen = true"
             (mouseleave)="isOpen = false">

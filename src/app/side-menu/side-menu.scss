@@ -3,7 +3,8 @@
 
 $border-color-light: $grey-400;
 $border-color-dark: $grey-700;
-
+$menu-item-height: 58px;
+$menu-elements-number: 6;
 
 .menu {
     background-color: rgba(245, 245, 245, .85);
@@ -11,7 +12,7 @@ $border-color-dark: $grey-700;
     border-right: 1px solid $border-color-light;
     border-radius: 4px;
     border-top: 1px solid $border-color-light;
-    height: calc(58px * 6);
+    height: calc($menu-item-height * $menu-elements-number);
     margin-left: -4px;
     margin-top: calc($toolbar-height + 32px);
     padding: 8px 0 8px 12px;
@@ -21,6 +22,10 @@ $border-color-dark: $grey-700;
     transition: .2s;
     width: $side-menu-width;
     z-index: 500;
+
+    &.is-admin {
+        height: calc($menu-item-height * $menu-elements-number + $menu-item-height);
+    }
 
     &.dark {
         background-color: rgba(45, 45, 45, .85);
