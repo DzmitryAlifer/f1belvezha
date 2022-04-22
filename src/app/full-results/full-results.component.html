@@ -65,7 +65,7 @@
                         </result-details>
                     </div>
 
-                    <ng-container *ngIf="!!data.points && (race.round < data.nextRaceRound! || race.round === data.nextEvent?.round && data.nextEvent?.eventType === EventType.Race)">
+                    <ng-container *ngIf="!!data.points && (race.round < data.nextRaceRound! || race.round === data.nextEvent?.round && data.nextEvent?.eventType !== EventType.Qualification)">
                         <points [points]="getPoints(data.points, user, race)" [isCurrentUser]="userData.isCurrentUser"></points>
                     </ng-container>
                     
@@ -73,7 +73,7 @@
                         <button *ngIf="userData.isCurrentUser"
                             mat-icon-button
                             onclick="this.blur()"
-                            (click)="openPredictionDialog(user.id!, race.round, !!data.currentUserHasPrediction, data.nextEvent?.eventType === EventType.Race, false)">
+                            (click)="openPredictionDialog(user.id!, race.round, !!data.currentUserHasPrediction, data.nextEvent?.eventType !== EventType.Qualification, false)">
                             <mat-icon class="user-prediction current">
                                 {{data.currentUserHasPrediction ? 'lightbulb_outline' : 'lightbulb'}}
                             </mat-icon>

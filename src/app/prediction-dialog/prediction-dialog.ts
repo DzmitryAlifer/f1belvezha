@@ -3,14 +3,14 @@ import {AbstractControl, FormControl, FormGroup, ValidationErrors, Validators} f
 import {MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
 import {Store} from '@ngrx/store';
 import {BehaviorSubject, combineLatest, merge} from 'rxjs';
-import {filter, map, shareReplay} from 'rxjs/operators';
+import {filter, map, shareReplay, switchMap} from 'rxjs/operators';
 import {F1PublicApiService} from '../service/f1-public-api.service';
 import {PredictionService} from '../service/prediction.service';
 import {Prediction} from '../types';
 import * as fullResultsSelectors from '../full-results/store/full-results.selectors';
 import {FullResultsActionType} from '../full-results/store/full-results.actions';
 import {PREDICTION_PLACES_NUMBER, TEAM_NAMES} from 'src/constants';
-import {CORRECT_TEAM_FROM_PAIR_PTS, getNextEvent, NOT_SELECTED_DRIVER_NAME, NOT_SELECTED_DRIVER_POSITION, WRONG_TEAM_PTS} from '../common';
+import { CORRECT_TEAM_FROM_PAIR_PTS, getNextEvent, getNextEvent2, NOT_SELECTED_DRIVER_NAME, NOT_SELECTED_DRIVER_POSITION, WRONG_TEAM_PTS} from '../common';
 import {EventType, TeamName} from '../enums';
 import * as toolbarSelectors from '../toolbar/store/toolbar.selectors';
 
@@ -92,7 +92,12 @@ export class PredictionDialog {
     teamVsTeam1: new FormControl(TeamName.None),
   }, {validators: validateForm});
 
-  private readonly nextEvent = getNextEvent().pipe(
+  // private readonly nextEvent = getNextEvent().pipe(
+  //   filter(event => event.round === this.data.round),
+  //   shareReplay(1));
+
+  private readonly nextEvent = this.store.select(toolbarSelectors.selectCalendar).pipe(
+    switchMap(calendarRaces => getNextEvent2(calendarRaces)),
     filter(event => event.round === this.data.round),
     shareReplay(1));
   readonly isQualificationEditable = this.nextEvent.pipe(

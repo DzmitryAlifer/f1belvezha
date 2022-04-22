@@ -1,4 +1,4 @@
-import {ChangeDetectionStrategy, Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output} from '@angular/core';
 import {FormControl, FormGroup} from '@angular/forms';
 import {Subject} from 'rxjs';
 import {map, takeUntil} from 'rxjs/operators';
@@ -20,7 +20,7 @@ const CURRENT_YEAR = new Date().getFullYear();
   styleUrls: ['./driver-places.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class DriverPlacesComponent implements OnInit, OnDestroy {
+export class DriverPlacesComponent implements OnInit, OnChanges, OnDestroy {
   @Input() round = 0;
   @Input() eventType = EventType.Qualification;
   @Input() results: string[] = [];
@@ -54,7 +54,9 @@ export class DriverPlacesComponent implements OnInit, OnDestroy {
       const driverNames = Object.values(formValues) as string[];
       this.selectedDrivers.emit(driverNames);
     });
+  }
 
+  ngOnChanges(): void {
     this.roundResult.pipe(takeUntil(this.destroyed)).subscribe(roundResult => {
       const eventResult = this.getEventResult(roundResult);
 

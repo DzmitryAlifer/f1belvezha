@@ -226,6 +226,16 @@ export function getNextEvent(): Observable<DisplayEvent> {
     );
 }
 
+export function getNextEvent2(races: Race[]): Observable<DisplayEvent> {
+    const nextEvent = findNextEvent2(races);
+    // Finds next event each 2 minutes
+    return interval(2 * 60 * 1000).pipe(
+        map(() => nextEvent),
+        startWith(nextEvent),
+        shareReplay(1),
+    );
+}
+
 export function resultToPoints(result: PlayerRoundResult): number {
     const driversInListPts = DRIVER_IN_LIST_PTS * (result.qual_guessed_on_list.length + result.race_guessed_on_list.length);
     const driversPositionsPts = DRIVER_PLACE_PTS * (result.qual_guessed_position.length + result.race_guessed_position.length);
