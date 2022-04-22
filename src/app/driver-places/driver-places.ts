@@ -1,6 +1,7 @@
-import {ChangeDetectionStrategy, Component, Input} from '@angular/core';
-import {AbstractControl, FormControl, FormGroup, ValidationErrors, Validators} from '@angular/forms';
-import {map} from 'rxjs/operators';
+import {ChangeDetectionStrategy, Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angular/core';
+import {FormControl, FormGroup} from '@angular/forms';
+import {Subject} from 'rxjs';
+import {map, takeUntil} from 'rxjs/operators';
 import {PREDICTION_PLACES_NUMBER} from 'src/constants';
 import {NOT_SELECTED_DRIVER_NAME, NOT_SELECTED_DRIVER_POSITION} from '../common';
 import {EventType} from '../enums';
@@ -19,12 +20,16 @@ const CURRENT_YEAR = new Date().getFullYear();
   styleUrls: ['./driver-places.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class DriverPlacesComponent {
+export class DriverPlacesComponent implements OnInit, OnDestroy {
   @Input() round = 0;
   @Input() eventType = EventType.Qualification;
+  @Input() results: string[] = [];
+  @Output() selectedDrivers = new EventEmitter<string[]>();
 
   readonly PLACE_INDEXES = PLACE_INDEXES;
   readonly EventType = EventType;
+
+  private readonly destroyed = new Subject<void>();
   
   readonly drivers = this.f1PublicApiService.getDriverStandings()
     .pipe(map(driverStandings => [...driverStandings, NOT_SELECTED_DRIVER_POSITION]));
@@ -44,18 +49,50 @@ export class DriverPlacesComponent {
     private readonly resultService: ResultService,
   ) {}
 
+  ngOnInit(): void {
+    this.placesForm.valueChanges.pipe(takeUntil(this.destroyed)).subscribe(formValues => {
+      const driverNames = Object.values(formValues) as string[];
+      this.selectedDrivers.emit(driverNames);
+    });
+
+    this.roundResult.pipe(takeUntil(this.destroyed)).subscribe(roundResult => {
+      const eventResult = this.getEventResult(roundResult);
+
+      this.placesForm.patchValue({
+        place1: eventResult ? eventResult[0] : NOT_SELECTED_DRIVER_NAME,
+        place2: eventResult ? eventResult[1] : NOT_SELECTED_DRIVER_NAME,
+        place3: eventResult ? eventResult[2] : NOT_SELECTED_DRIVER_NAME,
+        place4: eventResult ? eventResult[3] : NOT_SELECTED_DRIVER_NAME,
+        place5: eventResult ? eventResult[4] : NOT_SELECTED_DRIVER_NAME,
+      });
+    });
+  }
+
+  ngOnDestroy(): void {
+    this.destroyed.next();
+    this.destroyed.complete();
+  }
+
+  private getEventResult(driverRoundResult: DriverRoundResult|undefined): string[]|null {
+    if (!driverRoundResult) {
+      return null;
+    }
+
+    switch (this.eventType) {
+      case EventType.Qualification:
+        return driverRoundResult.qualifying;
+      case EventType.Race:
+        return driverRoundResult.race;
+      default:
+        return [];
+    }
+  }
+
   getDriverFamilyName(driverRoundResult: DriverRoundResult|null|undefined, placeIndex: number): string {
     if (!driverRoundResult) {
       return NOT_SELECTED_DRIVER_NAME;
     }
-    
-    switch(this.eventType) {
-      case EventType.Qualification:
-        return driverRoundResult.qualifying[placeIndex];
-      case EventType.Race:
-        return driverRoundResult.race[placeIndex];
-      default:
-        return NOT_SELECTED_DRIVER_NAME;
-    }
+
+    return this.getEventResult(driverRoundResult)![placeIndex];
   }
 }

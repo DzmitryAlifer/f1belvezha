@@ -1,6 +1,6 @@
 import {ChangeDetectionStrategy, Component} from '@angular/core';
 import {Store} from '@ngrx/store';
-import { combineLatest } from 'rxjs';
+import {combineLatest, ReplaySubject} from 'rxjs';
 import {map} from 'rxjs/operators';
 import {formatDate, getFlagLink, getNextEvent} from '../common';
 import {EventType} from '../enums';
@@ -21,6 +21,9 @@ const CURRENT_YEAR = new Date().getFullYear();
 export class AdminComponent {
   readonly EventType = EventType;
 
+  readonly selectedQualifyingDrivers = new ReplaySubject<string[]>(1);
+  readonly selectedRaceDrivers = new ReplaySubject<string[]>(1);
+
   readonly isDarkMode = this.store.select(toolbarSelectors.selectIsDarkMode);
   readonly nextRaceRound = getNextEvent().pipe(map(nextEvent => nextEvent.round));
   readonly results = this.resultService.getDriverYearResults(CURRENT_YEAR);
@@ -32,7 +35,10 @@ export class AdminComponent {
   constructor(
     private readonly resultService: ResultService,
     private readonly store: Store,
-  ) { this.results.subscribe(r=>console.log(r))}
+  ) { 
+    this.selectedQualifyingDrivers.subscribe(r=>console.log(r))
+    this.selectedRaceDrivers.subscribe(r => console.log(r))
+  }
 
   formatDate(dateStr: string): string {
     return formatDate(dateStr);
@@ -52,5 +58,9 @@ export class AdminComponent {
 
   hasRaceResults(results: DriverRoundResult[] | null, round: number): boolean {
     return !!this.findRoundResults(results, round)?.race.length;
+  }
+
+  saveResults(): void {
+    
   }
 }

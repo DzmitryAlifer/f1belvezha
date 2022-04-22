@@ -26,24 +26,40 @@
             </mat-expansion-panel-header>
             
             <div *ngIf="{roundResults: findRoundResults(data.results, event.round)} as innerData" class="content">
-                <div *ngIf="innerData.roundResults?.qualifying?.length">
-                    <span class="event-type">Qualifying:</span>
-                    {{innerData.roundResults?.qualifying?.toString()}}
-                </div>
-                <div *ngIf="innerData.roundResults?.race?.length">
-                    <span class="event-type">Race:</span>
-                    {{innerData.roundResults?.race?.toString()}}
+                <div *ngIf="data.nextRaceRound && event.round < data.nextRaceRound">
+                    <div *ngIf="innerData.roundResults?.qualifying?.length">
+                        <span class="event-type">Qualifying:</span>
+                        {{innerData.roundResults?.qualifying?.toString()}}
+                    </div>
+                    <div *ngIf="innerData.roundResults?.race?.length">
+                        <span class="event-type">Race:</span>
+                        {{innerData.roundResults?.race?.toString()}}
+                    </div>
                 </div>
 
-                <div class="new-results">
-                    <div *ngIf="!innerData.roundResults?.qualifying?.length" class="event-results">
-                        <h3>Qualifying</h3>
-                        <driver-places [round]="event.round" [eventType]="EventType.Qualification"></driver-places>
+                <div class="form">
+                    <div class="new-results">
+                        <div class="event-results">
+                            <h3>Qualifying</h3>
+                            <driver-places
+                                [round]="event.round"
+                                [eventType]="EventType.Qualification"
+                                [results]="innerData.roundResults?.qualifying ?? []"
+                                (selectedDrivers)="selectedQualifyingDrivers.next($event)">
+                            </driver-places>
+                        </div>
+                        <div class="event-results">
+                            <h3>Race</h3>
+                            <driver-places
+                                [round]="event.round"
+                                [eventType]="EventType.Race"
+                                [results]="innerData.roundResults?.race ?? []"
+                                (selectedDrivers)="selectedRaceDrivers.next($event)">
+                            </driver-places>
+                        </div>
                     </div>
-                    <div *ngIf="!innerData.roundResults?.race?.length" class="event-results">
-                        <h3>Race</h3>
-                        <driver-places [round]="event.round" [eventType]="EventType.Race"></driver-places>
-                    </div>
+
+                    <button mat-raised-button color="primary" (click)="saveResults()">Save</button>
                 </div>
             </div>
         </mat-expansion-panel>

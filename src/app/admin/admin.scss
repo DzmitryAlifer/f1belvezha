@@ -54,6 +54,10 @@ mat-panel-title {
 .content {
     text-align: left;
 
+    .form {
+        text-align: center;
+    }
+
     .new-results {
         display: flex;
         justify-content: center;
