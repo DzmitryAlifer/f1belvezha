@@ -1,6 +1,6 @@
 import * as moment from 'moment';
 import {interval, Observable} from 'rxjs';
-import {map, shareReplay, startWith} from 'rxjs/operators';
+import {filter, map, shareReplay, startWith} from 'rxjs/operators';
 import {EventType, TeamName} from './enums';
 import {DisplayEvent, EventSchedule} from './types';
 import {DateTimeApi, Driver, DriverRoundResult, DriverStanding, PlayerRoundResult, Prediction, Race, TeamVsTeam, User, UserPoints} from './types';
@@ -101,7 +101,11 @@ function toMoment(dateTime: DateTimeApi): moment.Moment {
     return toMoment2(dateTime.date, dateTime.time);
 }
 
-export function findNextEvent2(races: Race[]): DisplayEvent {
+export function findNextEvent2(races: Race[]): DisplayEvent|null {
+    if (!races.length) {
+        return null;
+    }
+
     const NOW = moment();
     const nextEventIndex = races.findIndex(event => toMoment(event).isAfter(NOW));
     const previousEvent = races[nextEventIndex - 1];
@@ -227,10 +231,11 @@ export function getNextEvent(): Observable<DisplayEvent> {
 }
 
 export function getNextEvent2(races: Race[]): Observable<DisplayEvent> {
-    const nextEvent = findNextEvent2(races);
+    const nextEvent = findNextEvent2(races) as DisplayEvent;
     // Finds next event each 2 minutes
     return interval(2 * 60 * 1000).pipe(
         map(() => nextEvent),
+        filter(event => event !== null),
         startWith(nextEvent),
         shareReplay(1),
     );

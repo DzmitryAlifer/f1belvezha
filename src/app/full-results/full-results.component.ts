@@ -3,7 +3,7 @@ import {MatDialog} from '@angular/material/dialog';
 import {MatPaginatorIntl, PageEvent} from '@angular/material/paginator';
 import {Store} from '@ngrx/store';
 import {BehaviorSubject, combineLatest, merge, Observable, ReplaySubject} from 'rxjs';
-import {filter, debounceTime, map, shareReplay} from 'rxjs/operators';
+import {filter, debounceTime, map, shareReplay, switchMap} from 'rxjs/operators';
 import {CircuitDialog} from '../circuit-dialog/circuit-dialog';
 import {EventType} from '../enums';
 import {PredictionDialog} from '../prediction-dialog/prediction-dialog';
@@ -11,7 +11,7 @@ import {DriverRoundResult, Prediction, Race, User} from '../types';
 import * as fullResultsSelectors from './store/full-results.selectors';
 import {FullResultsActionType} from './store/full-results.actions';
 import * as toolbarSelectors from '../toolbar/store/toolbar.selectors';
-import {formatDate, getCircuitPath, getFlagLink, getIndexes, getNextEvent} from '../common';
+import {formatDate, getCircuitPath, getFlagLink, getIndexes, getNextEvent, getNextEvent2} from '../common';
 import {LocalStorageService} from '../service/local-storage.service';
 
 
@@ -44,7 +44,10 @@ export class FullResultsComponent implements OnInit, AfterViewInit {
   readonly races = this.store.select(fullResultsSelectors.selectRaces).pipe(shareReplay(1));
   readonly currentYearResults = this.store.select(fullResultsSelectors.selectCurrentYearResults);
   readonly teamVsTeamResults = this.store.select(fullResultsSelectors.selectCurrentYearTeamVsTeamList);
-  readonly nextEvent = getNextEvent();
+  // readonly nextEvent = getNextEvent();
+  readonly nextEvent = this.store.select(toolbarSelectors.selectCalendar).pipe(
+    filter(calendarRaces => !!calendarRaces.length),
+    switchMap(calendarRaces => getNextEvent2(calendarRaces)));
   readonly nextRaceRound = this.nextEvent.pipe(map(nextEvent => nextEvent.round));
   readonly isLoaded = combineLatest([this.users, this.races]).pipe(map(([users, races]) => !!races && !!users));
 

@@ -44,6 +44,7 @@ export class ChartService {
   
   private readonly playersSuccessRates = combineLatest([this.users, this.allPredictions, this.playersYearResults, this.lastRound, this.nextEvent]).pipe(
     debounceTime(0),
+    filter(([,,,, nextEvent]) => !!nextEvent),
     map(([users, allPredictions, results, lastRound, nextEvent]) => users.reduce((map, user) => {
       const userId = user.id!;
       const playerFullName = getFullUserName(user);
@@ -53,7 +54,7 @@ export class ChartService {
           {userId, correctInList: 0, correctPosition: 0, predictionsNumber: 0};
       const correctInList = singlePlayerSuccessPct.correctInList + countGettingsInList(singlePlayerResults);
       const correctPosition = singlePlayerSuccessPct.correctPosition + countCorrectPositions(singlePlayerResults);
-      const predictionsNumber = this.calculateUserPredictionsNumber(userPredictions, nextEvent);
+      const predictionsNumber = this.calculateUserPredictionsNumber(userPredictions, nextEvent!);
 
       return map.set(playerFullName, {userId, correctInList, correctPosition, predictionsNumber});
     }, new Map<string, PlayerSuccessPct>())),
@@ -63,10 +64,11 @@ export class ChartService {
   private readonly playersProgressTotalPts = 
       combineLatest([this.users, this.playersYearResults, this.calendarEvents, this.nextEvent]).pipe(
         debounceTime(0),
+        filter(([, , , nextEvent]) => !!nextEvent),
         map(([users, results, calendarEvents, nextEvent]) => {
           const seriesData: {country: string, roundUserPts: number[]}[] = [];
 
-          for (let round = 1; round < nextEvent.round; round++) {
+          for (let round = 1; round < nextEvent!.round; round++) {
             const country = calendarEvents.find(event => event.round === round)!.Circuit.Location.country;
             const roundUserPts = getRoundUsersPoints(round, users, results)
             seriesData.push({country, roundUserPts});
