@@ -148,7 +148,7 @@ export interface Result {
 }
 
 export interface DriverRoundResult {
-    id: number;
+    id?: number;
     year: number;
     round: number;
     qualifying: string[];
