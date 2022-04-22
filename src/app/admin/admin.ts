@@ -3,9 +3,10 @@ import {Store} from '@ngrx/store';
 import { combineLatest } from 'rxjs';
 import {map} from 'rxjs/operators';
 import {formatDate, getFlagLink, getNextEvent} from '../common';
+import {EventType} from '../enums';
 import {ResultService} from '../service/result.service';
 import * as toolbarSelectors from '../toolbar/store/toolbar.selectors';
-import { DriverRoundResult } from '../types';
+import {DriverRoundResult} from '../types';
 
 
 const CURRENT_YEAR = new Date().getFullYear();
@@ -18,6 +19,8 @@ const CURRENT_YEAR = new Date().getFullYear();
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AdminComponent {
+  readonly EventType = EventType;
+
   readonly isDarkMode = this.store.select(toolbarSelectors.selectIsDarkMode);
   readonly nextRaceRound = getNextEvent().pipe(map(nextEvent => nextEvent.round));
   readonly results = this.resultService.getDriverYearResults(CURRENT_YEAR);

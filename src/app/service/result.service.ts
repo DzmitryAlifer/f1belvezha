@@ -1,5 +1,6 @@
 import {Injectable} from '@angular/core';
 import {Observable, of} from 'rxjs';
+import {map} from 'rxjs/operators';
 import {DriverRoundResult, Params, PlayerRoundResult} from '../types';
 import {HttpService} from './http.service';
 
@@ -12,6 +13,10 @@ export class ResultService {
   getDriverYearResults(year: number): Observable<DriverRoundResult[]> {
     const queryParams: Params = {year: String(year)};
     return this.httpService.getByParams<DriverRoundResult[]>('/driverResult', queryParams);
+  }
+
+  getDriverRoundResults(year: number, round: number): Observable<DriverRoundResult|undefined> {
+    return this.getDriverYearResults(year).pipe(map(results => results.find(result => result.round === round)));
   }
 
   getPlayersYearResults(year: number): Observable<PlayerRoundResult[]> {

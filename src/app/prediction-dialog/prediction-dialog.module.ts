@@ -8,6 +8,7 @@ import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatRadioModule} from '@angular/material/radio';
 import {MatSelectModule} from '@angular/material/select';
 import {MatTooltipModule} from '@angular/material/tooltip';
+import {DriverPlacesModule} from '../driver-places/driver-places.module';
 import {DriverBolidComponent} from './driver-bolid';
 import {PredictionDialog} from './prediction-dialog';
 
@@ -15,6 +16,7 @@ import {PredictionDialog} from './prediction-dialog';
 @NgModule({
   imports: [
     CommonModule,
+    DriverPlacesModule,
     FormsModule,
     MatButtonModule,
     MatFormFieldModule, 
@@ -26,5 +28,6 @@ import {PredictionDialog} from './prediction-dialog';
     ReactiveFormsModule,
   ],
   declarations: [DriverBolidComponent, PredictionDialog],
+  exports: [DriverBolidComponent],
 })
 export class PredictionDialogModule { }

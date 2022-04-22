@@ -41,7 +41,8 @@ mat-panel-title {
     }
 }
 
-.event {
+.event-type {
+    margin: 0 20px;
     padding: 0 20px;
 
     .mat-icon {
@@ -52,4 +53,14 @@ mat-panel-title {
 
 .content {
     text-align: left;
+
+    .new-results {
+        display: flex;
+        justify-content: center;
+        text-align: center;
+    
+        .event-results {
+            padding: 0 32px;
+        }
+    }
 }

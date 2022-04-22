@@ -33,7 +33,7 @@ const EMPTY_PREDICTION: Prediction = {
 
 
 @Component({
-  selector: 'app-prediction-dialog',
+  selector: 'prediction-dialog',
   templateUrl: './prediction-dialog.html',
   styleUrls: ['./prediction-dialog.scss'],
 })
@@ -41,7 +41,9 @@ export class PredictionDialog {
   readonly PLACE_INDEXES = PLACE_INDEXES;
   readonly TEAM_NAMES = TEAM_NAMES;
   readonly NOT_SELECTED_DRIVER_NAME = NOT_SELECTED_DRIVER_NAME;
+  readonly EventType = EventType;
   readonly TeamName = TeamName;
+  readonly round = this.data.round;
   readonly teamSelectionTooltip = 
       `You can optionally select one winning team in each selection, or you can skip one or more selections.\n
       • Each correct selection: +${CORRECT_TEAM_FROM_PAIR_PTS} point.\n

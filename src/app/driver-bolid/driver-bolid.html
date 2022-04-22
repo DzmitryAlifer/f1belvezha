@@ -1,0 +1,4 @@
+<img *ngIf="driverFamilyName && driverFamilyName !== NOT_SELECTED_DRIVER_NAME"
+    class="bolid"
+    [src]="getBolidPath(driverFamilyName!)" />
+<span>{{driverFamilyName}}</span>

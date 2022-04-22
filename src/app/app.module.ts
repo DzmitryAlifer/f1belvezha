@@ -15,6 +15,7 @@ import {CalendarModule} from './calendar/calendar.module';
 import {ChartsModule} from './charts/charts.module';
 import {CoinModule} from './coin/coin.module';
 import {DashboardModule} from './dashboard/dashboard.module';
+import {DriverPlacesModule} from './driver-places/driver-places.module';
 import {DriversStandingModule} from './drivers-standing/drivers-standing.module';
 import {FullResultsModule} from './full-results/full-results.module';
 import {GameRulesModule} from './game-rules/game-rules.module';
@@ -45,6 +46,7 @@ import {PredictionGameModule} from './prediction-game/prediction-game.module';
     CreateAccountDialogModule,
     DashboardModule,
     DragDropModule,
+    DriverPlacesModule,
     DriversStandingModule,
     FullResultsModule,
     GameRulesModule,

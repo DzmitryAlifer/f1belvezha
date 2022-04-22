@@ -1,0 +1,25 @@
+<ng-container *ngIf="{
+    drivers: drivers | async,
+    roundResult: roundResult | async
+} as data">
+    <ng-container *ngFor="let placeIndex of PLACE_INDEXES">
+        <mat-form-field>
+            <mat-label>Place {{placeIndex + 1}}</mat-label>
+
+            <ng-container *ngIf="{driverFamilyName : getDriverFamilyName(data.roundResult, placeIndex)} as innerData">
+                <mat-select 
+                    [formControlName]="'place' + (placeIndex + 1)"
+                    [(value)]="innerData.driverFamilyName">
+
+                    <mat-select-trigger>
+                        <driver-bolid [driverFamilyName]="innerData.driverFamilyName"></driver-bolid>
+                    </mat-select-trigger>
+
+                    <mat-option *ngFor="let driver of data.drivers" [value]="driver.Driver.familyName">
+                        <driver-bolid [driverFamilyName]="driver.Driver.familyName"></driver-bolid>
+                    </mat-option>
+                </mat-select>
+            </ng-container>
+        </mat-form-field>
+    </ng-container>
+</ng-container>
