@@ -55,7 +55,7 @@
                     <div class="place">{{index + 1}}</div>
                     <div class="name">{{user.firstname}} {{user.lastname ?? ''}}</div>
                 </th>
-                <td class="points" mat-cell *matCellDef="let race">
+                <td class="points" mat-cell *matCellDef="let race" (click)="toggleRowDetails(race.round)">
                     <div *ngIf="userData.playerPredictions && data.currentYearResults && !!race.round && !!data.nextRaceRound && race.round <= data.nextRaceRound"
                         class="details"
                         [class.hidden]="!data.expandedRounds?.has(race.round)">
@@ -77,7 +77,7 @@
                         <button *ngIf="userData.isCurrentUser"
                             mat-icon-button
                             onclick="this.blur()"
-                            (click)="openPredictionDialog(user.id!, race.round, !!data.currentUserHasPrediction, data.nextEvent?.eventType !== EventType.Qualification, false)">
+                            (click)="openPredictionDialog($event, user.id!, race.round, !!data.currentUserHasPrediction, data.nextEvent?.eventType !== EventType.Qualification, false)">
                             <mat-icon class="user-prediction current">
                                 {{data.currentUserHasPrediction ? 'lightbulb_outline' : 'lightbulb'}}
                             </mat-icon>
@@ -113,7 +113,7 @@
         </ng-container>
        
         <tr mat-header-row *matHeaderRowDef="data.displayedColumns; sticky: true"></tr>
-        <tr mat-row *matRowDef="let row; columns: data.displayedColumns;" (click)="toggleRowDetails(row.round)"></tr>
+        <tr mat-row *matRowDef="let row; columns: data.displayedColumns;"></tr>
     </table>
 </div>
   

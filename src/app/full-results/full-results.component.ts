@@ -164,7 +164,9 @@ export class FullResultsComponent implements OnInit, AfterViewInit {
     return points.get(user.id!)?.get(race.round) ?? [null, null, null];
   }
 
-  openPredictionDialog(userId: number, round: number, hasPrediction: boolean, isQualificationLocked: boolean, isRaceLocked: boolean): void {
+  openPredictionDialog(event: Event, userId: number, round: number, hasPrediction: boolean, isQualificationLocked: boolean, isRaceLocked: boolean): void {
+    event.stopPropagation();
+    
     this.predictionDialog.open(PredictionDialog, {
       disableClose: true,
       data: {userId, round, hasPrediction, isQualificationLocked, isRaceLocked},
