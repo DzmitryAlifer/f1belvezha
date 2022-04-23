@@ -1,9 +1,9 @@
 import {ChangeDetectionStrategy, Component} from '@angular/core';
 import {MatDialog} from '@angular/material/dialog';
 import {Store} from '@ngrx/store';
-import {map} from 'rxjs/operators';
+import {map, switchMap} from 'rxjs/operators';
 import {CircuitDialog} from '../circuit-dialog/circuit-dialog';
-import {formatDate, formatDateTime, getCircuitPath, getFlagLink, getNextEvent} from '../common';
+import {formatDate, formatDateTime, getCircuitPath, getFlagLink, getNextEvent2} from '../common';
 import * as toolbarSelectors from '../toolbar/store/toolbar.selectors';
 import {DateTimeApi} from '../types';
 
@@ -31,7 +31,12 @@ export class CalendarComponent {
 
   readonly isDarkMode = this.store.select(toolbarSelectors.selectIsDarkMode);
   readonly races = this.store.select(toolbarSelectors.selectCalendar);
-  readonly nextRaceRound = getNextEvent().pipe(map(nextEvent => nextEvent.round));
+  
+  readonly nextRaceRound = this.races.pipe(
+    switchMap(allEvents => getNextEvent2(allEvents)),
+    map(nextEvent => nextEvent.round),
+  );
+  // readonly nextRaceRound = getNextEvent().pipe(map(nextEvent => nextEvent.round));
 
   constructor(
     private readonly circuitDialog: MatDialog,

@@ -2,7 +2,7 @@ import {ChangeDetectionStrategy, Component} from '@angular/core';
 import {Store} from '@ngrx/store';
 import {combineLatest, ReplaySubject} from 'rxjs';
 import {map, switchMap, withLatestFrom} from 'rxjs/operators';
-import {formatDate, getFlagLink, getNextEvent, NOT_SELECTED_DRIVER_NAME} from '../common';
+import {formatDate, getFlagLink, getNextEvent2, NOT_SELECTED_DRIVER_NAME} from '../common';
 import {EventType} from '../enums';
 import {ResultService} from '../service/result.service';
 import * as toolbarSelectors from '../toolbar/store/toolbar.selectors';
@@ -25,9 +25,13 @@ export class AdminComponent {
   readonly selectedRaceDrivers = new ReplaySubject<string[]>(1);
 
   readonly isDarkMode = this.store.select(toolbarSelectors.selectIsDarkMode);
-  readonly nextRaceRound = getNextEvent().pipe(map(nextEvent => nextEvent.round));
   readonly results = this.resultService.getDriverYearResults(CURRENT_YEAR);
   private readonly allEvents = this.store.select(toolbarSelectors.selectCalendar);
+ 
+  readonly nextRaceRound = this.allEvents.pipe(
+    switchMap(allEvents => getNextEvent2(allEvents)),
+    map(nextEvent => nextEvent.round),
+  );
   
   readonly availableEvents = combineLatest([this.allEvents, this.nextRaceRound]).pipe(
     map(([allEvents, nextRaceRound]) => allEvents.filter(event => event.round <= nextRaceRound)));

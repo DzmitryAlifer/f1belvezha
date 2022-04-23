@@ -2,10 +2,10 @@ import {AfterViewInit, ChangeDetectionStrategy, Component, OnInit} from '@angula
 import {MatDialog} from '@angular/material/dialog';
 import {Store} from '@ngrx/store';
 import {combineLatest} from 'rxjs';
-import {map} from 'rxjs/operators';
+import {map, switchMap} from 'rxjs/operators';
 import {USER_DIALOG_OPTIONS} from 'src/constants';
 import {Page} from '../enums'; 
-import {animateTextElements, CORRECT_TEAM_FROM_PAIR_PTS, DRIVER_IN_LIST_PTS, DRIVER_PLACE_PTS, formatDate, getFlagLink, getFullUserName, getNextEvent, getSeasonPointsPerRound, WRONG_TEAM_PTS} from '../common';
+import {animateTextElements, CORRECT_TEAM_FROM_PAIR_PTS, DRIVER_IN_LIST_PTS, DRIVER_PLACE_PTS, formatDate, getFlagLink, getFullUserName, getNextEvent2, getSeasonPointsPerRound, WRONG_TEAM_PTS} from '../common';
 import {CORRECT_TEAM_FROM_PAIR_COLOR, DRIVER_IN_LIST_COLOR, DRIVER_CORRECT_PLACE_COLOR, WRONG_TEAM_COLOR} from '../../constants';
 import {FullResultsActionType} from '../full-results/store/full-results.actions'; 
 import * as fullResultsSelectors from '../full-results/store/full-results.selectors';
@@ -53,9 +53,9 @@ export class DashboardComponent implements AfterViewInit, OnInit {
       return getFullUserName(lastUser);
     }));
 
-  readonly nextEvent = getNextEvent();
   readonly newsList = this.newsService.getNewsEn().pipe(map(news => news.slice(0, DASHBOARD_NEWS_NUMBER)));
   private readonly races = this.store.select(toolbarSelectors.selectCalendar);
+  readonly nextEvent = this.races.pipe(switchMap(allEvents => getNextEvent2(allEvents)));
   readonly nextRaceRound = this.nextEvent.pipe(map(nextEvent => nextEvent.round));
   
   readonly visibleRaces = combineLatest([this.races, this.nextRaceRound]).pipe(
