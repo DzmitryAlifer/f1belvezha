@@ -6,7 +6,7 @@
     users: users | async
 } as data" class="standing mat-elevation-z8" [class.dark]="data.isDarkMode">
     <mat-icon *ngIf="!data.isLockedLayout" class="drag-icon">drag_indicator</mat-icon>
-    <h1 class="title">{{data.language === Language.English ? 'Players' : 'Игроки'}}</h1>
+    <h1 class="title">{{data.language === Language.Russian ? 'Игроки' : 'Players'}}</h1>
 
     <table mat-table matSort [dataSource]="users" (matSortChange)="sortPlayers($event, data.users)">
         <ng-container matColumnDef="place">

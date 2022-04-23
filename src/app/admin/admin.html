@@ -20,12 +20,16 @@
                         Qualifyng<mat-icon>verified</mat-icon>
                     </span>
                     <span *ngIf="hasRaceResults(data.results, event.round)" class="event">
-                        Race<mat-icon >verified</mat-icon>
+                        Race<mat-icon>verified</mat-icon>
                     </span>
                 </mat-panel-description>
             </mat-expansion-panel-header>
             
-            <div *ngIf="{roundResults: findRoundResults(data.results, event.round)} as innerData" class="content">
+            <div *ngIf="{
+                roundResults: findRoundResults(data.results, event.round),
+                hasQualifyingResults: hasQualifyingResults(data.results, event.round),
+                hasRaceResults: hasRaceResults(data.results, event.round)
+            } as innerData" class="content">
                 <div *ngIf="data.nextRaceRound && event.round < data.nextRaceRound">
                     <div *ngIf="innerData.roundResults?.qualifying?.length">
                         <span class="event-type">Qualifying:</span>
@@ -41,10 +45,15 @@
                     <div class="new-results">
                         <div class="event-results">
                             <h3>Qualifying</h3>
-                            <driver-places
+                            <driver-places *ngIf="innerData.hasQualifyingResults"
                                 [round]="event.round"
                                 [eventType]="EventType.Qualification"
-                                [results]="innerData.roundResults?.qualifying ?? []"
+                                [results]="innerData.roundResults?.qualifying!"
+                                (selectedDrivers)="selectedQualifyingDrivers.next($event)">
+                            </driver-places>
+                            <driver-places *ngIf="!innerData.hasQualifyingResults"
+                                [round]="event.round"
+                                [eventType]="EventType.Qualification"
                                 (selectedDrivers)="selectedQualifyingDrivers.next($event)">
                             </driver-places>
                         </div>

@@ -2,7 +2,7 @@ import {ChangeDetectionStrategy, Component} from '@angular/core';
 import {Store} from '@ngrx/store';
 import {combineLatest, ReplaySubject} from 'rxjs';
 import {map, switchMap, withLatestFrom} from 'rxjs/operators';
-import {formatDate, getFlagLink, getNextEvent} from '../common';
+import {formatDate, getFlagLink, getNextEvent, NOT_SELECTED_DRIVER_NAME} from '../common';
 import {EventType} from '../enums';
 import {ResultService} from '../service/result.service';
 import * as toolbarSelectors from '../toolbar/store/toolbar.selectors';
@@ -50,11 +50,11 @@ export class AdminComponent {
   }
 
   hasQualifyingResults(results: DriverRoundResult[]|null, round: number): boolean {
-    return !!this.findRoundResults(results, round)?.qualifying.length;
+    return !!this.findRoundResults(results, round)?.qualifying?.filter(name => name !== NOT_SELECTED_DRIVER_NAME)?.length;
   }
 
   hasRaceResults(results: DriverRoundResult[]|null, round: number): boolean {
-    return !!this.findRoundResults(results, round)?.race.length;
+    return !!this.findRoundResults(results, round)?.race?.filter(name => name !== NOT_SELECTED_DRIVER_NAME)?.length;
   }
 
   saveResults(round: number): void {
