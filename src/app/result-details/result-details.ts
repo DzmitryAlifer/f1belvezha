@@ -27,7 +27,7 @@ export class ResultDetailsComponent implements AfterViewInit {
   }
 
   getShortNames(fullNames: string[] = []): string[] {
-    return fullNames.map(fullName => getShortName(fullName));
+    return (fullNames ?? []).map(fullName => getShortName(fullName));
   }
 
   isCorrectOnList(eventType: EventType, index: number): boolean {

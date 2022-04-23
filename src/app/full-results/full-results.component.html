@@ -56,7 +56,7 @@
                     <div class="name">{{user.firstname}} {{user.lastname ?? ''}}</div>
                 </th>
                 <td class="points" mat-cell *matCellDef="let race">
-                    <div *ngIf="userData.playerPredictions && data.currentYearResults && !!race.round && !!data.nextRaceRound && race.round < data.nextRaceRound"
+                    <div *ngIf="userData.playerPredictions && data.currentYearResults && !!race.round && !!data.nextRaceRound && race.round <= data.nextRaceRound"
                         class="details"
                         [class.hidden]="!data.expandedRounds?.has(race.round)">
                         <result-details 
