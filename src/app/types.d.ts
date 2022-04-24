@@ -39,16 +39,20 @@ export interface TeamsResponse {
     };
 }
 
-export interface DriverStandingsResponse {
+export interface StandingsResponse {
     MRData: {
         StandingsTable: {
-            StandingsLists: Standings[];
+            StandingsLists: (DriverStandings|ConstructorStandings)[];
         };
     };
 }
 
-export interface Standings {
+export interface DriverStandings {
     DriverStandings: DriverStanding[];
+}
+
+export interface ConstructorStandings {
+    ConstructorStandings: ConstructorStanding[];
 }
 
 export interface DateTimeApi {
@@ -102,11 +106,18 @@ export interface Driver {
     constructorId?: string;
 }
 
-export interface DriverStanding {
+export interface Standing {
     position: number;
     points: number;
     wins: number;
+}
+
+export interface DriverStanding extends Standing {
     Driver: Driver;
+}
+
+export interface ConstructorStanding extends Standing {
+    Constructor: Team;
 }
 
 export interface Params {

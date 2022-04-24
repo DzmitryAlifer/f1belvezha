@@ -5,7 +5,7 @@ import {filter, map, shareReplay, switchMap} from 'rxjs/operators';
 import {getBolidPath, getFlagLink, getNextEvent2} from '../common';
 import {F1PublicApiService} from '../service/f1-public-api.service';
 import * as toolbarSelectors from '../toolbar/store/toolbar.selectors';
-import {DisplayEvent, Driver, DriverStanding, Race} from '../types';
+import {DisplayEvent, Driver, DriverStanding, Race, Team} from '../types';
 
 
 @Component({
@@ -28,11 +28,12 @@ export class SeasonStandingComponent {
 
   readonly driverStandings: Observable<DriverStanding[]> = this.f1PublicApiService.getDriverStandings();
   readonly results: Observable<Array<Map<string, number>>> = this.f1PublicApiService.getCurrentYearResults();
+  readonly teamStandings: Observable<Team[]> = this.f1PublicApiService.getTeams();
 
   constructor(
     private readonly f1PublicApiService: F1PublicApiService,
     private readonly store: Store,
-  ) {}
+  ) { this.teamStandings.subscribe(r=>console.log());}
 
   getFlagLink(countryName: string): string {
     return getFlagLink(countryName);

@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
-import {Observable, race} from 'rxjs';
+import {Observable} from 'rxjs';
 import {map} from 'rxjs/operators';
-import {DriverStanding, DriverStandingsResponse, Race, RacesResponse, Result, ResultsResponse, Team, TeamsResponse} from '../types';
+import {ConstructorStanding, ConstructorStandings, DriverStanding, DriverStandings, Race, RacesResponse, Result, ResultsResponse, StandingsResponse, Team, TeamsResponse} from '../types';
 import {HttpClient} from '@angular/common/http';
 
 
@@ -12,6 +12,7 @@ const CURRENT_YEAR = new Date().getFullYear();
 @Injectable({providedIn: 'root'})
 export class F1PublicApiService {
   private driverStandings: Observable<DriverStanding[]> | null = null;
+  private constructorStandings: Observable<ConstructorStanding[]> | null = null;
 
   constructor(private readonly httpClient: HttpClient) {}
 
@@ -36,11 +37,20 @@ export class F1PublicApiService {
 
   getDriverStandings(): Observable<DriverStanding[]> {
     if (!this.driverStandings) {
-      this.driverStandings = this.httpClient.get<DriverStandingsResponse>(`${F1_PUBLIC_API}${CURRENT_YEAR}/driverStandings.json`).pipe(
-        map(response => response.MRData.StandingsTable.StandingsLists[0].DriverStandings));
+      this.driverStandings = this.httpClient.get<StandingsResponse>(`${F1_PUBLIC_API}${CURRENT_YEAR}/driverStandings.json`).pipe(
+        map(response => (response.MRData.StandingsTable.StandingsLists as DriverStandings[])[0].DriverStandings));
     }
 
     return this.driverStandings;
+  }
+
+  getConstructorStandings(): Observable<ConstructorStanding[]> {
+    if (!this.constructorStandings) {
+      this.constructorStandings = this.httpClient.get<StandingsResponse>(`${F1_PUBLIC_API}${CURRENT_YEAR}/constructorStandings.json`).pipe(
+        map(response => (response.MRData.StandingsTable.StandingsLists as ConstructorStandings[])[0].ConstructorStandings));
+    }
+
+    return this.constructorStandings;
   }
 
   getQualifyingResults(round: number): Observable<Map<string, number>> {
