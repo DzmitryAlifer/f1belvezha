@@ -76,6 +76,16 @@ table {
     tr:not(:first-child) td {
         border: 1px solid grey;
     }
+
+    tr:nth-child(even) {
+        background-color: white;
+    }
+    
+    &.dark {    
+        tr:nth-child(even) {
+            background-color: $grey-750;
+        }
+    }
 }
 
 .first {

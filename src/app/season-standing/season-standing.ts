@@ -18,6 +18,7 @@ export class SeasonStandingComponent {
   readonly Array = Array;
   readonly Number = Number;
 
+  readonly isDarkMode = this.store.select(toolbarSelectors.selectIsDarkMode);
   readonly calendarRaces: Observable<Race[]> = this.store.select(toolbarSelectors.selectCalendar).pipe(shareReplay(1));
   private readonly nextEvent: Observable<DisplayEvent> = this.calendarRaces.pipe(switchMap(allEvents => getNextEvent2(allEvents)));
   
