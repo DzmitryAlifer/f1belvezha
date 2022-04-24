@@ -12,6 +12,7 @@ export enum Page {
     GameRules = 'rules',
     Account = 'account',
     Admin = 'admin',
+    Standing = 'standing'
 }
 
 export enum TeamName {

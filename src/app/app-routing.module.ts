@@ -8,6 +8,7 @@ import {DashboardComponent} from './dashboard/dashboard';
 import {NewsComponent} from './news/news';
 import {GameRulesComponent} from './game-rules/game-rules';
 import {PredictionGameComponent} from './prediction-game/prediction-game';
+import {SeasonStandingComponent} from './season-standing/season-standing';
 
 
 const routes: Routes = [
@@ -17,6 +18,7 @@ const routes: Routes = [
   {path: 'rules', component: GameRulesComponent},
   {path: 'game', component: PredictionGameComponent},
   {path: 'charts', component: ChartsComponent},
+  {path: 'standing', component: SeasonStandingComponent},
   {path: 'account', component: AccountComponent},
   {path: 'admin', component: AdminComponent},
   {path: '**', redirectTo: 'dashboard', pathMatch: 'full'},

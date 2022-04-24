@@ -31,6 +31,17 @@
             </button>
         </div>
 
+        <div *ngIf="0">
+            <button
+                mat-icon-button
+                routerLink="/standing"
+                [class.current]="data.page === Page.Standing"
+                (click)="showPage(Page.Standing)">
+                <mat-icon>table_chart</mat-icon>
+                <span class="button-text">Season standings</span>
+            </button>
+        </div>
+
         <div>
             <button 
                 mat-icon-button

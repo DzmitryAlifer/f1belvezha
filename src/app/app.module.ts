@@ -28,6 +28,7 @@ import {NextEventModule} from './toolbar/next-event/next-event.module';
 import {UsersStandingModule} from './users-standing/users-standing.module';
 import {PointsModule} from './points/points.module';
 import {PredictionDialogModule} from './prediction-dialog/prediction-dialog.module';
+import {SeasonStandingModule} from './season-standing/season-standing.module';
 import {EncryptionService} from './service/encryption.service';
 import {SideMenuModule} from './side-menu/side-menu.module';
 import {PredictionGameModule} from './prediction-game/prediction-game.module';
@@ -60,6 +61,7 @@ import {PredictionGameModule} from './prediction-game/prediction-game.module';
     PredictionDialogModule,
     PredictionGameModule,
     ResultDetailsModule,
+    SeasonStandingModule,
     SideMenuModule,
     ToolbarModule,
     UsersStandingModule,
