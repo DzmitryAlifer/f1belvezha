@@ -23,7 +23,6 @@ h2 {
 }
 
 table {
-    border-collapse: collapse;
     margin: 0 auto;
 
     tr:first-child {
@@ -72,10 +71,6 @@ table {
             vertical-align: middle;
         }
     }
-   
-    tr:not(:first-child) td {
-        border: 1px solid grey;
-    }
 
     tr:nth-child(even) {
         background-color: white;
@@ -83,7 +78,7 @@ table {
     
     &.dark {    
         tr:nth-child(even) {
-            background-color: $grey-750;
+            background-color: $grey-800;
         }
     }
 }
