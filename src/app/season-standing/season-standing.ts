@@ -27,13 +27,13 @@ export class SeasonStandingComponent {
     map(([calendarRaces, nextEvent]) => calendarRaces.filter(race => race.round < nextEvent.round)));
 
   readonly driverStandings: Observable<DriverStanding[]> = this.f1PublicApiService.getDriverStandings();
-  readonly results: Observable<Array<Map<string, number>>> = this.f1PublicApiService.getCurrentYearResults();
   readonly constructorStandings: Observable<ConstructorStanding[]> = this.f1PublicApiService.getConstructorStandings();
+  readonly results: Observable<Array<Map<string, number>>> = this.f1PublicApiService.getCurrentYearResults();
 
   constructor(
     private readonly f1PublicApiService: F1PublicApiService,
     private readonly store: Store,
-  ) { this.constructorStandings.subscribe(r=>console.log());}
+  ) { this.results.subscribe(r=>console.log(r));}
 
   getFlagLink(countryName: string): string {
     return getFlagLink(countryName);
@@ -44,8 +44,8 @@ export class SeasonStandingComponent {
   }
 
   getConstructorBolidPath(teamId: string): string {
-  return `/assets/images/bolids/${teamId}.png`;
-}
+    return `/assets/images/bolids/${teamId}.png`;
+  }
 
   getDriverPositionInRace(results: Array<Map<string, number>>, raceIndex: number, driver: Driver): number {
     return results[raceIndex]?.get(driver.driverId) ?? 0;
