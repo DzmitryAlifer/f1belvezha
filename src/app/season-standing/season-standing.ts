@@ -31,11 +31,7 @@ export class SeasonStandingComponent {
   constructor(
     private readonly f1PublicApiService: F1PublicApiService,
     private readonly store: Store,
-  ) { 
-    this.calendarRaces.subscribe(r => console.log(r));
-    this.driverStandings.subscribe(r => console.log(r));
-    this.results.subscribe(r => console.log(r));
-  }
+  ) {}
 
   getFlagLink(countryName: string): string {
     return getFlagLink(countryName);
