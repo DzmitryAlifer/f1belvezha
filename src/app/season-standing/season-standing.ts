@@ -43,8 +43,6 @@ export class SeasonStandingComponent {
   }
 
   getDriverPositionInRace(results: Array<Map<string, number>>, raceIndex: number, driver: Driver): number {
-    const raceResult = results[raceIndex];
-    
-    return raceResult.get(driver.driverId) ?? 0;
+    return results[raceIndex]?.get(driver.driverId) ?? 0;
   }
 }
