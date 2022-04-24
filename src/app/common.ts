@@ -250,8 +250,10 @@ export function getNextEvent2(races: Race[]): Observable<DisplayEvent> {
 export function resultToPoints(result: PlayerRoundResult): number {
     const driversInListPts = DRIVER_IN_LIST_PTS * (result.qual_guessed_on_list.length + result.race_guessed_on_list.length);
     const driversPositionsPts = DRIVER_PLACE_PTS * (result.qual_guessed_position.length + result.race_guessed_position.length);
-    const correctTeamsPts = result.correct_teams ? CORRECT_TEAM_FROM_PAIR_PTS * result.correct_teams.length : 0;
-    const wrongTeamsPts = result.wrong_teams ? WRONG_TEAM_PTS * result.wrong_teams.length : 0;
+    const correctTeams = filterTeams(result.correct_teams);
+    const correctTeamsPts = correctTeams ? CORRECT_TEAM_FROM_PAIR_PTS * correctTeams.length : 0;
+    const wrongTeams = filterTeams(result.wrong_teams);
+    const wrongTeamsPts = wrongTeams ? WRONG_TEAM_PTS * wrongTeams.length : 0;
     
     return driversInListPts + driversPositionsPts + correctTeamsPts + wrongTeamsPts;
 }
@@ -352,5 +354,9 @@ export function getWrongTeams(predictedTeams: TeamName[], resultTeams: TeamVsTea
         return [];
     }
 
-    return predictedTeams.filter((predictedTeam, index) => predictedTeam !== TeamName.None && predictedTeam !== resultTeams[index].winner);
+    return predictedTeams.filter((predictedTeam, index) => !!predictedTeam && predictedTeam !== TeamName.None && predictedTeam !== resultTeams[index].winner);
+}
+
+export function filterTeams(teams: TeamName[] = []): TeamName[] {
+    return (teams ?? []).filter(team => !!team && team !== TeamName.None);
 }

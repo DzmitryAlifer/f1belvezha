@@ -3,7 +3,7 @@ import {Actions, createEffect, ofType} from '@ngrx/effects';
 import {Store} from '@ngrx/store';
 import {combineLatest, timer} from 'rxjs';
 import {debounceTime, filter, map, switchMap, tap} from 'rxjs/operators';
-import {findNextEvent2, getCorrectTeams, getWrongTeams} from 'src/app/common';
+import {filterTeams, findNextEvent2, getCorrectTeams, getWrongTeams} from 'src/app/common';
 import {Theme, ThemeService} from 'src/app/service/theme.service';
 import {ToolbarAction, ToolbarActionType} from './toolbar.actions';
 import * as toolbarSelectors from './toolbar.selectors';
@@ -59,10 +59,12 @@ export class ToolbarEffects {
 
     private readonly newPlayersResults = 
         combineLatest([this.unprocessedDriversResults, this.unprocessedTeamVsTeamResults, this.allPredictions]).pipe(
+            debounceTime(0),
             map(([driverResults, teamVsTeamResults, predictions]) => {
                 const playerDriverResults =  driverResults.map(driverResult => {
                     const teamVsTeamRoundResults = teamVsTeamResults.filter(({round}) => round === driverResult.round);
-                    return predictions.filter(({round}) => round === driverResult.round).map(prediction => getPlayerResult(prediction, driverResult, teamVsTeamRoundResults));
+                    return predictions.filter(({round}) => round === driverResult.round)
+                            .map(prediction => getPlayerResult(prediction, driverResult, teamVsTeamRoundResults));
                 }).flat();
 
                 return playerDriverResults;
