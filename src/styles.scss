@@ -42,8 +42,13 @@ $red-700: #d32f2f;
 $red-800: #c62828;
 $red-900: #b71c1c;
 
-$driver-on-list-color: #cfd8dc;
-$driver-correct-place-color: #ffc107;
+
+$gold-color: #ffc107;
+$silver-color: #cfd8dc;
+$bronze-color: #b08d57;
+
+$driver-on-list-color: $silver-color;
+$driver-correct-place-color: $gold-color;
 
 $toolbar-height: 40px;
 $side-menu-width: 48px;

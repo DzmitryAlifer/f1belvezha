@@ -1,6 +1,7 @@
 import * as moment from 'moment';
 import {interval, Observable} from 'rxjs';
 import {filter, map, shareReplay, startWith} from 'rxjs/operators';
+import { DRIVER_TEAM_MAPPING } from 'src/constants';
 import {EventType, TeamName} from './enums';
 import {DisplayEvent, EventSchedule} from './types';
 import {DateTimeApi, Driver, DriverRoundResult, DriverStanding, PlayerRoundResult, Prediction, Race, TeamVsTeam, User, UserPoints} from './types';
@@ -91,6 +92,11 @@ export function getFlagLink(countryName: string): string {
 export function getCircuitPath(countryName: string, isLarge = false): string {
     const smallOrLarge = isLarge ? 'large' : 'small';
     return `/assets/images/circuits/${smallOrLarge}/${countryName}.png`;
+}
+
+export function getBolidPath(driverFamilyName: string): string {
+    const teamId = DRIVER_TEAM_MAPPING.get(driverFamilyName);
+    return `/assets/images/bolids/${teamId}.png`;
 }
 
 function toMoment2(date: string, time: string): moment.Moment {

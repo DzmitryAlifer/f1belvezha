@@ -1,0 +1,99 @@
+@import '../../styles.scss';
+
+
+h2 {
+    padding-top: 32px;
+}
+
+.legend {
+    display: flex;
+    justify-content: center;
+
+    .item {
+        display: flex;
+        padding: 0 16px;
+
+        .box {
+            border: 1px solid grey;
+            border-radius: 4px;
+            height: 16px;
+            width: 16px;
+        }
+    }
+}
+
+table {
+    border-collapse: collapse;
+    margin: 0 auto;
+
+    tr:first-child {
+        height: 32px;
+        font-size: 12px;
+
+        td {
+            text-align: center;
+        }
+    }
+
+    td {
+        padding: 0 2px;
+
+        &.position,
+        &.driver-name,
+        &.wins,
+        &.points {
+            padding: 2px 8px;
+        }
+
+        &.driver-name {
+            text-align: left;
+
+            .bolid {
+                vertical-align: middle;
+                width: 70px;
+            }
+        }
+
+        &.first,
+        &.second,
+        &.third,
+        &.has-points {
+            color: black;
+        }
+        
+        &.no-points {
+            color: white;
+        }
+
+        .flag {
+            border: 1px solid grey;
+            border-radius: 3px;
+            height: 18px;
+            vertical-align: middle;
+        }
+    }
+   
+    tr:not(:first-child) td {
+        border: 1px solid grey;
+    }
+}
+
+.first {
+    background-color: $gold-color;
+}
+
+.second {
+    background-color: $silver-color;
+}
+
+.third {
+    background-color: $bronze-color;
+}
+
+.has-points {
+    background-color: $blue-200;
+}
+
+.no-points {
+    background-color: $blue-800;
+}

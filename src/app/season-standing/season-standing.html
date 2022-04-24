@@ -1,1 +1,49 @@
-<p>season-standing works!</p>
+<ng-container *ngIf="{
+    calendarRaces: calendarRaces | async,
+    driverStandings: driverStandings | async,
+    finishedRaces: finishedRaces | async,
+    results: results | async
+} as data">
+    <div class="legend">
+        <div class="item"><div class="box first"></div>&nbsp;- 1st position</div>
+        <div class="item"><div class="box second"></div>&nbsp;- 2nd position</div>
+        <div class="item"><div class="box third"></div>&nbsp;- 3rd position</div>
+        <div class="item"><div class="box has-points"></div>&nbsp;- other points position</div>
+        <div class="item"><div class="box no-points"></div>&nbsp;- no-points position</div>
+    </div>
+
+    <h2>Drivers' Championship standings</h2>
+
+    <table *ngIf="data.results">
+        <tr>
+            <td class="position">Pos</td>
+            <td class="driver-name">Driver</td>
+            <td *ngFor="let race of data.calendarRaces">
+                <img class="flag" [src]="getFlagLink(race.Circuit.Location.country)" />
+            </td>
+            <td class="wins">Wins</td>
+            <td class="points">Points</td>
+        </tr>
+
+        <tr *ngFor="let driverStanding of data.driverStandings">
+            <td>{{driverStanding.position}}</td>
+            <td class="driver-name">
+                <img class="bolid" [src]="getBolidPath(driverStanding.Driver.familyName)"/>
+                {{driverStanding.Driver.familyName}}
+            </td>
+            <ng-container *ngFor="let race of data.finishedRaces; let index = index">
+                <td *ngIf="{position: getDriverPositionInRace(data.results, index, driverStanding.Driver)} as innerData"
+                    [class.first]="innerData.position == 1"
+                    [class.second]="innerData.position == 2"
+                    [class.third]="innerData.position == 3"
+                    [class.has-points]="innerData.position > 3 && innerData.position <= 10"
+                    [class.no-points]="innerData.position > 10">
+                    {{innerData.position || ''}}
+                </td>
+            </ng-container>
+            <td *ngFor="let empty of Array(data.calendarRaces?.length! - data.finishedRaces?.length!).fill(1); let index = index"></td>
+            <td><b>{{Number(driverStanding.wins) || ''}}</b></td>
+            <td><b>{{driverStanding.points}}</b></td>
+        </tr>
+    </table>
+</ng-container>

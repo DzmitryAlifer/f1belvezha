@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {Observable} from 'rxjs';
+import {Observable, race} from 'rxjs';
 import {map} from 'rxjs/operators';
 import {DriverStanding, DriverStandingsResponse, Race, RacesResponse, Result, ResultsResponse, Team, TeamsResponse} from '../types';
 import {HttpClient} from '@angular/common/http';
@@ -46,6 +46,11 @@ export class F1PublicApiService {
   getQualifyingResults(round: number): Observable<Map<string, number>> {
     return this.httpClient.get<ResultsResponse>(`${F1_PUBLIC_API}${CURRENT_YEAR}/${round}/qualifying.json`).pipe(
       map(response => this.convertApiResponse(response.MRData.RaceTable.Races[0].QualifyingResults!)));
+  }
+
+  getCurrentYearResults(): Observable<Array<Map<string, number>>> {
+    return this.httpClient.get<ResultsResponse>(`${F1_PUBLIC_API}${CURRENT_YEAR}/results.json?limit=1000`).pipe(
+      map(response => response.MRData.RaceTable.Races.map(race => this.convertApiResponse(race.Results!))));
   }
 
   getRaceResults(round: number): Observable<Map<string, number>> {
