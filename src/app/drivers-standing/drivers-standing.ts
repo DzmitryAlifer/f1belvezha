@@ -7,8 +7,8 @@ import {DRIVER_TEAM_MAPPING} from 'src/constants';
 
 @Component({
   selector: 'drivers-standing',
-  templateUrl: './drivers-standing.component.html',
-  styleUrls: ['./drivers-standing.component.scss'],
+  templateUrl: './drivers-standing.html',
+  styleUrls: ['./drivers-standing.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DriversStandingComponent {
