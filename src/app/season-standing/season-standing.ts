@@ -1,10 +1,11 @@
 import {ChangeDetectionStrategy, Component} from '@angular/core';
+import {FormControl} from '@angular/forms';
 import {Store} from '@ngrx/store';
 import {combineLatest, Observable} from 'rxjs';
 import {filter, map, shareReplay, switchMap} from 'rxjs/operators';
 import {TEAM_DRIVER_IDS_MAPPING} from 'src/constants';
 import {getBolidPath, getFlagLink, getNextEvent2} from '../common';
-import { TeamName } from '../enums';
+import {TeamName} from '../enums';
 import {F1PublicApiService} from '../service/f1-public-api.service';
 import * as toolbarSelectors from '../toolbar/store/toolbar.selectors';
 import {ConstructorStanding, DisplayEvent, Driver, DriverStanding, Race, Team} from '../types';
@@ -19,6 +20,8 @@ import {ConstructorStanding, DisplayEvent, Driver, DriverStanding, Race, Team} f
 export class SeasonStandingComponent {
   readonly Array = Array;
   readonly Number = Number;
+
+  readonly constructorStandingsControl = new FormControl();
 
   readonly isDarkMode = this.store.select(toolbarSelectors.selectIsDarkMode);
   readonly calendarRaces: Observable<Race[]> = this.store.select(toolbarSelectors.selectCalendar).pipe(shareReplay(1));
@@ -68,7 +71,7 @@ export class SeasonStandingComponent {
     return driverResults[raceIndex]?.get(driver.driverId)?.position ?? 0;
   }
 
-  private getConstructorPointsInRace(driverRaceResults: Map<string, DriverStanding>, teamName: TeamName): number {
+  getConstructorPointsInRace(driverRaceResults: Map<string, DriverStanding>, teamName: TeamName): number {
     const teamDriverIds = TEAM_DRIVER_IDS_MAPPING.get(teamName) ?? [];
     return teamDriverIds.reduce((sum, driverId) => sum + Number(driverRaceResults?.get(driverId)?.points ?? 0), 0);
   }

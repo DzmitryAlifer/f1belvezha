@@ -1,10 +1,6 @@
 @import '../../styles.scss';
 
 
-h2 {
-    padding-top: 32px;
-}
-
 .legend {
     display: flex;
     justify-content: center;
@@ -19,6 +15,26 @@ h2 {
             height: 16px;
             width: 16px;
         }
+    }
+}
+
+.header {
+    display: flex;
+    justify-content: center;
+    margin: 0 auto;
+    padding-top: 32px;
+
+    mat-button-toggle-group {
+        height: 24px;
+
+        ::ng-deep .mat-button-toggle-label-content {
+            line-height: 24px;
+        }
+    }
+
+    h2 {
+        line-height: 24px;
+        padding: 0 32px;
     }
 }
 
