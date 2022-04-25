@@ -21,6 +21,7 @@ export class SeasonStandingComponent {
   readonly Array = Array;
   readonly Number = Number;
 
+  readonly driverStandingsControl = new FormControl();
   readonly constructorStandingsControl = new FormControl();
 
   readonly isDarkMode = this.store.select(toolbarSelectors.selectIsDarkMode);
@@ -65,6 +66,10 @@ export class SeasonStandingComponent {
 
   getConstructorBolidPath(teamId: string): string {
     return `/assets/images/bolids/${teamId}.png`;
+  }
+
+  getDriverPointsInRace(driverResults: Array<Map<string, DriverStanding>>, raceIndex: number, driver: Driver): number {
+    return driverResults[raceIndex]?.get(driver.driverId)?.points ?? 0;
   }
 
   getDriverPositionInRace(driverResults: Array<Map<string, DriverStanding>>, raceIndex: number, driver: Driver): number {
