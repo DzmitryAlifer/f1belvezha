@@ -94,9 +94,9 @@
                 } as innerData"
                     [class.first]="innerData.position == 1" [class.second]="innerData.position == 2"
                     [class.third]="innerData.position == 3"
-                    [class.has-points]="innerData.position > 3 && innerData.position <= 10"
-                    [class.no-points]="innerData.position > 10">
-                    {{(constructorStandingsControl.value === 'points' ? innerData.points : innerData.position) || ''}}
+                    [class.has-points]="innerData.position > 3 && !!innerData.points"
+                    [class.no-points]="!innerData.points">
+                    {{constructorStandingsControl.value === 'points' ? innerData.points : (innerData.position || '')}}
                 </td>
             </ng-container>
             <td *ngFor="let empty of Array(data.calendarRaces?.length! - data.finishedRaces?.length!).fill(1); let index = index"></td>
