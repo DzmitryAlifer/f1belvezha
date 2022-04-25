@@ -5,7 +5,7 @@ export const PREDICTION_PLACES_NUMBER = 5;
 export const CURRENT_USER_KEY = 'currentUser';
 export const USER_DIALOG_OPTIONS = {disableClose: true, width: '270px'};
 
-export const DRIVER_TEAM_MAPPING = new Map<string, string>()
+export const DRIVER_TEAM_MAPPING = new Map<string, TeamName>()
     .set('Hamilton', TeamName.Mercedes)
     .set('Russell', TeamName.Mercedes)
     .set('Verstappen', TeamName.RedBull)
@@ -27,6 +27,29 @@ export const DRIVER_TEAM_MAPPING = new Map<string, string>()
     .set('Zhou', TeamName.AlfaRomeo)
     .set('Schumacher', TeamName.Haas)
     .set('Magnussen', TeamName.Haas);
+
+export const DRIVER_ID_NAME_MAPPING = new Map<string, string>()
+    .set('hamilton', 'Hamilton')
+    .set('russell', 'Russell')
+    .set('max_verstappen', 'Verstappen')
+    .set('perez', 'Pérez')
+    .set('sainz', 'Sainz')
+    .set('leclerc', 'Leclerc')
+    .set('norris', 'Norris')
+    .set('ricciardo', 'Ricciardo')
+    .set('ocon', 'Ocon')
+    .set('alonso', 'Alonso')
+    .set('gasly', 'Gasly')
+    .set('tsunoda', 'Tsunoda')
+    .set('atroll', 'Stroll')
+    .set('Vettel', 'Vettel')
+    .set('hulkenberg', 'Hülkenberg')
+    .set('albon', 'Albon')
+    .set('latifi', 'Latifi')
+    .set('bottas', 'Bottas')
+    .set('zhou', 'Zhou')
+    .set('mick_schumacher', 'Schumacher')
+    .set('kevin_magnussen', 'Magnussen');
 
 export const TEAM_NAMES = new Map<TeamName, string>()
     .set(TeamName.Mercedes, 'Mercedes')
