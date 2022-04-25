@@ -1,10 +1,11 @@
 <ng-container *ngIf="{
     calendarRaces: calendarRaces | async,
+    constructorResults: constructorResults | async,
     constructorStandings: constructorStandings | async,
     isDarkMode: isDarkMode | async,
     driverStandings: driverStandings | async,
     finishedRaces: finishedRaces | async,
-    results: results | async
+    driverResults: driverResults | async
 } as data">
     <div class="legend">
         <div class="item"><div class="box first"></div>&nbsp;- 1st position</div>
@@ -16,7 +17,7 @@
 
     <h2>Drivers' Championship standings</h2>
 
-    <table *ngIf="data.results" [class.dark]="data.isDarkMode">
+    <table *ngIf="data.driverResults" [class.dark]="data.isDarkMode">
         <tr>
             <td class="position">Pos</td>
             <td class="driver-name">Driver</td>
@@ -34,7 +35,7 @@
                 {{driverStanding.Driver.familyName}}
             </td>
             <ng-container *ngFor="let race of data.finishedRaces; let index = index">
-                <td *ngIf="{position: getDriverPositionInRace(data.results, index, driverStanding.Driver)} as innerData"
+                <td *ngIf="{position: getDriverPositionInRace(data.driverResults, index, driverStanding.Driver)} as innerData"
                     [class.first]="innerData.position == 1"
                     [class.second]="innerData.position == 2"
                     [class.third]="innerData.position == 3"
@@ -51,7 +52,7 @@
 
     <h2>Constructors' Championship standings</h2>
 
-    <table *ngIf="data.results" [class.dark]="data.isDarkMode">
+    <table *ngIf="data.constructorResults" [class.dark]="data.isDarkMode">
         <tr>
             <td class="position">Pos</td>
             <td class="driver-name">Team</td>
@@ -69,7 +70,7 @@
                 {{constructorStanding.Constructor.name.replace(' F1 Team', '')}}
             </td>
             <ng-container *ngFor="let race of data.finishedRaces; let index = index">
-                <td *ngIf="{position: getConstructorPositionInRace(data.results, index, constructorStanding.Constructor)} as innerData"
+                <td *ngIf="{position: getConstructorPositionInRace(data.constructorResults, index, constructorStanding.Constructor)} as innerData"
                     [class.first]="innerData.position == 1" [class.second]="innerData.position == 2"
                     [class.third]="innerData.position == 3"
                     [class.has-points]="innerData.position > 3 && innerData.position <= 10"

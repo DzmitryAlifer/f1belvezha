@@ -76,12 +76,12 @@ export interface Race {
     Sprint: DateTimeApi;
     date: string;
     time: string;
-    QualifyingResults?: Result[];
-    Results?: Result[];
+    QualifyingResults?: DriverStanding[];
+    Results?: DriverStanding[];
 }
 
 export interface Team {
-    constructorId: string;
+    constructorId: TeamName;
     url: string;
     name: string;
     nationality: string;

@@ -53,25 +53,25 @@ export class F1PublicApiService {
     return this.constructorStandings;
   }
 
-  getQualifyingResults(round: number): Observable<Map<string, number>> {
+  getQualifyingResults(round: number): Observable<Map<string, DriverStanding>> {
     return this.httpClient.get<ResultsResponse>(`${F1_PUBLIC_API}${CURRENT_YEAR}/${round}/qualifying.json`).pipe(
       map(response => this.convertApiResponse(response.MRData.RaceTable.Races[0].QualifyingResults!)));
   }
 
-  getCurrentYearResults(): Observable<Array<Map<string, number>>> {
+  getCurrentYearResults(): Observable<Array<Map<string, DriverStanding>>> {
     return this.httpClient.get<ResultsResponse>(`${F1_PUBLIC_API}${CURRENT_YEAR}/results.json?limit=1000`).pipe(
       map(response => response.MRData.RaceTable.Races.map(race => this.convertApiResponse(race.Results!))));
   }
 
-  getRaceResults(round: number): Observable<Map<string, number>> {
+  getRaceResults(round: number): Observable<Map<string, DriverStanding>> {
     return this.httpClient.get<ResultsResponse>(`${F1_PUBLIC_API}${CURRENT_YEAR}/${round}/results.json`).pipe(
       map(response => this.convertApiResponse(response.MRData.RaceTable.Races[0].Results!)));
   }
 
-  private convertApiResponse(apiResults: Result[]) {
-    return apiResults.reduce((resultsMap, qualifyingResult) => {
-      resultsMap.set(qualifyingResult.Driver.driverId, qualifyingResult.position);
+  private convertApiResponse(apiResults: DriverStanding[]) {
+    return apiResults.reduce((resultsMap, result) => {
+      resultsMap.set(result.Driver.driverId, result);
       return resultsMap;
-    }, new Map<string, number>());
+    }, new Map<string, DriverStanding>());
   }
 }

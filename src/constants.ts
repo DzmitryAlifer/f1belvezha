@@ -5,6 +5,18 @@ export const PREDICTION_PLACES_NUMBER = 5;
 export const CURRENT_USER_KEY = 'currentUser';
 export const USER_DIALOG_OPTIONS = {disableClose: true, width: '270px'};
 
+export const TEAM_DRIVER_IDS_MAPPING = new Map<TeamName, string[]>()
+    .set(TeamName.Mercedes, ['hamilton', 'russell'])
+    .set(TeamName.RedBull, ['max_verstappen', 'perez'])
+    .set(TeamName.Ferrari, ['sainz', 'leclerc'])
+    .set(TeamName.McLaren, ['norris', 'ricciardo'])
+    .set(TeamName.Alpine, ['ocon', 'alonso'])
+    .set(TeamName.AlphaTauri, ['gasly', 'tsunoda'])
+    .set(TeamName.AlfaRomeo, ['bottas', 'zhou'])
+    .set(TeamName.AstonMartin, ['vettel', 'stroll', 'hulkenberg'])
+    .set(TeamName.Williams, ['albon', 'latifi'])
+    .set(TeamName.Haas, ['kevin_magnussen', 'mick_schumacher']);
+
 export const DRIVER_TEAM_MAPPING = new Map<string, TeamName>()
     .set('Hamilton', TeamName.Mercedes)
     .set('Russell', TeamName.Mercedes)
@@ -41,8 +53,8 @@ export const DRIVER_ID_NAME_MAPPING = new Map<string, string>()
     .set('alonso', 'Alonso')
     .set('gasly', 'Gasly')
     .set('tsunoda', 'Tsunoda')
-    .set('atroll', 'Stroll')
-    .set('Vettel', 'Vettel')
+    .set('stroll', 'Stroll')
+    .set('vettel', 'Vettel')
     .set('hulkenberg', 'Hülkenberg')
     .set('albon', 'Albon')
     .set('latifi', 'Latifi')
