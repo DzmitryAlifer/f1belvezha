@@ -52,7 +52,10 @@
                 playerPredictions: getPlayerPredictions(user.id!) | async
             } as userData">
                 <th class="user" mat-header-cell *matHeaderCellDef [class.current-user]="userData.isCurrentUser">
-                    <div class="place">{{index + 1}}</div>
+                    <div class="place">
+                        {{index + 1}}
+                        <span class="points">({{user.seasonpoints}} pts)</span>
+                    </div>
                     <div class="name">{{user.firstname}} {{user.lastname ?? ''}}</div>
                 </th>
                 <td class="points" mat-cell *matCellDef="let race" (click)="toggleRowDetails(race.round)">

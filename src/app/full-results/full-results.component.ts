@@ -99,7 +99,7 @@ export class FullResultsComponent implements OnInit, AfterViewInit {
     private readonly localStorageService: LocalStorageService,
     private readonly predictionDialog: MatDialog,
     private readonly store: Store,
-  ) {}
+  ) { this.users.subscribe(r=>console.log(r));}
 
   ngOnInit(): void {
     const pageSize = this.localStorageService.getItem<number>('pageSize') ?? PAGE_SIZES[0];
