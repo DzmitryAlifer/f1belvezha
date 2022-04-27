@@ -92,6 +92,7 @@ export class FullResultsComponent implements OnInit, AfterViewInit {
   );
 
   readonly points = this.store.select(fullResultsSelectors.selectCurrentYearPoints);
+  readonly pointSums = this.store.select(fullResultsSelectors.selectCurrentYearPointsSum);
 
   constructor(
     private readonly circuitDialog: MatDialog,
@@ -99,7 +100,7 @@ export class FullResultsComponent implements OnInit, AfterViewInit {
     private readonly localStorageService: LocalStorageService,
     private readonly predictionDialog: MatDialog,
     private readonly store: Store,
-  ) { this.users.subscribe(r=>console.log(r));}
+  ) {}
 
   ngOnInit(): void {
     const pageSize = this.localStorageService.getItem<number>('pageSize') ?? PAGE_SIZES[0];
