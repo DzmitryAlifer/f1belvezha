@@ -1,6 +1,6 @@
 import {createFeatureSelector, createSelector} from '@ngrx/store';
 import {FullResultsState} from './full-results.model';
-import {User} from 'src/app/types';
+import {DriverRoundResult, User} from 'src/app/types';
 import {CORRECT_TEAM_FROM_PAIR_PTS, DRIVER_IN_LIST_PTS, DRIVER_PLACE_PTS, WRONG_TEAM_PTS} from 'src/app/common';
 
 
@@ -19,8 +19,8 @@ export const selectCurrentUserPredictions = createSelector(selectFullResults,(st
 export const selectNextRoundPredictions = createSelector(selectFullResults, (state: FullResultsState) => state.nextRoundPredictions);
 export const selectCurrentYearPoints = createSelector(selectFullResults, (state: FullResultsState) => state.currentYearPoints);
 
-export const selectCurrentYearPointsSum = createSelector(selectCurrentYearPoints, selectNextRound,
-    (currentYearPoints: Map<number, Map<number, number[][]>>, nextRound: number) => {
+export const selectCurrentYearPointsSum = 
+    createSelector(selectCurrentYearPoints, (currentYearPoints: Map<number, Map<number, number[][]>>) => {
         return Array.from(currentYearPoints.entries()).reduce((map, [userId, roundToValuesMap]) => {
             const roundToPointsMap = convertToPointsMap(roundToValuesMap);
             map.set(userId, roundToPointsMap);
@@ -37,3 +37,29 @@ function convertToPointsMap(roundToValuesMap: Map<number, number[][]>): Map<numb
         return map;
     }, new Map<number, number>());
 }
+
+export const selectAllRoundWinners = createSelector(selectCurrentYearPointsSum, selectCurrentYearResults, selectUsers, 
+    (currentYearPointsSum: Map<number, Map<number, number>>, currentYearResults: DriverRoundResult[], users: User[]) => {
+        const lastRound = currentYearResults.length ? currentYearResults[currentYearResults.length - 1].round : 0;
+
+        return Array.from(currentYearPointsSum.entries()).reduce((map, [userId, roundToUserPts]) => {
+            for (let round = 1; round <= lastRound; round++) {
+                const roundWinnersPts = map.get(round)
+                const userRoundPts = roundToUserPts.get(round);
+                const user = users.find(user => user.id! === userId)!;
+
+                if (!userRoundPts) {
+                    return map;
+                }
+
+                if (!roundWinnersPts || userRoundPts > (roundWinnersPts.maxPoints ?? 0)) {
+                    map.set(round, {maxPoints: userRoundPts, winners: [user]});
+                }
+
+                if (userRoundPts === roundWinnersPts?.maxPoints) {
+                    roundWinnersPts.winners.push(user);
+                }
+            }
+            return map;
+        }, new Map<number, {maxPoints: number, winners: User[]}>());
+});

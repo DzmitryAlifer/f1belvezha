@@ -92,8 +92,7 @@ export class FullResultsComponent implements OnInit, AfterViewInit {
   );
 
   readonly points = this.store.select(fullResultsSelectors.selectCurrentYearPoints);
-  readonly pointSums = this.store.select(fullResultsSelectors.selectCurrentYearPointsSum);
-
+  
   constructor(
     private readonly circuitDialog: MatDialog,
     private readonly matPaginatorIntl: MatPaginatorIntl,

@@ -2,7 +2,7 @@ import {AfterViewInit, ChangeDetectionStrategy, Component, OnInit} from '@angula
 import {MatDialog} from '@angular/material/dialog';
 import {Store} from '@ngrx/store';
 import {combineLatest} from 'rxjs';
-import {map, switchMap} from 'rxjs/operators';
+import {debounceTime, filter, map, switchMap} from 'rxjs/operators';
 import {USER_DIALOG_OPTIONS} from 'src/constants';
 import {Page} from '../enums'; 
 import {animateTextElements, CORRECT_TEAM_FROM_PAIR_PTS, DRIVER_IN_LIST_PTS, DRIVER_PLACE_PTS, formatDate, getFlagLink, getFullUserName, getNextEvent2, getSeasonPointsPerRound, WRONG_TEAM_PTS} from '../common';
@@ -56,7 +56,15 @@ export class DashboardComponent implements AfterViewInit, OnInit {
   readonly newsList = this.newsService.getNewsEn().pipe(map(news => news.slice(0, DASHBOARD_NEWS_NUMBER)));
   private readonly races = this.store.select(toolbarSelectors.selectCalendar);
   readonly nextEvent = this.races.pipe(switchMap(allEvents => getNextEvent2(allEvents)));
-  readonly nextRaceRound = this.nextEvent.pipe(map(nextEvent => nextEvent.round));
+  readonly nextRaceRound = this.nextEvent.pipe(map(nextEvent => nextEvent?.round));
+  private readonly allRoundWinners = this.store.select(fullResultsSelectors.selectAllRoundWinners);
+
+  readonly lastRoundWinners = combineLatest([this.allRoundWinners, this.nextEvent]).pipe(
+    debounceTime(0),
+    filter(([allRoundWinners, nextEvent]) => !!allRoundWinners.size && !!nextEvent),
+    map(([allRoundWinners, nextEvent]) => allRoundWinners.get(nextEvent.round - 1)?.winners),
+    map(winners => winners?.map(winner => getFullUserName(winner))),
+  );
   
   readonly visibleRaces = combineLatest([this.races, this.nextRaceRound]).pipe(
     map(([races, nextRaceRound]) => {
@@ -80,6 +88,7 @@ export class DashboardComponent implements AfterViewInit, OnInit {
   ngOnInit(): void {
     this.store.dispatch({type: FullResultsActionType.LOAD_ALL_PREDICTIONS});
     this.store.dispatch({type: FullResultsActionType.LOAD_CURRENT_YEAR_RESULTS});
+    this.store.dispatch({type: FullResultsActionType.CALCULATE_CURRENT_YEAR_POINTS});
   }
 
   ngAfterViewInit(): void {

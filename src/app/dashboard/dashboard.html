@@ -14,6 +14,7 @@
     currentUser: currentUser | async,
     isDarkMode: isDarkMode | async,
     lastRegisteredUserFullName: lastRegisteredUserFullName | async,
+    lastRoundWinners : lastRoundWinners | async,
     mostSelectableDriversChart: mostSelectableDriversChart | async,
     newsList: newsList | async,
     nextRaceRound: nextRaceRound | async,
@@ -75,6 +76,10 @@
                 <h3>
                     Total players<br>
                     <span class="large">{{data.users?.length}}</span>
+                </h3>
+                <h3>
+                    Last round winner{{data.lastRoundWinners?.length === 1 ? '' : 's'}}<br>
+                    <span>{{data.lastRoundWinners?.join(', ')}}</span>
                 </h3>
                 <h3>
                     Last registered<br> 
