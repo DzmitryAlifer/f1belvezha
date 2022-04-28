@@ -24,6 +24,7 @@ export class SideMenuComponent {
 
   showPage(page: Page): void {
     setTimeout(() => {
+      this.isOpen = false;
       this.store.dispatch({type: ToolbarActionType.SHOW_PAGE, payload: {page}});
     }, 100);
   }
