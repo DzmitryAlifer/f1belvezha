@@ -53,14 +53,12 @@
             } as userData">
                 <th class="user" mat-header-cell *matHeaderCellDef [class.current-user]="userData.isCurrentUser">
                     <div class="place">
-                        <mat-icon 
-                            *ngIf="index < 3"
+                        <img *ngIf="index < 3"
                             class="medal"
                             [class.first]="index === 0"
                             [class.second]="index === 1"
-                            [class.third]="index === 2">
-                            workspace_premium_outline
-                        </mat-icon>
+                            [class.third]="index === 2" 
+                            src="/assets/images/transparent.gif"/>
                         <span *ngIf="index > 2">{{index + 1}}</span>
                         <span class="points">&nbsp;({{user.seasonpoints}} pts)</span>
                     </div>
