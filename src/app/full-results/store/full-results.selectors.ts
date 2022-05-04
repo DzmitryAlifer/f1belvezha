@@ -30,10 +30,15 @@ export const selectCurrentYearPointsSum =
 
 function convertToPointsMap(roundToValuesMap: Map<number, number[][]>): Map<number, number> {
     return Array.from(roundToValuesMap.entries()).reduce((map, [round, values]) => {
+        if (!values.length) {
+            return map;
+        }
+
         const qualifyingPts = values[0][0] * DRIVER_IN_LIST_PTS + values[0][1] * DRIVER_PLACE_PTS;
         const racePts = values[1][0] * DRIVER_IN_LIST_PTS + values[1][1] * DRIVER_PLACE_PTS;
         const teamVsTeamPts = values[2][0] * CORRECT_TEAM_FROM_PAIR_PTS + values[2][1] * WRONG_TEAM_PTS;
         map.set(round, qualifyingPts + racePts + teamVsTeamPts);
+        
         return map;
     }, new Map<number, number>());
 }
