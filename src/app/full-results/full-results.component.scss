@@ -67,6 +67,13 @@
         ::ng-deep {
             .mat-paginator-range-actions {
                 display: block;
+                width: 100%;
+
+                .mat-icon-button {
+                    height: 28px;
+                    line-height: 28px;
+                    width: 28px;
+                }
             }
 
             .mat-paginator-container {
