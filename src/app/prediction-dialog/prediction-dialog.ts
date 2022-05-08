@@ -92,10 +92,6 @@ export class PredictionDialog {
     teamVsTeam1: new FormControl(TeamName.None),
   }, {validators: validateForm});
 
-  // private readonly nextEvent = getNextEvent().pipe(
-  //   filter(event => event.round === this.data.round),
-  //   shareReplay(1));
-
   private readonly nextEvent = this.store.select(toolbarSelectors.selectCalendar).pipe(
     switchMap(calendarRaces => getNextEvent2(calendarRaces)),
     filter(event => event.round === this.data.round),
