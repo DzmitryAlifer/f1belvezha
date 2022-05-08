@@ -45,7 +45,7 @@ export class PointsComponent {
       this.points[1] ? DRIVER_IN_LIST_PTS * this.points[1][0] + DRIVER_PLACE_PTS * this.points[1][1] : 0;
 
     if (nextEvent.eventType !== EventType.Qualification) {
-      // return qualifyingPredictionPoints + racePredictionPoints;
+      return qualifyingPredictionPoints + racePredictionPoints;
     } 
 
     const correctTeamVsTeamPoints = this.points[2] ? (CORRECT_TEAM_FROM_PAIR_PTS * (this.points[2][0] ?? 0)) : 0;
