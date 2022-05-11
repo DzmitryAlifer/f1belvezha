@@ -39,6 +39,10 @@ export class PointsComponent {
   constructor(private readonly store: Store) {}
 
   getTotalPoints(nextEvent: DisplayEvent): number {
+    if (!this.points.filter(point => !!point).length) {
+      return 0;
+    }
+
     const qualifyingPredictionPoints = 
         this.points[0] ? DRIVER_IN_LIST_PTS * this.points[0][0] + DRIVER_PLACE_PTS * this.points[0][1] : 0;
     const racePredictionPoints = 
