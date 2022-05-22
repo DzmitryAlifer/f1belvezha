@@ -50,7 +50,7 @@ export class PointsComponent {
 
     if (nextEvent.eventType !== EventType.Qualification) {
       // Comment out the next line when adding Qual results. Uncomment when adding race results.
-      // return qualifyingPredictionPoints + racePredictionPoints; 
+      return qualifyingPredictionPoints + racePredictionPoints; 
     } 
 
     const correctTeamVsTeamPoints = this.points[2] ? (CORRECT_TEAM_FROM_PAIR_PTS * (this.points[2][0] ?? 0)) : 0;
