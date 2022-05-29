@@ -351,7 +351,10 @@ export function getCorrectTeams(predictedTeams: TeamName[], resultTeams: TeamVsT
         return [];
     }
 
-    return predictedTeams.filter((predictedTeam, index) => predictedTeam !== TeamName.None && predictedTeam === resultTeams[index].winner);
+    return predictedTeams.filter((predictedTeam, index) => 
+        predictedTeam !== TeamName.None && 
+            resultTeams[index].winner !== TeamName.None &&
+            predictedTeam === resultTeams[index].winner);
 }
 
 export function getWrongTeams(predictedTeams: TeamName[], resultTeams: TeamVsTeam[]): TeamName[] {
@@ -359,7 +362,10 @@ export function getWrongTeams(predictedTeams: TeamName[], resultTeams: TeamVsTea
         return [];
     }
 
-    return predictedTeams.filter((predictedTeam, index) => !!predictedTeam && predictedTeam !== TeamName.None && predictedTeam !== resultTeams[index].winner);
+    return predictedTeams.filter((predictedTeam, index) => 
+        !!predictedTeam && predictedTeam !== TeamName.None && 
+            resultTeams[index].winner !== TeamName.None && 
+            predictedTeam !== resultTeams[index].winner);
 }
 
 export function filterTeams(teams: TeamName[] = []): TeamName[] {
