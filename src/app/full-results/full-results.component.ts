@@ -11,7 +11,7 @@ import {DriverRoundResult, Prediction, Race, User} from '../types';
 import * as fullResultsSelectors from './store/full-results.selectors';
 import {FullResultsActionType} from './store/full-results.actions';
 import * as toolbarSelectors from '../toolbar/store/toolbar.selectors';
-import {formatDate, getCircuitPath, getFlagLink, getIndexes, getNextEvent, getNextEvent2} from '../common';
+import {formatDate, getCircuitPath, getFlagLink, getIndexes, getNextEvent2} from '../common';
 import {LocalStorageService} from '../service/local-storage.service';
 
 
@@ -44,7 +44,6 @@ export class FullResultsComponent implements OnInit, AfterViewInit {
   readonly races = this.store.select(fullResultsSelectors.selectRaces).pipe(shareReplay(1));
   readonly currentYearResults = this.store.select(fullResultsSelectors.selectCurrentYearResults);
   readonly teamVsTeamResults = this.store.select(fullResultsSelectors.selectCurrentYearTeamVsTeamList);
-  // readonly nextEvent = getNextEvent();
   readonly nextEvent = this.store.select(toolbarSelectors.selectCalendar).pipe(
     filter(calendarRaces => !!calendarRaces.length),
     switchMap(calendarRaces => getNextEvent2(calendarRaces)));
@@ -160,7 +159,7 @@ export class FullResultsComponent implements OnInit, AfterViewInit {
     return results.find(result => result.round === round);
   }
 
-  getPoints(points: Map<number, Map<number, number[][]>>, user: User, race: Race): Array<number[]|null> {
+  getPoints(points: Map<number, Map<number, Array<number[] | null>>>, user: User, race: Race): Array<number[]|null> {
     return points.get(user.id!)?.get(race.round) ?? [null, null, null];
   }
 
